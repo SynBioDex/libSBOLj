@@ -28,7 +28,7 @@ public class CutExample {
 		ComponentDefinition promoter = document.createComponentDefinition(
 				"BBa_J23119",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 		promoter.addRole(SequenceOntology.PROMOTER);
 		promoter.addRole(URI.create("http://identifiers.org/so/SO:0000613"));
 				

@@ -33,9 +33,9 @@ SHELL = /bin/bash
 	chap1.tex \
 	chap2.tex \
 	chap3.tex \
-	libsbolj-crisprTutorial-2-2.tex
+	libsbolj-crisprTutorial-2-3.tex
 
-TEXFILES = libsbolj-crisprTutorial-2-2.tex
+TEXFILES = libsbolj-crisprTutorial-2-3.tex
 
 FIGURES = 
 
@@ -49,45 +49,45 @@ EPSFILES = \
 %.eps: %.fig
 	$(FIG2EPS) $< >$@
 
-all: libsbolj-crisprTutorial-2-2.dvi
+all: libsbolj-crisprTutorial-2-3.dvi
 
-pdf: libsbolj-crisprTutorial-2-2.pdf
+pdf: libsbolj-crisprTutorial-2-3.pdf
 
-ps: libsbolj-crisprTutorial-2-2.ps
+ps: libsbolj-crisprTutorial-2-3.ps
 
 check: dw syn
 
-#libsbolj-crisprTutorial-2-2.dvi: libsbolj-crisprTutorial-2-2.tex aliascnt.sty $(FIGURES) $(TEXFILES) $(EPSFILES)
-libsbolj-crisprTutorial-2-2.dvi: libsbolj-crisprTutorial-2-2.tex $(FIGURES) $(TEXFILES) $(EPSFILES)
+#libsbolj-crisprTutorial-2-3.dvi: libsbolj-crisprTutorial-2-3.tex aliascnt.sty $(FIGURES) $(TEXFILES) $(EPSFILES)
+libsbolj-crisprTutorial-2-3.dvi: libsbolj-crisprTutorial-2-3.tex $(FIGURES) $(TEXFILES) $(EPSFILES)
 	@echo '-------------------- latex #1 --------------------'
-	$(PDFLATEX) --shell-escape libsbolj-crisprTutorial-2-2.tex
+	$(PDFLATEX) --shell-escape libsbolj-crisprTutorial-2-3.tex
 	@echo '-------------------- latex #2 --------------------'
-	$(PDFLATEX) --shell-escape libsbolj-crisprTutorial-2-2.tex
-	$(BIBTEX) libsbolj-crisprTutorial-2-2
+	$(PDFLATEX) --shell-escape libsbolj-crisprTutorial-2-3.tex
+	$(BIBTEX) libsbolj-crisprTutorial-2-3
 	@echo '-------------------- latex #3 --------------------'
-	$(PDFLATEX) --shell-escape libsbolj-crisprTutorial-2-2.tex
+	$(PDFLATEX) --shell-escape libsbolj-crisprTutorial-2-3.tex
 
-libsbolj-crisprTutorial-2-2.pdf: libsbolj-crisprTutorial-2-2.ps
+libsbolj-crisprTutorial-2-3.pdf: libsbolj-crisprTutorial-2-3.ps
 	@echo '-------------------- pdf --------------------'
 	$(DISTILL) $?
 
-libsbolj-crisprTutorial-2-2.ps: libsbolj-crisprTutorial-2-2.dvi
+libsbolj-crisprTutorial-2-3.ps: libsbolj-crisprTutorial-2-3.dvi
 	@echo '-------------------- ps --------------------'
 	$(DVIPS) -o $@ $?
 
 dw:
-	@-$(RM) libsbolj-crisprTutorial-2-2.dw
+	@-$(RM) libsbolj-crisprTutorial-2-3.dw
 	@echo '-------------------- doubled words --------------------'
 	@for f in $(TEXFILES) ;\
 	do \
 		echo ----- $$f ----- ; \
-		echo ----- $$f ----- >> libsbolj-crisprTutorial-2-2.dw ; \
-		$(DETEX) $$f  | $(DW) >> libsbolj-crisprTutorial-2-2.dw ; \
+		echo ----- $$f ----- >> libsbolj-crisprTutorial-2-3.dw ; \
+		$(DETEX) $$f  | $(DW) >> libsbolj-crisprTutorial-2-3.dw ; \
 	done
 
 syn:
 	@echo '-------------------- syntax check --------------------'
-	@$(LACHECK) libsbolj-crisprTutorial-2-2.tex
+	@$(LACHECK) libsbolj-crisprTutorial-2-3.tex
 
 clean:
 	@$(RM) $(FIGFILES:.fig=.eps) *.blg *.dvi* *.dw *.ilg \

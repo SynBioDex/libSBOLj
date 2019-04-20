@@ -14,7 +14,7 @@ import java.io.InputStream;
 public class SBOLReaderTest extends SBOLAbstractTests
 {
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws SBOLValidationException, IOException, SBOLConversionException 
+	public void runTest(final String fileName, final SBOLDocument expected, boolean compliant) throws SBOLValidationException, IOException, SBOLConversionException 
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)
@@ -30,16 +30,20 @@ public class SBOLReaderTest extends SBOLAbstractTests
 		}
 		else SBOLReader.unsetURIPrefix();
 
-		if(fileType.equals("rdf"))
-			actual = SBOLReader.read(resourceAsStream);
-		else if (fileType.equals("json"))
-			actual = SBOLReader.read(resourceAsStream,SBOLDocument.JSON);
-		else if (fileType.equals("turtle"))
-			actual = SBOLReader.read(resourceAsStream,SBOLDocument.TURTLE);
-		else
-			actual = SBOLReader.read(resourceAsStream);
+//		if(fileType.equals("rdf"))
+//			actual = SBOLReader.read(resourceAsStream);
+//		else if (fileType.equals("json"))
+//			actual = SBOLReader.read(resourceAsStream,SBOLDocument.JSON);
+//		else if (fileType.equals("turtle"))
+//			actual = SBOLReader.read(resourceAsStream,SBOLDocument.TURTLE);
+//		else
+		actual = SBOLReader.read(resourceAsStream);
 		if (!actual.equals(expected)) {
 			SBOLValidate.compareDocuments("actual", actual, "expected", expected);
+			for (String error : SBOLValidate.getErrors()) {
+				System.out.println(error);
+			}
+			
 		}
 		assertTrue(actual.equals(expected));
 	}

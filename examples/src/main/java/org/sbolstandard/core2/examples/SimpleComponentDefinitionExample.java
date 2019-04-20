@@ -27,7 +27,7 @@ public class SimpleComponentDefinitionExample {
 				"BBa_J23119",
 				"",
 				new HashSet<URI>(Arrays.asList(
-						ComponentDefinition.DNA,
+						ComponentDefinition.DNA_REGION,
 						URI.create("http://identifiers.org/chebi/CHEBI:4705")												
 						)));
 		promoter.addRole(SequenceOntology.PROMOTER);

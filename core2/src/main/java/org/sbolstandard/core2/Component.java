@@ -4,8 +4,11 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import static org.sbolstandard.core2.URIcompliance.extractDisplayId;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,6 +25,8 @@ public class Component extends ComponentInstance{
 	private HashMap<URI, MapsTo> mapsTos;
 	private Set<URI> roles;
 	private RoleIntegrationType roleIntegration;
+	private HashMap<URI, Location> locations;
+	private HashMap<URI, Location> sourceLocations;
 	/**
 	 * Parent component definition of this component
 	 */
@@ -38,6 +43,8 @@ public class Component extends ComponentInstance{
 		super(identity, access, definition);
 		this.mapsTos = new HashMap<>();
 		this.roles = new HashSet<>();
+		this.locations = new HashMap<>();
+		this.sourceLocations = new HashMap<>();
 	}
 
 	/**
@@ -66,21 +73,124 @@ public class Component extends ComponentInstance{
 		for (URI role : component.getRoles()) {
 			this.addRole(URI.create(role.toString()));
 		}
+		this.locations = new HashMap<>();
+		for (Location location : component.getLocations()) {
+			addLocation(location.deepCopy());
+		}
+		this.sourceLocations = new HashMap<>();
+		for (Location location : component.getSourceLocations()) {
+			addSourceLocation(location.deepCopy());
+		}
 	}
 	
 	void copy(Component component) throws SBOLValidationException {
 		((ComponentInstance)this).copy((ComponentInstance)component);
-		if (!component.getMapsTos().isEmpty()) {
-			for (MapsTo mapsTo : component.getMapsTos()) {
-				String displayId = URIcompliance.findDisplayId(mapsTo);
-				String localDisplayId = URIcompliance.findDisplayId(mapsTo.getLocal());
-				MapsTo newMapsTo = this.createMapsTo(displayId, mapsTo.getRefinement(), localDisplayId, 
-						mapsTo.getRemoteURI());
-				newMapsTo.copy(mapsTo);
-			}
-		}
+		this.mapsTos = new HashMap<>();
+		// TODO: moved up a level since need to copy components before mapstos
+//		if (!component.getMapsTos().isEmpty()) {
+//			for (MapsTo mapsTo : component.getMapsTos()) {
+//				String displayId = URIcompliance.findDisplayId(mapsTo);
+//				String localDisplayId = URIcompliance.findDisplayId(mapsTo.getLocal());
+//				MapsTo newMapsTo = this.createMapsTo(displayId, mapsTo.getRefinement(), localDisplayId, 
+//						mapsTo.getRemoteURI());
+//				newMapsTo.copy(mapsTo);
+//			}
+//		}
+		this.setRoleIntegration(component.getRoleIntegration());
 		for (URI role : component.getRoles()) {
 			this.addRole(URI.create(role.toString()));
+		}
+		for (Location location : component.getLocations()) {
+			String displayId = URIcompliance.findDisplayId(location);
+			if (location instanceof Range) {
+				Range range = (Range)location;
+				Range newRange;
+				if (range.isSetOrientation()) {
+					newRange = this.addRange(displayId, range.getStart(), range.getEnd(), 
+							range.getOrientation());
+				} else {
+					newRange = this.addRange(displayId, range.getStart(), range.getEnd());
+				}
+				if (range.isSetSequence()) {
+					newRange.setSequence(range.getSequenceURI());
+				}
+				newRange.copy(range);
+			} else if (location instanceof Cut) {
+				Cut cut = (Cut)location;
+				Cut newCut;
+				if (cut.isSetOrientation()) {
+					newCut = this.addCut(displayId, cut.getAt(), cut.getOrientation());
+				} else {
+					newCut = this.addCut(displayId, cut.getAt());
+				}
+				if (cut.isSetSequence()) {
+					newCut.setSequence(cut.getSequenceURI());
+				}
+				newCut.copy(cut);
+			} else if (location instanceof GenericLocation) {
+				GenericLocation genericLocation = (GenericLocation)location;
+				GenericLocation newGenericLocation;
+				if (genericLocation.isSetOrientation()) {
+					newGenericLocation = this.addGenericLocation(displayId,
+							genericLocation.getOrientation());
+				} else {
+					newGenericLocation = this.addGenericLocation(displayId);
+				}
+				if (genericLocation.isSetSequence()) {
+					newGenericLocation.setSequence(genericLocation.getSequenceURI());
+				}
+				newGenericLocation.copy(genericLocation);
+			}
+		}
+		Location location = this.getLocation("DUMMY__LOCATION");
+		if (location!=null) {
+			this.removeLocation(location);
+		}
+		for (Location sourceLocation : component.getSourceLocations()) {
+			String displayId = URIcompliance.findDisplayId(sourceLocation);
+			if (sourceLocation instanceof Range) {
+				Range range = (Range)sourceLocation;
+				Range newRange;
+				if (range.isSetOrientation()) {
+					newRange = this.addSourceRange(displayId, range.getStart(), range.getEnd(), 
+							range.getOrientation());
+				} else {
+					newRange = this.addSourceRange(displayId, range.getStart(), range.getEnd());
+				}
+				if (range.isSetSequence()) {
+					newRange.setSequence(range.getSequenceURI());
+				}
+				newRange.copy(range);
+			} else if (sourceLocation instanceof Cut) {
+				Cut cut = (Cut)sourceLocation;
+				Cut newCut;
+				if (cut.isSetOrientation()) {
+					newCut = this.addSourceCut(displayId, cut.getAt(), cut.getOrientation());
+				} else {
+					newCut = this.addSourceCut(displayId, cut.getAt());
+				}
+				if (cut.isSetSequence()) {
+					newCut.setSequence(cut.getSequenceURI());
+				}
+				newCut.copy(cut);
+			} else if (sourceLocation instanceof GenericLocation) {
+				GenericLocation genericLocation = (GenericLocation)sourceLocation;
+				GenericLocation newGenericLocation;
+				if (genericLocation.isSetOrientation()) {
+					newGenericLocation = this.addGenericSourceLocation(displayId,
+							genericLocation.getOrientation());
+				} else {
+					newGenericLocation = this.addGenericSourceLocation(displayId);
+				}
+				if (genericLocation.isSetSequence()) {
+					newGenericLocation.setSequence(genericLocation.getSequenceURI());
+				}
+				newGenericLocation.copy(genericLocation);
+			}
+		}
+		Location sourceLocation = this.getLocation("DUMMY__LOCATION");
+		if (sourceLocation!=null) {
+			this.removeLocation(sourceLocation);
 		}
 	}
 
@@ -125,6 +235,20 @@ public class Component extends ComponentInstance{
 			this.addMapsTo(mapsTo);
 			String localId = extractDisplayId(mapsTo.getLocalURI());
 			mapsTo.setLocal(createCompliantURI(URIprefix,localId,version));
+		}
+		int count = 0;
+		for (Location location : this.getLocations()) {
+			if (!location.isSetDisplayId()) location.setDisplayId("location"+ ++count);
+			location.updateCompliantURI(this.getPersistentIdentity().toString(),location.getDisplayId(),version);
+			this.removeChildSafely(location, this.locations);
+			this.addLocation(location);
+		}
+		count = 0;
+		for (Location sourceLocation : this.getSourceLocations()) {
+			if (!sourceLocation.isSetDisplayId()) sourceLocation.setDisplayId("sourceLocation"+ ++count);
+			sourceLocation.updateCompliantURI(this.getPersistentIdentity().toString(),sourceLocation.getDisplayId(),version);
+			this.removeChildSafely(sourceLocation, this.sourceLocations);
+			this.addSourceLocation(sourceLocation);
 		}
 	}
 	
@@ -493,12 +617,550 @@ public class Component extends ComponentInstance{
 		super.setDefinition(definition);
 	}
 	
+	/**
+	 * Creates a generic location with the given arguments and then adds it to this components's
+	 * list of source locations.
+	 * <p>
+	 * This method first creates a compliant URI for the generic location to be created. 
+	 * It starts with this component's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
+	 *  
+	 * @param displayId the display ID for the generic location to be created
+	 * @return the created generic location instance
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206.
+	 */
+	public GenericLocation addGenericSourceLocation(String displayId) throws SBOLValidationException {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		GenericLocation genericLocation = new GenericLocation(identity);
+		genericLocation.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		genericLocation.setDisplayId(displayId);
+		genericLocation.setVersion(this.getVersion());
+		addSourceLocation(genericLocation);
+		return genericLocation;
+	}
+	
+	/**
+	 * Creates a generic location with the given arguments and then adds it to this component's
+	 * list of source locations.
+	 * <p>
+	 * This method first creates a compliant URI for the generic location to be created. 
+	 * It starts with this component's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
+	 *  
+	 * @param displayId the display ID for the generic location to be created
+	 * @param orientation the orientation type
+	 * @return the created generic location instance
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206. 
+ 	 */
+	public GenericLocation addGenericSourceLocation(String displayId,OrientationType orientation) throws SBOLValidationException {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		GenericLocation genericLocation = new GenericLocation(identity);
+		genericLocation.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		genericLocation.setDisplayId(displayId);
+		genericLocation.setVersion(this.getVersion());
+		genericLocation.setOrientation(orientation);
+		addSourceLocation(genericLocation);
+		return genericLocation;
+	}
+	
+	/**
+	 * Creates a cut with the given arguments and then adds it to this component's
+	 * list of source locations.
+	 * <p>
+	 * This method first creates a compliant URI for the cut to be created. 
+	 * It starts with this component's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
+	 *  
+	 * @param displayId the display ID for the cut to be created
+	 * @param at the at property for the cut to be created
+	 * @return the created cut
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 11202.
+	 */
+	public Cut addSourceCut(String displayId,int at) throws SBOLValidationException {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		Cut cut = new Cut(identity,at);
+		cut.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		cut.setDisplayId(displayId);
+		cut.setVersion(this.getVersion());
+		addSourceLocation(cut);
+		return cut;
+	}
+	
+	/**
+	 * Creates a cut with the given arguments and then adds it to this component's
+	 * list of source locations.
+	 * <p>
+	 * This method first creates a compliant URI for the cut to be created. 
+	 * It starts with this component's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
+	 *  
+	 * @param displayId the display ID for the cut to be created
+	 * @param at the at property for the cut to be created
+	 * @param orientation the orientation type
+	 * @return the created cut
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 11202. 
+	 */
+	public Cut addSourceCut(String displayId,int at,OrientationType orientation) throws SBOLValidationException {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		Cut cut = new Cut(identity,at);
+		cut.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		cut.setDisplayId(displayId);
+		cut.setVersion(this.getVersion());
+		cut.setOrientation(orientation);
+		addSourceLocation(cut);
+		return cut;
+	}
+
+	/**
+	 * Creates a range with the given arguments and then adds it to this component's
+	 * list of source locations.
+	 * <p>
+	 * This method first creates a compliant URI for the range to be created. 
+	 * It starts with this component's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
+	 *  
+	 * @param displayId the display ID for the range to be created
+ 	 * @param start the start index for the range to be created
+	 * @param end the end index for the range to be created
+	 * @return the created range
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 11102, 11103, 11104. 
+	 */
+	public Range addSourceRange(String displayId,int start,int end) throws SBOLValidationException {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		Range range = new Range(identity,start,end);
+		range.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		range.setDisplayId(displayId);
+		range.setVersion(this.getVersion());
+		addSourceLocation(range);
+		return range;
+	}
+	
+	/**
+	 * Creates a range with the given arguments and then adds it to this component's
+	 * list of source locations.
+	 * <p>
+	 * This method first creates a compliant URI for the range to be created. 
+	 * It starts with this component's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
+	 * 
+	 * @param displayId the display ID for the range to be created
+ 	 * @param start the start index for the range to be created
+	 * @param end the end index for the range to be created
+	 * @param orientation the orientation type
+	 * @return the created range
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 11102, 11103, 11104.
+	 */
+	public Range addSourceRange(String displayId,int start,int end,OrientationType orientation) throws SBOLValidationException {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		Range range = new Range(identity,start,end);
+		range.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		range.setDisplayId(displayId);
+		range.setVersion(this.getVersion());
+		range.setOrientation(orientation);
+		addSourceLocation(range);
+		return range;
+	}
+	
+	/**
+	 * @param sourceLocation
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}
+	 */
+	void addSourceLocation(Location sourceLocation) throws SBOLValidationException {
+		addChildSafely(sourceLocation, sourceLocations, "sourceLocation");
+		sourceLocation.setSBOLDocument(this.getSBOLDocument());
+		sourceLocation.setComponentDefinition(componentDefinition);
+		if (sourceLocation.isSetSequence() && getDefinition() != null && 
+				!getDefinition().getSequenceURIs().contains(sourceLocation.getSequenceURI())) {
+			throw new SBOLValidationException("sbol-11003",this);
+		}
+	}
+	
+	/**
+	 * Removes the given location from the list of source locations.
+	 * 
+	 * @param sourceLocation the location to be removed
+	 * @return {@code true} if the matching location was removed successfully, {@code false} otherwise
+	 */	
+	public boolean removeSourceLocation(Location sourceLocation) {
+		return removeChildSafely(sourceLocation,sourceLocations);
+	}
+	
+	/**
+	 * Returns a source location owned by this component 
+	 * that matches the given display ID.
+	 * <p>
+	 * This method first creates a compliant URI. It starts with the component's persistent identity URI,
+	 * followed by the given display ID, and ends with this component's version. This compliant URI is used
+	 * to look up for the location to be retrieved.
+	 * 
+	 * @param displayId the display ID of the location to be retrieved
+	 * @return the matching location
+	 */
+	public Location getSourceLocation(String displayId) {
+		try {
+			return sourceLocations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+		}
+		catch (SBOLValidationException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * Returns a sourceLocation owned by this component 
+	 * that matches the given identity URI.
+	 * 
+	 * @param sourceLocationURI the URI identity of the location to be retrieved
+	 * @return the matching location 
+	 */
+	public Location getSourceLocation(URI sourceLocationURI) {
+		return sourceLocations.get(sourceLocationURI);
+	}
+	
+	/**
+	 * Returns the set of sourceLocations referenced by this component.
+	 * 
+	 * @return the set of sourceLocations referenced by this component
+	 */
+	public Set<Location> getSourceLocations() {
+		return new HashSet<>(sourceLocations.values());
+	}
+	
+	/**
+	 * Returns the set of Range/Cut sourceLocations referenced by this component.
+	 * 
+	 * @return the set of Range/Cut sourceLocations referenced by this component
+	 */
+	public Set<Location> getPreciseSourceLocations() {
+		HashSet<Location> preciseSourceLocations = new HashSet<>();
+		for (Location sourceLocation : sourceLocations.values()) {
+			if (!(sourceLocation instanceof GenericLocation)) {
+				preciseSourceLocations.add(sourceLocation);
+			}
+		}
+		return preciseSourceLocations;
+	}
+	
+	/**
+	 * Returns a sorted list of sourceLocations owned by this component.
+	 * 
+	 * @return a sorted list of sourceLocations owned by this component
+	 */
+	public List<Location> getSortedSourceLocations() {
+		List<Location> sortedSourceLocations = new ArrayList<Location>();
+		sortedSourceLocations.addAll(this.getSourceLocations());
+		Collections.sort(sortedSourceLocations);
+		return sortedSourceLocations;
+	}
+
+	/**
+	 * Removes all entries of this component's list of sourceLocations.
+	 * The set will be empty after this call returns.
+	 */
+	void clearSourceLocations() {
+		Object[] valueSetArray = sourceLocations.values().toArray();
+		for (Object sourceLocation : valueSetArray) {
+			removeSourceLocation((Location)sourceLocation);
+		}
+	}
+		
+	/**
+	 * Clears the existing list of sourceLocation instances first, 
+	 * then adds the given set of sourceLocations.
+	 * 
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <li>the following SBOL validation rule was violated: 10902;</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #clearSourceLocations()}; or </li>
+	 * <li>an SBOL validation rule violation occurred in {@link #addSourceLocation(Location)}.</li>
+	 */
+	void setSourceLocations(Set<Location> sourceLocations) throws SBOLValidationException {
+		clearSourceLocations();	
+		for (Location location : sourceLocations) {
+			addSourceLocation(location);
+		}
+	}
+	
+	/**
+	 * Creates a generic location with the given arguments and then adds it to this component's
+	 * list of locations.
+	 * <p>
+	 * This method first creates a compliant URI for the generic location to be created. 
+	 * It starts with this component's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
+	 *  
+	 * @param displayId the display ID for the generic location to be created
+	 * @return the created generic location instance
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206.
+	 */
+	public GenericLocation addGenericLocation(String displayId) throws SBOLValidationException {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		GenericLocation genericLocation = new GenericLocation(identity);
+		genericLocation.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		genericLocation.setDisplayId(displayId);
+		genericLocation.setVersion(this.getVersion());
+		addLocation(genericLocation);
+		return genericLocation;
+	}
+	
+	/**
+	 * Creates a generic location with the given arguments and then adds it to this component's
+	 * list of locations.
+	 * <p>
+	 * This method first creates a compliant URI for the generic location to be created. 
+	 * It starts with this component's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
+	 *  
+	 * @param displayId the display ID for the generic location to be created
+	 * @param orientation the orientation type
+	 * @return the created generic location instance
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206. 
+ 	 */
+	public GenericLocation addGenericLocation(String displayId,OrientationType orientation) throws SBOLValidationException {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		GenericLocation genericLocation = new GenericLocation(identity);
+		genericLocation.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		genericLocation.setDisplayId(displayId);
+		genericLocation.setVersion(this.getVersion());
+		genericLocation.setOrientation(orientation);
+		addLocation(genericLocation);
+		return genericLocation;
+	}
+	
+	/**
+	 * Creates a cut with the given arguments and then adds it to this component's
+	 * list of locations.
+	 * <p>
+	 * This method first creates a compliant URI for the cut to be created. 
+	 * It starts with this component's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
+	 *  
+	 * @param displayId the display ID for the cut to be created
+	 * @param at the at property for the cut to be created
+	 * @return the created cut
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 11202.
+	 */
+	public Cut addCut(String displayId,int at) throws SBOLValidationException {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		Cut cut = new Cut(identity,at);
+		cut.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		cut.setDisplayId(displayId);
+		cut.setVersion(this.getVersion());
+		addLocation(cut);
+		return cut;
+	}
+	
+	/**
+	 * Creates a cut with the given arguments and then adds it to this component's
+	 * list of locations.
+	 * <p>
+	 * This method first creates a compliant URI for the cut to be created. 
+	 * It starts with this component's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
+	 *  
+	 * @param displayId the display ID for the cut to be created
+	 * @param at the at property for the cut to be created
+	 * @param orientation the orientation type
+	 * @return the created cut
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 11202. 
+	 */
+	public Cut addCut(String displayId,int at,OrientationType orientation) throws SBOLValidationException {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		Cut cut = new Cut(identity,at);
+		cut.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		cut.setDisplayId(displayId);
+		cut.setVersion(this.getVersion());
+		cut.setOrientation(orientation);
+		addLocation(cut);
+		return cut;
+	}
+
+	/**
+	 * Creates a range with the given arguments and then adds it to this component's
+	 * list of locations.
+	 * <p>
+	 * This method first creates a compliant URI for the range to be created. 
+	 * It starts with this component's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
+	 *  
+	 * @param displayId the display ID for the range to be created
+ 	 * @param start the start index for the range to be created
+	 * @param end the end index for the range to be created
+	 * @return the created range
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 11102, 11103, 11104. 
+	 */
+	public Range addRange(String displayId,int start,int end) throws SBOLValidationException {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		Range range = new Range(identity,start,end);
+		range.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		range.setDisplayId(displayId);
+		range.setVersion(this.getVersion());
+		addLocation(range);
+		return range;
+	}
+	
+	/**
+	 * Creates a range with the given arguments and then adds it to this component's
+	 * list of locations.
+	 * <p>
+	 * This method first creates a compliant URI for the range to be created. 
+	 * It starts with this component's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
+	 * 
+	 * @param displayId the display ID for the range to be created
+ 	 * @param start the start index for the range to be created
+	 * @param end the end index for the range to be created
+	 * @param orientation the orientation type
+	 * @return the created range
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 11102, 11103, 11104.
+	 */
+	public Range addRange(String displayId,int start,int end,OrientationType orientation) throws SBOLValidationException {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		Range range = new Range(identity,start,end);
+		range.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		range.setDisplayId(displayId);
+		range.setVersion(this.getVersion());
+		range.setOrientation(orientation);
+		addLocation(range);
+		return range;
+	}
+	
+	/**
+	 * @param location
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}
+	 */
+	void addLocation(Location location) throws SBOLValidationException {
+		addChildSafely(location, locations, "location");
+		location.setSBOLDocument(this.getSBOLDocument());
+		location.setComponentDefinition(componentDefinition);
+		if (location.isSetSequence() && componentDefinition != null && 
+				!componentDefinition.getSequenceURIs().contains(location.getSequenceURI())) {
+			throw new SBOLValidationException("sbol-11003",this);
+		}
+	}
+	
+	/**
+	 * Removes the given location from the list of locations.
+	 * 
+	 * @param location the location to be removed
+	 * @return {@code true} if the matching location was removed successfully, {@code false} otherwise
+	 */	
+	public boolean removeLocation(Location location) {
+		return removeChildSafely(location,sourceLocations);
+	}
+	
+	/**
+	 * Returns the location owned by this component 
+	 * that matches the given display ID.
+	 * <p>
+	 * This method first creates a compliant URI. It starts with the component's persistent identity URI,
+	 * followed by the given display ID, and ends with this component's version. This compliant URI is used
+	 * to look up for the location to be retrieved.
+	 * 
+	 * @param displayId the display ID of the location to be retrieved
+	 * @return the matching location
+	 */
+	public Location getLocation(String displayId) {
+		try {
+			return locations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+		}
+		catch (SBOLValidationException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * Returns the location owned by this component 
+	 * that matches the given identity URI.
+	 * 
+	 * @param locationURI the URI identity of the location to be retrieved
+	 * @return the matching location 
+	 */
+	public Location getLocation(URI locationURI) {
+		return locations.get(locationURI);
+	}
+	
+	/**
+	 * Returns the set of locations referenced by this component.
+	 * 
+	 * @return the set of locations referenced by this component
+	 */
+	public Set<Location> getLocations() {
+		return new HashSet<>(locations.values());
+	}
+	
+	/**
+	 * Returns the set of Range/Cut locations referenced by this component.
+	 * 
+	 * @return the set of Range/Cut locations referenced by this component
+	 */
+	public Set<Location> getPreciseLocations() {
+		HashSet<Location> preciseLocations = new HashSet<>();
+		for (Location location : locations.values()) {
+			if (!(location instanceof GenericLocation)) {
+				preciseLocations.add(location);
+			}
+		}
+		return preciseLocations;
+	}
+	
+	/**
+	 * Returns a sorted list of locations owned by this component.
+	 * 
+	 * @return a sorted list of locations owned by this component
+	 */
+	public List<Location> getSortedLocations() {
+		List<Location> sortedLocations = new ArrayList<Location>();
+		sortedLocations.addAll(this.getLocations());
+		Collections.sort(sortedLocations);
+		return sortedLocations;
+	}
+
+	/**
+	 * Removes all entries of this component's list of locations.
+	 * The set will be empty after this call returns.
+	 */
+	void clearLocations() {
+		Object[] valueSetArray = locations.values().toArray();
+		for (Object location : valueSetArray) {
+			removeLocation((Location)location);
+		}
+	}
+		
+	/**
+	 * Clears the existing list of location instances first, 
+	 * then adds the given set of locations.
+	 * 
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <li>the following SBOL validation rule was violated: 10902;</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #clearLocations()}; or </li>
+	 * <li>an SBOL validation rule violation occurred in {@link #addLocation(Location)}.</li>
+	 */
+	void setLocations(Set<Location> locations) throws SBOLValidationException {
+		clearLocations();	
+		for (Location location : locations) {
+			addLocation(location);
+		}
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
 		result = prime * result + ((mapsTos == null) ? 0 : mapsTos.hashCode());
+		result = prime * result + ((locations == null) ? 0 : locations.hashCode());
+		result = prime * result + ((sourceLocations == null) ? 0 : sourceLocations.hashCode());
 		return result;
 	}
 
@@ -521,6 +1183,16 @@ public class Component extends ComponentInstance{
 				return false;
 		} else if (!mapsTos.equals(other.mapsTos))
 			return false;
+		if (locations == null) {
+			if (other.locations != null)
+				return false;
+		} else if (!locations.equals(other.locations))
+			return false;
+		if (sourceLocations == null) {
+			if (other.sourceLocations != null)
+				return false;
+		} else if (!sourceLocations.equals(other.sourceLocations))
+			return false;
 		return true;
 	}
 
@@ -530,6 +1202,8 @@ public class Component extends ComponentInstance{
 		return "Component ["
 				+ super.toString()
 				+ (roles.size()>0?", roles=" + roles:"")  
+				+ (locations.size()>0?", locations=" + this.getLocations():"")
+				+ (sourceLocations.size()>0?", sourcelocations=" + this.getSourceLocations():"")
 				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
 				+ "]";
 	}

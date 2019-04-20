@@ -11,7 +11,7 @@ import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.SequenceOntology;
 
-import static uk.ac.ncl.intbio.core.datatree.Datatree.*;
+import static org.sbolstandard.core.datatree.Datatree.*;
 
 /**
  * This example shows how to embed application specific custom data into SBOL documents. 
@@ -51,7 +51,7 @@ public class AnnotationOutput {
 		promoter.createAnnotation(
 				new QName(prURI, "information", prPrefix), 
 				new QName(prURI, "Information", prPrefix), 
-				URI.create("http://partsregistry.org/cd/BBa_J23119/information"), 
+				"information", 
 				new ArrayList<Annotation>(Arrays.asList(sigmaFactor,regulation)));
 				
 		SBOLWriter.write(document,(System.out));		

@@ -17,7 +17,7 @@ import java.util.Set;
  * @version 2.1
  */
 
-public class Module extends Identified {
+public class Module extends Measured {
 
 	private HashMap<URI, MapsTo> mapsTos;
 	private URI definition;
@@ -53,7 +53,7 @@ public class Module extends Identified {
 	}
 	
 	void copy(Module module) throws SBOLValidationException {
-		((Identified)this).copy((Identified)module);
+		((Measured)this).copy((Measured)module);
 		if (!module.getMapsTos().isEmpty()) {
 			for (MapsTo mapsTo : module.getMapsTos()) {
 				String displayId = URIcompliance.findDisplayId(mapsTo);
@@ -320,7 +320,7 @@ public class Module extends Identified {
 	}
 
 	/**
-	 * Returns the MapsTo instance owned by this Module object that matches the given {@code displayId}
+	 * Returns the MapsTo instance owned by this Module object that matches the given {@code referenceURI}
 	 *
 	 * @param referenceURI The MapsTo URI object
 	 * @return the matching MapsTo instance URI

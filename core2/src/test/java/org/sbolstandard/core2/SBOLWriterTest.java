@@ -16,7 +16,7 @@ import org.junit.Assume;
 public class SBOLWriterTest extends SBOLAbstractTests {
 
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws SBOLValidationException, SBOLConversionException, IOException 
+	public void runTest(final String fileName, final SBOLDocument expected, boolean compliant) throws SBOLValidationException, SBOLConversionException, IOException 
 	{
 		assumeNotNull(expected);
 		SBOLValidate.validateSBOL(expected, false, compliant, false);

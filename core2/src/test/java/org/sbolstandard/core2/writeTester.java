@@ -1,6 +1,6 @@
 package org.sbolstandard.core2;
 
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
+import static org.sbolstandard.core.datatree.Datatree.NamedProperty;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -47,11 +47,18 @@ class writeTester {
 		ArrayList<Annotation> anns = new ArrayList<>();
 		anns.add(ann);
 		seq.createAnnotation(new QName("http://dummy.org/","dumbTop","dumb"), 
-				new QName("http://dummy.org/","dumbNested","dumb"), 
-				URI.create("http://myuri.org/anno"), anns);
+				new QName("http://dummy.org/","dumbNested","dumb"), "anno", anns);
+		gtl.createAnnotation(new QName("http://dummy.org/","dumbTop","dumb"), 
+				new QName("http://dummy.org/","dumbNested","dumb"), "anno", anns);
 		//doc2 = doc2.createRecursiveCopy(seq);
-		doc2.createCopy(gtl0);
+		//doc2.createCopy(gtl0);
 		doc2.write(System.out);
+		SBOLValidate.validateSBOL(doc2,  true, true, true);
+		if (SBOLValidate.getNumErrors()>0) {
+			for (String error : SBOLValidate.getErrors()) {
+				System.out.println(error);
+			}
+		}
 //		SBOLTestUtils.writeAndRead(doc2,true);
 //		doc2.setDefaultURIprefix("http://dummy.org");
 //		Sequence seq = doc2.createSequence("id", "agct", Sequence.IUPAC_DNA);
@@ -221,7 +228,7 @@ class writeTester {
 	private static ComponentDefinition get_pLac (SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetURI(ComponentDefinition.DNA),
+				getSetURI(ComponentDefinition.DNA_REGION),
 				getSetURI(SequenceOntology.PROMOTER),
 				getData("pLac",version),
 				"pLacSeq");
@@ -230,7 +237,7 @@ class writeTester {
 	private static ComponentDefinition get_tetR (SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetURI(ComponentDefinition.DNA),
+				getSetURI(ComponentDefinition.DNA_REGION),
 				getSetURI(SequenceOntology.CDS),
 				getData("tetRCDS",version),
 				"tetRSeq");
@@ -258,7 +265,7 @@ class writeTester {
 	private static ComponentDefinition get_pLactetR (SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
 		ComponentDefinition cd = createComponentDefinitionData(SBOL2Doc_test,
-				getSetURI(ComponentDefinition.DNA),
+				getSetURI(ComponentDefinition.DNA_REGION),
 				getSetURI(SequenceOntology.ENGINEERED_GENE),
 				getData("pLactetR",version),
 				"pLactetRSeq");
@@ -385,7 +392,7 @@ class writeTester {
 	private static ComponentDefinition get_ptet(SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetURI(ComponentDefinition.DNA),
+				getSetURI(ComponentDefinition.DNA_REGION),
 				getSetURI(SequenceOntology.PROMOTER),
 				getData("ptet",version),
 				"ptetSeq");
@@ -394,7 +401,7 @@ class writeTester {
 	private static ComponentDefinition get_lacI (SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetURI(ComponentDefinition.DNA),
+				getSetURI(ComponentDefinition.DNA_REGION),
 				getSetURI(SequenceOntology.CDS),
 				getData("lacICDS",version),
 				"lacISeq");
@@ -423,7 +430,7 @@ class writeTester {
 	private static ComponentDefinition get_ptetlacI (SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
 		ComponentDefinition cd = createComponentDefinitionData(SBOL2Doc_test,
-				getSetURI(ComponentDefinition.DNA),
+				getSetURI(ComponentDefinition.DNA_REGION),
 				getSetURI(SequenceOntology.ENGINEERED_GENE),
 				getData("ptetlacI",version),
 				"ptetlacISeq");
@@ -582,7 +589,7 @@ class writeTester {
 		as.add(a);
 		a = toplevel.createAnnotation(new QName("urn:bbn.com:tasbe:grn", "theReaction", "grn"), 
 				new QName("urn:bbn.com:tasbe:grn","TheReaction","grn"), 
-				URI.create("http://www.async.ece.utah.edu/myAnnotation"), as);
+				"myAnnotation", as);
 		/*
 		as = a.getAnnotations();
 		System.out.println(a.getQName());

@@ -30,7 +30,7 @@ public class SequenceConstraintOutput {
 		ComponentDefinition promoter = document.createComponentDefinition(
 				"BBa_K174004",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 		promoter.addRole(SequenceOntology.PROMOTER);		
 		promoter.setName("pspac promoter");
 		promoter.setDescription("LacI repressible promoter");	
@@ -38,7 +38,7 @@ public class SequenceConstraintOutput {
 		ComponentDefinition constPromoter = document.createComponentDefinition(
 				"pspac",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 		constPromoter.addRole(SequenceOntology.PROMOTER);		
 		constPromoter.setName("constitutive promoter");
 		constPromoter.setDescription("pspac core promoter region");	
@@ -46,7 +46,7 @@ public class SequenceConstraintOutput {
 		ComponentDefinition operator = document.createComponentDefinition(
 				"LacI_operator",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));				
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));				
 		operator.addRole(SequenceOntology.OPERATOR);		
 		operator.setName("LacI operator");
 		operator.setDescription("LacI binding site");	

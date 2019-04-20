@@ -36,20 +36,20 @@ public class ComponentTest {
 		doc.setTypesInURIs(false);
 		doc.setComplete(true);
 		/*create CD's for main CD and sub-components*/
-		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", "", ComponentDefinition.DNA);
-		doc.createComponentDefinition("promoter_CD", "", ComponentDefinition.DNA);
-		gene_CD = doc.createComponentDefinition("gene_CD", "", ComponentDefinition.DNA);
-		doc.createComponentDefinition("terminator_CD", "", ComponentDefinition.DNA);
+		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", "", ComponentDefinition.DNA_REGION);
+		doc.createComponentDefinition("promoter_CD", "", ComponentDefinition.DNA_REGION);
+		gene_CD = doc.createComponentDefinition("gene_CD", "", ComponentDefinition.DNA_REGION);
+		doc.createComponentDefinition("terminator_CD", "", ComponentDefinition.DNA_REGION);
 		
 		/*create Components   */
 		promoter = gRNA_b_gene.createComponent("promoter", AccessType.PUBLIC, "promoter_CD");
 		gene = gRNA_b_gene.createComponent("gene", AccessType.PUBLIC, "gene_CD");
 		gRNA_b_gene.createComponent("terminator", AccessType.PUBLIC, "terminator_CD");
 		
-		doc.createComponentDefinition("target_gene_CD", "", ComponentDefinition.DNA);
+		doc.createComponentDefinition("target_gene_CD", "", ComponentDefinition.DNA_REGION);
 		target_gene = gRNA_b_gene.createComponent("target_gene", AccessType.PUBLIC, "target_gene_CD");
 		
-		doc.createComponentDefinition("target_protein", ComponentDefinition.DNA);
+		doc.createComponentDefinition("target_protein", ComponentDefinition.DNA_REGION);
 		protein = gene_CD.createComponent("protein", AccessType.PUBLIC, "target_protein");
 	}
 

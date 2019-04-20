@@ -33,10 +33,10 @@ public class SequenceAnnotationTest {
 		doc.setTypesInURIs(false);
 		doc.setComplete(true);
 		/*create CD's for main CD and sub-components*/
-		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", "", ComponentDefinition.DNA);
-		promoter_CD = doc.createComponentDefinition("promoter_CD", "", ComponentDefinition.DNA);
-		doc.createComponentDefinition("gene_CD", "", ComponentDefinition.DNA);
-		doc.createComponentDefinition("terminator_CD", "", ComponentDefinition.DNA);
+		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", "", ComponentDefinition.DNA_REGION);
+		promoter_CD = doc.createComponentDefinition("promoter_CD", "", ComponentDefinition.DNA_REGION);
+		doc.createComponentDefinition("gene_CD", "", ComponentDefinition.DNA_REGION);
+		doc.createComponentDefinition("terminator_CD", "", ComponentDefinition.DNA_REGION);
 		gRNA_b_gene.createComponent("promoter", AccessType.PUBLIC, "promoter_CD");
 		gRNA_b_gene.createComponent("gene", AccessType.PUBLIC, "promoter_CD");
 		gRNA_b_gene.createComponent("terminator", AccessType.PUBLIC, "promoter_CD");

@@ -43,7 +43,7 @@ public class GettingStartedExample {
 		
 		// Creating a Top-level SBOL Data Object
 		HashSet<URI> types = new HashSet<URI>(Arrays.asList(
-						ComponentDefinition.DNA,
+						ComponentDefinition.DNA_REGION,
 						URI.create("http://identifiers.org/chebi/CHEBI:4705")
 						));		
 		ComponentDefinition TetR_promoter = document.createComponentDefinition(

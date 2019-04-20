@@ -41,7 +41,7 @@ public class GenericTopLevelOutput {
 		ComponentDefinition promoter = document.createComponentDefinition(
 				"BBa_J23119",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));		
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));		
 		promoter.addRole(SequenceOntology.PROMOTER);
 		promoter.setName("J23119");
 		promoter.setDescription("Constitutive promoter");					

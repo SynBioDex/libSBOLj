@@ -258,8 +258,15 @@ public abstract class Identified {
 	 *
 	 * @param wasDerivedFromURI the wasDerivedFrom URI to be added
 	 * @return {@code true} if this set did not already contain the specified wasDerivedFrom, {@code false} otherwise.
+	 * @throws SBOLValidationException if the following SBOL validation rules was violated: 10305. 
 	 */
-	public boolean addWasDerivedFrom(URI wasDerivedFromURI) {
+	public boolean addWasDerivedFrom(URI wasDerivedFromURI) throws SBOLValidationException {
+		if (sbolDocument!=null) {
+			if (!SBOLValidate.checkWasDerivedFromVersion(sbolDocument, this, wasDerivedFromURI)) {
+				throw new SBOLValidationException("sbol-10305", this);
+			}
+			SBOLValidate.checkWasDerivedFromCycle(sbolDocument, this, wasDerivedFromURI, new HashSet<URI>());
+		}
 		return wasDerivedFroms.add(wasDerivedFromURI);
 	}
 	
@@ -339,8 +346,9 @@ public abstract class Identified {
 	 * set of the wasDerivedFroms.
 	 *
 	 * @param wasDerivedFroms the set of wasDerivedFroms to set to
+	 * @throws SBOLValidationException if the following SBOL validation rules was violated: 10305. 
 	 */
-	public void setWasDerivedFroms(Set<URI> wasDerivedFroms) {
+	public void setWasDerivedFroms(Set<URI> wasDerivedFroms) throws SBOLValidationException {
 		clearWasDerivedFroms();
 		if (wasDerivedFroms==null) return;
 		for (URI wasDerivedFrom : wasDerivedFroms) {
@@ -360,6 +368,9 @@ public abstract class Identified {
 			if (this.getSBOLDocument().getActivity(wasGeneratedByURI)==null) {
 				throw new SBOLValidationException("sbol-10222",this);
 			}
+		}
+		if (sbolDocument!=null) {
+			SBOLValidate.checkWasGeneratedByCycle(sbolDocument, this, wasGeneratedByURI, new HashSet<URI>());
 		}
 		return wasGeneratedBys.add(wasGeneratedByURI);
 	}
@@ -514,13 +525,15 @@ public abstract class Identified {
 	 * 
 	 * @param qName the QName of the annotation to be created
 	 * @param nestedQName the QName of the nested annotation
-	 * @param nestedURI the identity URI for the nested annotation
+	 * @param nestedId the id for the nested annotation
 	 * @param annotations the list of annotations used to construct the nested annotation
 	 * @return the created annotation
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
 	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12101, 12301.
 	 */
-	public Annotation createAnnotation(QName qName,QName nestedQName, URI nestedURI, List<Annotation> annotations) throws SBOLValidationException {
+	public Annotation createAnnotation(QName qName,QName nestedQName, String nestedId, List<Annotation> annotations) throws SBOLValidationException {
+		URI nestedURI = URIcompliance.createCompliantURI(persistentIdentity.toString(),
+				TopLevel.ANNOTATION, nestedId, version, this.getSBOLDocument().isTypesInURIs());
 		Annotation annotation = new Annotation(qName, nestedQName, nestedURI, annotations);
 		addAnnotation(annotation);
 		return annotation;
@@ -619,6 +632,12 @@ public abstract class Identified {
 				throw new SBOLValidationException("sbol-13101");
 			} else if (this instanceof Attachment) {
 				throw new SBOLValidationException("sbol-13201");
+			} else if (this instanceof ExperimentalData) {
+				throw new SBOLValidationException("sbol-13301");
+			} else if (this instanceof Experiment) {
+				throw new SBOLValidationException("sbol-13401");
+			}else if (this instanceof Measure) {
+				throw new SBOLValidationException("sbol-13501");
 			}
 		}
 		addNamespace(annotation);
@@ -741,7 +760,9 @@ public abstract class Identified {
 		if (annotations == null) {
 			if (other.annotations != null)
 				return false;
-		} else if (!annotations.containsAll(other.annotations))
+		} else if (!annotations.containsAll(other.annotations)) 
+			return false;
+		else if (!other.annotations.containsAll(annotations))
 			return false;
 		if (identity == null) {
 			if (other.identity != null)

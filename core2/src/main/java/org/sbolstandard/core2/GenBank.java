@@ -1,11 +1,7 @@
 package org.sbolstandard.core2;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
@@ -32,6 +28,7 @@ class GenBank {
 	public static final String GBPREFIX = "genbank";
 	public static final String GBNAMESPACE = "http://www.ncbi.nlm.nih.gov/genbank#";
 	public static final String LOCUS = "locus";
+	public static final String REGION = "region";
 	public static final String MOLECULE = "molecule";
 	public static final String TOPOLOGY = "topology"; // Only used for backward compatiblity with 2.1.0
 	public static final String DIVISION = "division";
@@ -59,22 +56,6 @@ class GenBank {
 	public static final String ENDGREATERTHAN = "endGreaterThan";
 	public static final String SINGLEBASERANGE = "singleBaseRange";
 	public static final String MULTIRANGETYPE = "multiRangeType";
-	
-	static boolean isGenBankFile(String fileName) throws IOException {
-		File file = new File(fileName);
-		FileInputStream stream     = new FileInputStream(file);
-		BufferedInputStream buffer = new BufferedInputStream(stream);
-		String strLine;
-		BufferedReader br = new BufferedReader(new InputStreamReader(buffer));
-		strLine = br.readLine();
-		br.close();
-		return isGenBankString(strLine);
-	}
-
-	static boolean isGenBankString(String inputString) {
-		if (inputString!=null && inputString.startsWith("LOCUS")) return true;
-		return false;
-	}
 	
 	private static void writeGenBankLine(Writer w, String line, int margin, int indent) throws IOException {
 		if (line.length() < margin) {
@@ -387,10 +368,10 @@ class GenBank {
 		}
 		String type = null;
 		for (URI typeURI : componentDefinition.getTypes()) {
-			if (typeURI.equals(ComponentDefinition.RNA)) {
+			if (typeURI.equals(ComponentDefinition.RNA_REGION)) {
 				type = "RNA";
 				break;
-			} else if (typeURI.equals(ComponentDefinition.DNA)) {
+			} else if (typeURI.equals(ComponentDefinition.DNA_REGION)) {
 				type = "DNA";
 			}
 		}
@@ -433,7 +414,14 @@ class GenBank {
 		if (componentDefinition.isSetDescription()) {
 			writeGenBankLine(w,"DEFINITION  " + componentDefinition.getDescription(),80,12);
 		}
-		w.write("ACCESSION   " + componentDefinition.getDisplayId() + "\n");
+		String region = "";
+		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,REGION,GBPREFIX));
+		if (annotation!=null) {
+			region = annotation.getStringValue();
+			w.write("ACCESSION   " + componentDefinition.getDisplayId() + " REGION: " + region + "\n");
+		} else {
+			w.write("ACCESSION   " + componentDefinition.getDisplayId() + "\n");
+		}
 		if (componentDefinition.isSetVersion()) {
 			String giNumber = "";
 			annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,GINUMBER,GBPREFIX));
@@ -893,7 +881,7 @@ class GenBank {
 	 * <li>{@link #createSubComponentDefinitions(SBOLDocument, ComponentDefinition, URI, String, String)}.</li>
 	 * </ul>
 	 */
-	static void read(SBOLDocument doc,String stringBuffer,String URIPrefix,String defaultVersion) throws IOException, SBOLConversionException, SBOLValidationException {
+	static void read(SBOLDocument doc,String stringBuffer,String URIPrefix,String displayId,String defaultVersion) throws IOException, SBOLConversionException, SBOLValidationException {
 		so = new SequenceOntology();
 
 		// reset the global static variables needed for parsing
@@ -910,7 +898,7 @@ class GenBank {
 		URI lastRole = null;
 		while (true) {
 			boolean cont = false;
-			String id = "";
+			String id = displayId;
 			String accession = "";
 			String version = defaultVersion;
 			featureMode = false;
@@ -918,7 +906,7 @@ class GenBank {
 			StringBuilder sbSequence = new StringBuilder();
 			String elements = null;
 			String description = "";
-			URI type = ComponentDefinition.DNA;
+			URI type = ComponentDefinition.DNA_REGION;
 			ComponentDefinition topCD = null;
 			List<Annotation> annotations = new ArrayList<Annotation>();
 			List<Annotation> nestedAnnotations = null;
@@ -931,42 +919,80 @@ class GenBank {
 				// Example:
 				// LOCUS       AF123456                1510 bp    mRNA    linear   VRT 12-APR-2012
 				if (strLine.startsWith("LOCUS")) {
-					//String[] strSplit = strLine.split("\\s+");
+					String[] strSplit = strLine.split("\\s+");
 
 					// ID of the sequence
-					id = strLine.substring(12, 28).trim();
-					annotation = new Annotation(new QName(GBNAMESPACE, LOCUS, GBPREFIX), id);
-					id = URIcompliance.fixDisplayId(id);
-					annotations.add(annotation);
-
+					if (id == null || id.equals("")) {
+						if (strLine.length() > 28) {
+							id = strLine.substring(12, 28).trim();
+							if (strSplit.length > 1 && strSplit[1].length()>id.length() && strSplit[1].contains(id)) {
+								id = strSplit[1];
+							}
+							annotation = new Annotation(new QName(GBNAMESPACE, LOCUS, GBPREFIX), id);
+							id = URIcompliance.fixDisplayId(id);
+							annotations.add(annotation);
+						} else {
+							// TODO: Exception?
+							id = "id_is_missing";
+						}
+					}
+					
 					// Base count of the sequence
-					int startBaseCount = strLine.substring(29,40).lastIndexOf(" ");
-					baseCount = Integer.parseInt(strLine.substring(29+startBaseCount,40).trim());
-					
+					if (strLine.length() > 40) {
+						int startBaseCount = 0;
+						if (strLine.substring(29,40).trim().contains(" ")) {
+							startBaseCount = strLine.substring(29,40).trim().lastIndexOf(" ");
+						}
+						String baseCountStr = strLine.substring(29+startBaseCount,40).trim();
+						if (strSplit.length > 2 && strSplit[2].length()>baseCountStr.length() && strSplit[2].contains(baseCountStr)) {
+							baseCountStr = strSplit[2];
+						}
+						baseCount = Integer.parseInt(baseCountStr);
+					}
+						
 					// type of sequence
-					String seqType = strLine.substring(44,53).trim();
-					if (seqType.toUpperCase().contains("RNA")) {
-						type = ComponentDefinition.RNA;
+					if (strLine.length() > 53) {
+						String seqType = strLine.substring(44,53).trim();
+						if (strSplit.length > 4 && strSplit[4].length()>seqType.length() && strSplit[4].contains(seqType)) {
+							seqType = strSplit[4];
+						}
+						if (seqType.toUpperCase().contains("RNA")) {
+							type = ComponentDefinition.RNA_REGION;
 
-					}
-					annotation = new Annotation(new QName(GBNAMESPACE, MOLECULE, GBPREFIX), seqType);
-					annotations.add(annotation);
-
-					String topology = strLine.substring(55,63).trim();
-					// linear vs. circular construct
-					if (topology.startsWith("linear") || topology.startsWith("circular")) {
-						if (topology.startsWith("circular")) circular = true;
-						//annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
+						}
+						annotation = new Annotation(new QName(GBNAMESPACE, MOLECULE, GBPREFIX), seqType);
+						annotations.add(annotation);
 					}
 					
-					String division = strLine.substring(64,67).trim();
-					annotation = new Annotation(new QName(GBNAMESPACE, DIVISION, GBPREFIX), division);
-					annotations.add(annotation);
-
+					if (strLine.length() > 63) {
+						String topology = strLine.substring(55,63).trim();
+						if (strSplit.length > 5 && strSplit[5].length()>topology.length() && strSplit[5].contains(topology)) {
+							topology = strSplit[5];
+						}
+						// linear vs. circular construct
+						if (topology.startsWith("linear") || topology.startsWith("circular")) {
+							if (topology.startsWith("circular")) circular = true;
+							//annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
+						}
+					}
+					if (strLine.length() > 67) {
+						String division = strLine.substring(64,67).trim();
+						if (strSplit.length > 6 && strSplit[6].length()>division.length() && strSplit[6].contains(division)) {
+							division = strSplit[6];
+						}
+						annotation = new Annotation(new QName(GBNAMESPACE, DIVISION, GBPREFIX), division);
+						annotations.add(annotation);
+					}
+					
 					// date
-					String date = strLine.substring(68,79).trim();
-					annotation = new Annotation(new QName(GBNAMESPACE, DATE, GBPREFIX), date);
-					annotations.add(annotation);
+					if (strLine.length() > 79) {
+						String date = strLine.substring(68,79).trim();
+						if (strSplit.length > 7 && strSplit[7].length()>date.length() && strSplit[7].contains(date)) {
+							date = strSplit[7];
+						}
+						annotation = new Annotation(new QName(GBNAMESPACE, DATE, GBPREFIX), date);
+						annotations.add(annotation);
+					}
 
 				} else if (strLine.startsWith("DEFINITION")) {
 					description = strLine.replaceFirst("DEFINITION  ", "");
@@ -979,6 +1005,12 @@ class GenBank {
 							id = URIcompliance.fixDisplayId(id);
 						}
 					}
+					if (strSplit.length > 3) {
+						if (strSplit[2].equals("REGION:")) {
+							annotation = new Annotation(new QName(GBNAMESPACE, REGION, GBPREFIX), strSplit[3]);
+							annotations.add(annotation);
+						}
+					}
 				} else if (strLine.startsWith("VERSION")) {
 					String[] strSplit = strLine.split("\\s+");
 					//id = URIcompliance.fixDisplayId(id);
@@ -987,9 +1019,11 @@ class GenBank {
 							if (strSplit[1].split("\\.").length > 1) {
 								version = strSplit[1].split("\\.")[strSplit[1].split("\\.").length-1];
 							}	
-							String vId = strSplit[1].split("\\.")[0];
-							if (!accession.equals(vId)) {
-								throw new SBOLConversionException("Warning: id in version does not match id in accession");
+							if (strSplit[1].split("\\.").length > 0) {
+								String vId = strSplit[1].split("\\.")[0];
+								if (!accession.equals(vId)) {
+									throw new SBOLConversionException("Warning: id in version does not match id in accession");
+								}
 							}
 						}
 					}

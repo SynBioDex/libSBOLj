@@ -7,7 +7,7 @@ import static org.sbolstandard.core2.URIcompliance.extractVersion;
 import static org.sbolstandard.core2.URIcompliance.isURIprefixCompliant;
 import static org.sbolstandard.core2.URIcompliance.keyExistsInAnyMap;
 import static org.sbolstandard.core2.Version.isFirstVersionNewer;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBinding;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -30,7 +30,7 @@ import javax.xml.namespace.QName;
 import org.synbiohub.frontend.SynBioHubException;
 import org.synbiohub.frontend.SynBioHubFrontend;
 
-import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
+import org.sbolstandard.core.datatree.NamespaceBinding;
 
 /**
  * Represents the SBOL document where all top-level instances can be created and
@@ -47,6 +47,8 @@ public class SBOLDocument {
 	private HashMap<URI, GenericTopLevel> genericTopLevels;
 	private HashMap<URI, Collection> collections;
 	private HashMap<URI, ComponentDefinition> componentDefinitions;
+	private HashMap<URI, Experiment> experiments;
+	private HashMap<URI, ExperimentalData> experimentalData;
 	private HashMap<URI, Model> models;
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
@@ -90,6 +92,10 @@ public class SBOLDocument {
 	 * Constant representing GenBank file format
 	 */
 	public static final String GENBANK = "GENBANK";
+	/**
+	 * Constant representing SnapGene file format
+	 */
+	public static final String SNAPGENE = "SNAPGENE";
 
 	/**
 	 * Creates a new SBOLDocument instance with one empty list for the namespaces
@@ -101,6 +107,8 @@ public class SBOLDocument {
 		genericTopLevels = new HashMap<>();
 		collections = new HashMap<>();
 		componentDefinitions = new HashMap<>();
+		experiments = new HashMap<>();
+		experimentalData = new HashMap<>();
 		models = new HashMap<>();
 		moduleDefinitions = new HashMap<>();
 		sequences = new HashMap<>();
@@ -116,6 +124,7 @@ public class SBOLDocument {
 			addNamespaceBinding(Sbol1Terms.rdf);
 			addNamespaceBinding(Sbol2Terms.dc);
 			addNamespaceBinding(Sbol2Terms.prov);
+			addNamespaceBinding(Sbol2Terms.om);
 		} catch (SBOLValidationException e) {
 			e.printStackTrace();
 		}
@@ -221,7 +230,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addModuleDefinition(ModuleDefinition moduleDefinition) throws SBOLValidationException {
-		addTopLevel(moduleDefinition, moduleDefinitions, "moduleDefinition", collections, componentDefinitions,
+		addTopLevel(moduleDefinition, moduleDefinitions, "moduleDefinition", collections, componentDefinitions, experiments, experimentalData,
 				genericTopLevels, activities, plans, agents, models, sequences, combinatorialDerivations, implementations, attachments);
 		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 			functionalComponent.setSBOLDocument(this);
@@ -316,7 +325,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					moduleDefinition = null;
 				}
 			}
 		}
@@ -351,34 +359,6 @@ public class SBOLDocument {
 			removeModuleDefinition((ModuleDefinition) moduleDefinition);
 		}
 	}
-
-	/**
-	 * Clears the existing list <code>modules</code>, then appends all of the
-	 * elements in the specified collection to the end of this list.
-	 * 
-	 * @throws SBOLValidationException
-	 *             see {@link SBOLValidationException}
-	 */
-	/*
-	 * void setModuleDefinitions(Set<ModuleDefinition> moduleDefinitions) throws
-	 * SBOLValidationException { clearModuleDefinitions(); for (ModuleDefinition
-	 * module : moduleDefinitions) { addModuleDefinition(module); } }
-	 */
-
-	// /**
-	// * Create a new collection by calling the constructor {@link
-	// Collection#Collection(URI)}, and then
-	// * adds it to the list of collections to this SBOL document.
-	// *
-	// * @return the created collection
-	// * @throws SBOLValidationException
-	// */
-	// private Collection createCollection(URI identity) throws
-	// SBOLValidationException {
-	// Collection newCollection = new Collection(identity);
-	// addCollection(newCollection);
-	// return newCollection;
-	// }
 
 	/**
 	 * Creates a collection first, and then adds to this SBOL document's list of
@@ -559,6 +539,366 @@ public class SBOLDocument {
 			removeCollection((Collection) collection);
 		}
 	}
+	
+	/**
+	 * Creates a experiment first, and then adds to this SBOL document's list of
+	 * experiments.
+	 * <p>
+	 * This method calls {@link #createExperiment(String, String, String)} with the
+	 * default URI prefix for this SOBL document, the given display ID of the
+	 * experiment to be created, and an empty version string.
+	 *
+	 * @param displayId
+	 *            the display ID of the experiment to be created
+	 * @return the created experiment
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createExperiment(String, String, String)}.
+	 */
+	public Experiment createExperiment(String displayId) throws SBOLValidationException {
+		return createExperiment(defaultURIprefix, displayId, "");
+	}
+
+	/**
+	 * Creates a experiment first, and then adds to this SBOL document's list of
+	 * experiments.
+	 * <p>
+	 * This method calls {@link #createExperiment(String, String, String)} with the
+	 * default URI prefix for this SOBL document, the given display ID and version
+	 * of the experiment to be created.
+	 *
+	 * @param displayId
+	 *            the display ID of the experiment to be created
+	 * @param version
+	 *            the version of the experiment to be created
+	 * @return the created experiment
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createExperiment(String, String, String)}.
+	 */
+	public Experiment createExperiment(String displayId, String version) throws SBOLValidationException {
+		return createExperiment(defaultURIprefix, displayId, version);
+	}
+
+	/**
+	 * Creates a experiment first, and then adds to this SBOL document's list of
+	 * experiments.
+	 * <p>
+	 * This method creates a compliant URI for the experiment to be created first.
+	 * It starts with the given URI prefix after its been successfully validated,
+	 * followed by the given display ID, and ends with the given version.
+	 * 
+	 * @param URIprefix
+	 *            the URI prefix for the experiment to be created
+	 * @param displayId
+	 *            the display ID of the experiment to be created
+	 * @param version
+	 *            the version of the experiment to be created
+	 * @return the created experiment
+	 * @throws SBOLValidationException
+	 *             if any of the following SBOL validation rules was violated:
+	 *             10201, 10204, 10206.
+	 */
+	public Experiment createExperiment(String URIprefix, String displayId, String version)
+			throws SBOLValidationException {
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
+		Experiment c = new Experiment(
+				createCompliantURI(URIprefix, TopLevel.EXPERIMENT, displayId, version, typesInURIs));
+		c.setDisplayId(displayId);
+		c.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.EXPERIMENT, displayId, "", typesInURIs));
+		c.setVersion(version);
+		addExperiment(c);
+		return c;
+	}
+
+	/**
+	 * Adds the given experiment to this SBOL document's list of experiments.
+	 *
+	 * @param experiment
+	 *            the experiment object to be added
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}
+	 */
+	void addExperiment(Experiment experiment) throws SBOLValidationException {
+		addTopLevel(experiment, experiments, "experiment", collections, experimentalData, componentDefinitions, genericTopLevels, activities, plans,
+				agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
+	}
+
+	/**
+	 * Removes the given experiment from this SBOL document's list of experiments.
+	 *
+	 * @param experiment
+	 *            the given experiment to be removed
+	 * @return {@code true} if the given experiment was successfully removed,
+	 *         {@code false} otherwise
+	 * @throws SBOLValidationException
+	 *             if the following SBOL validation rule was violated: 12103.
+	 */
+	public boolean removeExperiment(Experiment experiment) throws SBOLValidationException {
+		return removeTopLevel(experiment, experiments);
+	}
+
+	/**
+	 * Returns the experiment matching the given display ID and version from this
+	 * SBOL document's list of experiments.
+	 * <p>
+	 * A compliant Experiment URI is created first. It starts with the given URI
+	 * prefix after its been successfully validated, optionally followed by its
+	 * type, namely {@link TopLevel#EXPERIMENT}, followed by the given display ID,
+	 * and ends with the given version. This URI is used to look up the module
+	 * definition in this SBOL document.
+	 *
+	 * @param displayId
+	 *            the display ID of the experiment to be retrieved
+	 * @param version
+	 *            the version of the experiment to be retrieved
+	 * @return the matching experiment if present, or {@code null} otherwise
+	 */
+	public Experiment getExperiment(String displayId, String version) {
+		try {
+			return getExperiment(
+					createCompliantURI(defaultURIprefix, TopLevel.EXPERIMENT, displayId, version, typesInURIs));
+		} catch (SBOLValidationException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the experiment matching the given identity URI from this SBOL
+	 * document's list of experiments.
+	 *
+	 * @param experimentURI
+	 *            the given identity URI of the experiment to be retrieved
+	 * @return the matching experiment if present, or {@code null} otherwise
+	 *
+	 */
+	public Experiment getExperiment(URI experimentURI) {
+		Experiment experiment = experiments.get(experimentURI);
+		if (experiment == null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(experimentURI);
+					if (document != null) {
+						experiment = document.getExperiment(experimentURI);
+						createCopy(document);
+					}
+				} catch (SynBioHubException | SBOLValidationException e) {
+					experiment = null;
+				}
+			}
+		}
+		return experiment;
+	}
+
+	/**
+	 * Returns the set of {@code Experiment} instances owned by this SBOL document.
+	 *
+	 * @return the set of {@code Experiment} instances owned by this SBOL document.
+	 */
+	public Set<Experiment> getExperiments() {
+		Set<Experiment> experiments = new HashSet<>();
+		experiments.addAll(this.experiments.values());
+		return experiments;
+	}
+
+	/**
+	 * Removes all entries in the list of experiments owned by this SBOL document.
+	 * The list will be empty after this call returns.
+	 * <p>
+	 * This method calls {@link #removeExperiment(Experiment)} to iteratively remove
+	 * each experiment.
+	 * 
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #removeExperiment(Experiment)}.
+	 */
+	public void clearExperiments() throws SBOLValidationException {
+		Object[] valueSetArray = experiments.values().toArray();
+		for (Object experiment : valueSetArray) {
+			removeExperiment((Experiment) experiment);
+		}
+	}
+	
+	/**
+	 * Creates a experimentalData first, and then adds to this SBOL document's list of
+	 * experimentalDatas.
+	 * <p>
+	 * This method calls {@link #createExperimentalData(String, String, String)} with the
+	 * default URI prefix for this SOBL document, the given display ID of the
+	 * experimentalData to be created, and an empty version string.
+	 *
+	 * @param displayId
+	 *            the display ID of the experimentalData to be created
+	 * @return the created experimentalData
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createExperimentalData(String, String, String)}.
+	 */
+	public ExperimentalData createExperimentalData(String displayId) throws SBOLValidationException {
+		return createExperimentalData(defaultURIprefix, displayId, "");
+	}
+
+	/**
+	 * Creates a experimentalData first, and then adds to this SBOL document's list of
+	 * experimentalDatas.
+	 * <p>
+	 * This method calls {@link #createExperimentalData(String, String, String)} with the
+	 * default URI prefix for this SOBL document, the given display ID and version
+	 * of the experimentalData to be created.
+	 *
+	 * @param displayId
+	 *            the display ID of the experimentalData to be created
+	 * @param version
+	 *            the version of the experimentalData to be created
+	 * @return the created experimentalData
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createExperimentalData(String, String, String)}.
+	 */
+	public ExperimentalData createExperimentalData(String displayId, String version) throws SBOLValidationException {
+		return createExperimentalData(defaultURIprefix, displayId, version);
+	}
+
+	/**
+	 * Creates a experimentalData first, and then adds to this SBOL document's list of
+	 * experimentalDatas.
+	 * <p>
+	 * This method creates a compliant URI for the experimentalData to be created first.
+	 * It starts with the given URI prefix after its been successfully validated,
+	 * followed by the given display ID, and ends with the given version.
+	 * 
+	 * @param URIprefix
+	 *            the URI prefix for the experimentalData to be created
+	 * @param displayId
+	 *            the display ID of the experimentalData to be created
+	 * @param version
+	 *            the version of the experimentalData to be created
+	 * @return the created experimentalData
+	 * @throws SBOLValidationException
+	 *             if any of the following SBOL validation rules was violated:
+	 *             10201, 10204, 10206.
+	 */
+	public ExperimentalData createExperimentalData(String URIprefix, String displayId, String version)
+			throws SBOLValidationException {
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
+		ExperimentalData c = new ExperimentalData(
+				createCompliantURI(URIprefix, TopLevel.EXPERIMENTAL_DATA, displayId, version, typesInURIs));
+		c.setDisplayId(displayId);
+		c.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.EXPERIMENTAL_DATA, displayId, "", typesInURIs));
+		c.setVersion(version);
+		addExperimentalData(c);
+		return c;
+	}
+
+	/**
+	 * Adds the given experimentalData to this SBOL document's list of experimentalData.
+	 *
+	 * @param experimentalDatum
+	 *            the experimentalData object to be added
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}
+	 */
+	void addExperimentalData(ExperimentalData experimentalDatum) throws SBOLValidationException {
+		addTopLevel(experimentalDatum, experimentalData, "experimentalData", collections, experiments, componentDefinitions, genericTopLevels, activities, plans,
+				agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
+	}
+
+	/**
+	 * Removes the given experimentalData from this SBOL document's list of experimentalData.
+	 *
+	 * @param experimentalDatum
+	 *            the given experimentalData to be removed
+	 * @return {@code true} if the given experimentalData was successfully removed,
+	 *         {@code false} otherwise
+	 * @throws SBOLValidationException
+	 *             if the following SBOL validation rule was violated: 12103.
+	 */
+	public boolean removeExperimentalData(ExperimentalData experimentalDatum) throws SBOLValidationException {
+		return removeTopLevel(experimentalDatum, experimentalData);
+	}
+
+	/**
+	 * Returns the experimentalData matching the given display ID and version from this
+	 * SBOL document's list of experimentalData.
+	 * <p>
+	 * A compliant ExperimentalData URI is created first. It starts with the given URI
+	 * prefix after its been successfully validated, optionally followed by its
+	 * type, namely {@link TopLevel#EXPERIMENTAL_DATA}, followed by the given display ID,
+	 * and ends with the given version. This URI is used to look up the module
+	 * definition in this SBOL document.
+	 *
+	 * @param displayId
+	 *            the display ID of the experimentalData to be retrieved
+	 * @param version
+	 *            the version of the experimentalData to be retrieved
+	 * @return the matching experimentalData if present, or {@code null} otherwise
+	 */
+	public ExperimentalData getExperimentalData(String displayId, String version) {
+		try {
+			return getExperimentalData(
+					createCompliantURI(defaultURIprefix, TopLevel.EXPERIMENTAL_DATA, displayId, version, typesInURIs));
+		} catch (SBOLValidationException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the experimentalData matching the given identity URI from this SBOL
+	 * document's list of experimentalDatas.
+	 *
+	 * @param experimentalDataURI
+	 *            the given identity URI of the experimentalData to be retrieved
+	 * @return the matching experimentalData if present, or {@code null} otherwise
+	 *
+	 */
+	public ExperimentalData getExperimentalData(URI experimentalDataURI) {
+		ExperimentalData experimentalDatum = experimentalData.get(experimentalDataURI);
+		if (experimentalDatum == null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(experimentalDataURI);
+					if (document != null) {
+						experimentalDatum = document.getExperimentalData(experimentalDataURI);
+						createCopy(document);
+					}
+				} catch (SynBioHubException | SBOLValidationException e) {
+					experimentalDatum = null;
+				}
+			}
+		}
+		return experimentalDatum;
+	}
+
+	/**
+	 * Returns the set of {@code ExperimentalData} instances owned by this SBOL document.
+	 *
+	 * @return the set of {@code ExperimentalData} instances owned by this SBOL document.
+	 */
+	public Set<ExperimentalData> getExperimentalData() {
+		Set<ExperimentalData> experimentalDatas = new HashSet<>();
+		experimentalDatas.addAll(this.experimentalData.values());
+		return experimentalDatas;
+	}
+
+	/**
+	 * Removes all entries in the list of experimentalData owned by this SBOL document.
+	 * The list will be empty after this call returns.
+	 * <p>
+	 * This method calls {@link #removeExperimentalData(ExperimentalData)} to iteratively remove
+	 * each experimentalData.
+	 * 
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #removeExperimentalData(ExperimentalData)}.
+	 */
+	public void clearExperimentalData() throws SBOLValidationException {
+		Object[] valueSetArray = experimentalData.values().toArray();
+		for (Object experimentalData : valueSetArray) {
+			removeExperimentalData((ExperimentalData) experimentalData);
+		}
+	}
 
 	/**
 	 * Creates a model, and then adds it to this SBOL document's list of models.
@@ -659,7 +999,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addModel(Model model) throws SBOLValidationException {
-		addTopLevel(model, models, "model", collections, componentDefinitions, genericTopLevels, activities, plans,
+		addTopLevel(model, models, "model", collections, componentDefinitions, experiments, experimentalData, genericTopLevels, activities, plans,
 				agents, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 	}
 
@@ -750,7 +1090,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					model = null;
 				}
 			}
 		}
@@ -872,7 +1211,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addAttachment(Attachment attachment) throws SBOLValidationException {
-		addTopLevel(attachment, attachments, "attachment", collections, componentDefinitions, genericTopLevels, activities, plans,
+		addTopLevel(attachment, attachments, "attachment", collections, componentDefinitions, experiments, experimentalData, genericTopLevels, activities, plans,
 				agents, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 	
@@ -1131,7 +1470,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addComponentDefinition(ComponentDefinition componentDefinition) throws SBOLValidationException {
-		addTopLevel(componentDefinition, componentDefinitions, "componentDefinition", collections, genericTopLevels,
+		addTopLevel(componentDefinition, componentDefinitions, "componentDefinition", collections, experiments, experimentalData, genericTopLevels,
 				activities, plans, agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 		for (Component component : componentDefinition.getComponents()) {
 			component.setSBOLDocument(this);
@@ -1144,6 +1483,7 @@ public class SBOLDocument {
 			sa.setComponentDefinition(componentDefinition);
 			for (Location location : sa.getLocations()) {
 				location.setSBOLDocument(this);
+				location.setComponentDefinition(componentDefinition);
 			}
 		}
 		for (SequenceConstraint sc : componentDefinition.getSequenceConstraints()) {
@@ -1231,7 +1571,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					componentDefinition = null;
 				}
 			}
 		}
@@ -1288,7 +1627,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					combinatorialDerivation = null;
 				}
 			}
 		}
@@ -1307,7 +1645,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addCombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) throws SBOLValidationException {
-		addTopLevel(combinatorialDerivation, combinatorialDerivations, "combinatorialDerivation", collections,
+		addTopLevel(combinatorialDerivation, combinatorialDerivations, "combinatorialDerivation", collections, experiments, experimentalData, 
 				genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences, implementations, attachments);
 		for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
 			variableComponent.setSBOLDocument(this);
@@ -1538,7 +1876,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					implementation = null;
 				}
 			}
 		}
@@ -1557,7 +1894,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addImplementation(Implementation implementation) throws SBOLValidationException {
-		addTopLevel(implementation, implementations, "implementation", collections,
+		addTopLevel(implementation, implementations, "implementation", collections, experiments, experimentalData, 
 				genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences, combinatorialDerivations, attachments);
 	}
 	
@@ -2136,6 +2473,14 @@ public class SBOLDocument {
 			Collection newCollection = this.createCollection(URIprefix, displayId, version);
 			newCollection.copy((Collection) topLevel);
 			return newCollection;
+		} else if (topLevel instanceof Experiment) {
+			Experiment newExperiment = this.createExperiment(URIprefix, displayId, version);
+			newExperiment.copy((Experiment) topLevel);
+			return newExperiment;
+		} else if (topLevel instanceof ExperimentalData) {
+			ExperimentalData newExperimentalData = this.createExperimentalData(URIprefix, displayId, version);
+			newExperimentalData.copy((ExperimentalData) topLevel);
+			return newExperimentalData;
 		} else if (topLevel instanceof ComponentDefinition) {
 			ComponentDefinition newComponentDefinition = this.createComponentDefinition(URIprefix, displayId, version,
 					((ComponentDefinition) topLevel).getTypes());
@@ -2261,11 +2606,15 @@ public class SBOLDocument {
 		}
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model
 				|| topLevel instanceof Plan || topLevel instanceof Agent || topLevel instanceof Implementation
-				|| topLevel instanceof Attachment) {
+				|| topLevel instanceof Attachment || topLevel instanceof ExperimentalData) {
 			// Do nothing
 		} else if (topLevel instanceof Collection) {
 			for (TopLevel member : ((Collection) topLevel).getMembers()) {
 				createRecursiveCopy(document, member);
+			}
+		} else if (topLevel instanceof Experiment) {
+			for (TopLevel experimentalDatum : ((Experiment) topLevel).getExperimentalData()) {
+				createRecursiveCopy(document, experimentalDatum);
 			}
 		} else if (topLevel instanceof ComponentDefinition) {
 			for (Component component : ((ComponentDefinition) topLevel).getComponents()) {
@@ -2394,6 +2743,7 @@ public class SBOLDocument {
 				TopLevel newTopLevel = this.createCopy(topLevel, newDisplayId, newVersion);
 				removeTopLevel(topLevel);
 				updateReferences(topLevel.getIdentity(), newTopLevel.getIdentity());
+				// TODO: should this be changing to newTopLevel.getIdentity(), rather than persistent identity
 				updateReferences(topLevel.getPersistentIdentity(), newTopLevel.getPersistentIdentity());
 			}
 		}
@@ -2417,7 +2767,6 @@ public class SBOLDocument {
 		updateReferences(identified.getAnnotations(), originalIdentity, newIdentity);
 	}
 
-	// TODO: need to update persistentIdentities too
 	private void updateReferences(URI originalIdentity, URI newIdentity) throws SBOLValidationException {
 		for (TopLevel topLevel : getTopLevels()) {
 			for (URI wasDerivedFrom : topLevel.getWasDerivedFroms()) {
@@ -2448,8 +2797,23 @@ public class SBOLDocument {
 			}
 			updateReferences(collection, originalIdentity, newIdentity);
 		}
+		for (Experiment experiment : getExperiments()) {
+			for (URI experimentalDataURI : experiment.getExperimentalDataURIs()) {
+				if (experimentalDataURI.equals(originalIdentity)) {
+					experiment.removeExperimentalData(originalIdentity);
+					experiment.addExperimentalData(newIdentity);
+				}
+			}
+			updateReferences(experiment, originalIdentity, newIdentity);
+		}
 		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
 			updateReferences(componentDefinition, originalIdentity, newIdentity);
+			for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
+				if (sequenceURI.equals(originalIdentity)) {
+					componentDefinition.removeSequence(originalIdentity);
+					componentDefinition.addSequence(newIdentity);
+				}
+			}
 			for (Component component : componentDefinition.getComponents()) {
 				if (component.getDefinitionURI().equals(originalIdentity)) {
 					component.setDefinition(newIdentity);
@@ -2467,21 +2831,23 @@ public class SBOLDocument {
 				for (MapsTo mapsTo : component.getMapsTos()) {
 					updateReferences(mapsTo, originalIdentity, newIdentity);
 				}
+				for (Location sourceLocation : component.getSourceLocations()) {
+					if (sourceLocation.isSetSequence() && sourceLocation.getSequenceURI().equals(originalIdentity)) {
+						sourceLocation.setSequence(newIdentity);
+					}
+				}
 			}
 			for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
 				for (Location loc : sa.getLocations()) {
+					if (loc.isSetSequence() && loc.getSequenceURI().equals(originalIdentity)) {
+						loc.setSequence(newIdentity);
+					}
 					updateReferences(loc, originalIdentity, newIdentity);
 				}
 				updateReferences(sa, originalIdentity, newIdentity);
 			}
 			for (SequenceConstraint sc : componentDefinition.getSequenceConstraints()) {
 				updateReferences(sc, originalIdentity, newIdentity);
-			}
-			for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
-				if (sequenceURI.equals(originalIdentity)) {
-					componentDefinition.removeSequence(originalIdentity);
-					componentDefinition.addSequence(newIdentity);
-				}
 			}
 		}
 		for (ModuleDefinition moduleDefinition : getModuleDefinitions()) {
@@ -2536,7 +2902,10 @@ public class SBOLDocument {
 			}
 		}
 		for (Model model : getModels()) {
-			updateReferences(model, originalIdentity, newIdentity);
+			if (model.getSource().equals(originalIdentity)) {
+				model.setSource(newIdentity);
+			}
+ 			updateReferences(model, originalIdentity, newIdentity);
 		}
 		for (Attachment attachment : getAttachments()) {
 			updateReferences(attachment, originalIdentity, newIdentity);
@@ -2569,6 +2938,24 @@ public class SBOLDocument {
 				}
 			}
 			for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+				for (URI variantURI : variableComponent.getVariantURIs()) {
+					if (variantURI.equals(originalIdentity)) {
+						variableComponent.removeVariant(variantURI);
+						variableComponent.addVariant(newIdentity);
+					}
+				}
+				for (URI variantCollectionURI : variableComponent.getVariantCollectionURIs()) {
+					if (variantCollectionURI.equals(originalIdentity)) {
+						variableComponent.removeVariantCollection(variantCollectionURI);
+						variableComponent.addVariantCollection(newIdentity);
+					}
+				}
+				for (URI variantDerivationURI : variableComponent.getVariantDerivationURIs()) {
+					if (variantDerivationURI.equals(originalIdentity)) {
+						variableComponent.removeVariantDerivation(variantDerivationURI);
+						variableComponent.addVariantDerivation(newIdentity);
+					}
+				}
 				updateReferences(variableComponent,originalIdentity,newIdentity);
 			}
 		}
@@ -2616,7 +3003,6 @@ public class SBOLDocument {
 		updateReferences(identified.getAnnotations(), uriMap);
 	}
 
-	// TODO: need to update persistentIdentities too
 	private void updateReferences(HashMap<URI, URI> uriMap) throws SBOLValidationException {
 		for (TopLevel topLevel : getTopLevels()) {
 			for (URI wasDerivedFrom : topLevel.getWasDerivedFroms()) {
@@ -2647,8 +3033,23 @@ public class SBOLDocument {
 			}
 			updateReferences(collection, uriMap);
 		}
+		for (Experiment experiment : getExperiments()) {
+			for (URI experimentalDatumURI : experiment.getExperimentalDataURIs()) {
+				if (uriMap.get(experimentalDatumURI) != null) {
+					experiment.removeExperimentalData(experimentalDatumURI);
+					experiment.addExperimentalData(uriMap.get(experimentalDatumURI));
+				}
+			}
+			updateReferences(experiment, uriMap);
+		}
 		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
 			updateReferences(componentDefinition, uriMap);
+			for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
+				if (uriMap.get(sequenceURI) != null) {
+					componentDefinition.removeSequence(sequenceURI);
+					componentDefinition.addSequence(uriMap.get(sequenceURI));
+				}
+			}
 			for (Component component : componentDefinition.getComponents()) {
 				if (uriMap.get(component.getDefinitionURI()) != null) {
 					component.setDefinition(uriMap.get(component.getDefinitionURI()));
@@ -2666,21 +3067,23 @@ public class SBOLDocument {
 				for (MapsTo mapsTo : component.getMapsTos()) {
 					updateReferences(mapsTo, uriMap);
 				}
+				for (Location sourceLocation : component.getSourceLocations()) {
+					if (sourceLocation.isSetSequence() && uriMap.get(sourceLocation.getSequenceURI())!=null) {
+						sourceLocation.setSequence(uriMap.get(sourceLocation.getSequenceURI()));
+					}
+				}
 			}
 			for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
 				for (Location loc : sa.getLocations()) {
+					if (loc.isSetSequence() && uriMap.get(loc.getSequenceURI())!=null) {
+						loc.setSequence(uriMap.get(loc.getSequenceURI()));
+					}
 					updateReferences(loc, uriMap);
 				}
 				updateReferences(sa, uriMap);
 			}
 			for (SequenceConstraint sc : componentDefinition.getSequenceConstraints()) {
 				updateReferences(sc, uriMap);
-			}
-			for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
-				if (uriMap.get(sequenceURI) != null) {
-					componentDefinition.removeSequence(sequenceURI);
-					componentDefinition.addSequence(uriMap.get(sequenceURI));
-				}
 			}
 		}
 		for (ModuleDefinition moduleDefinition : getModuleDefinitions()) {
@@ -2735,6 +3138,9 @@ public class SBOLDocument {
 			}
 		}
 		for (Model model : getModels()) {
+			if (uriMap.get(model.getSource()) != null) {
+				model.setSource(uriMap.get(model.getSource()));
+			}
 			updateReferences(model, uriMap);
 		}
 		for (Sequence sequence : getSequences()) {
@@ -2771,6 +3177,24 @@ public class SBOLDocument {
 				}
 			}
 			for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+				for (URI variantURI : variableComponent.getVariantURIs()) {
+					if (uriMap.get(variantURI) != null) {
+						variableComponent.removeVariant(variantURI);
+						variableComponent.addVariant(uriMap.get(variantURI));
+					}
+				}
+				for (URI variantCollectionURI : variableComponent.getVariantCollectionURIs()) {
+					if (uriMap.get(variantCollectionURI) != null) {
+						variableComponent.removeVariantCollection(variantCollectionURI);
+						variableComponent.addVariantCollection(uriMap.get(variantCollectionURI));
+					}
+				}
+				for (URI variantDerivationURI : variableComponent.getVariantDerivationURIs()) {
+					if (uriMap.get(variantDerivationURI) != null) {
+						variableComponent.removeVariantDerivation(variantDerivationURI);
+						variableComponent.addVariantDerivation(uriMap.get(variantDerivationURI));
+					}
+				}
 				updateReferences(variableComponent,uriMap);
 			}
 		}
@@ -2870,11 +3294,13 @@ public class SBOLDocument {
 					newVersion = defaultVersion;
 				}
 			}
-			fixed.rename(topLevel, URIPrefix, null, newVersion);
+			fixed.rename(topLevel, URIPrefix, null, newVersion, false);
 			TopLevel newTL = document.createCopy(topLevel, URIPrefix, null, newVersion);
 			uriMap.put(topLevel.getIdentity(), newTL.getIdentity());
 			if (!topLevel.getIdentity().equals(topLevel.getPersistentIdentity())) {
-				uriMap.put(topLevel.getPersistentIdentity(), newTL.getPersistentIdentity());
+				// TODO: This means persistent identity references change to actual identity references,
+				// This was needed for SBH, but is it okay in general
+				uriMap.put(topLevel.getPersistentIdentity(), newTL.getIdentity());
 			}
 		}
 		document.updateReferences(uriMap);
@@ -2892,6 +3318,23 @@ public class SBOLDocument {
 		}
 		document.setDefaultURIprefix(URIPrefix);
 		return document;
+	}
+	
+	private TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version, boolean updateRefs)
+			throws SBOLValidationException {
+		if ((URIprefix == null || URIprefix.equals(URIcompliance.extractURIprefix(topLevel.getIdentity())))
+				&& (displayId == null || displayId.equals(topLevel.getDisplayId()))
+				&& (version == null || version.equals(topLevel.getVersion()))) {
+			return topLevel;
+		}
+		TopLevel renamedTopLevel = createCopy(topLevel, URIprefix, displayId, version);
+		removeTopLevel(topLevel);
+		if (updateRefs) {
+			updateReferences(topLevel.getIdentity(), renamedTopLevel.getIdentity());
+			// TODO: should this be changing to newTopLevel.getIdentity(), rather than persistent identity
+			updateReferences(topLevel.getPersistentIdentity(), renamedTopLevel.getPersistentIdentity());
+		}
+		return renamedTopLevel;
 	}
 
 	/**
@@ -2924,16 +3367,7 @@ public class SBOLDocument {
 	 */
 	public TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version)
 			throws SBOLValidationException {
-		if ((URIprefix == null || URIprefix.equals(URIcompliance.extractURIprefix(topLevel.getIdentity())))
-				&& (displayId == null || displayId.equals(topLevel.getDisplayId()))
-				&& (version == null || version.equals(topLevel.getVersion()))) {
-			return topLevel;
-		}
-		TopLevel renamedTopLevel = createCopy(topLevel, URIprefix, displayId, version);
-		removeTopLevel(topLevel);
-		updateReferences(topLevel.getIdentity(), renamedTopLevel.getIdentity());
-		updateReferences(topLevel.getPersistentIdentity(), renamedTopLevel.getPersistentIdentity());
-		return renamedTopLevel;
+		return rename(topLevel,URIprefix,displayId,version,true);
 	}
 
 	/**
@@ -2947,7 +3381,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addSequence(Sequence sequence) throws SBOLValidationException {
-		addTopLevel(sequence, sequences, "sequence", collections, componentDefinitions, genericTopLevels, activities,
+		addTopLevel(sequence, sequences, "sequence", collections, componentDefinitions, experiments, experimentalData, genericTopLevels, activities,
 				plans, agents, models, moduleDefinitions, combinatorialDerivations, implementations, attachments);
 	}
 
@@ -3018,7 +3452,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					sequence = null;
 				}
 			}
 		}
@@ -3176,7 +3609,7 @@ public class SBOLDocument {
 			genericTopLevel.setRDFType(new QName(genericTopLevel.getRDFType().getNamespaceURI(),
 					genericTopLevel.getRDFType().getLocalPart(), qNameInNamespace.getPrefix()));
 		}
-		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel", collections, componentDefinitions, models,
+		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel", collections, componentDefinitions, experiments, experimentalData, models,
 				activities, plans, agents, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 	}
 
@@ -3239,7 +3672,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					genericTopLevel = null;
 				}
 			}
 		}
@@ -3355,7 +3787,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addActivity(Activity activity) throws SBOLValidationException {
-		addTopLevel(activity, activities, "activity", collections, componentDefinitions, models, genericTopLevels,
+		addTopLevel(activity, activities, "activity", collections, componentDefinitions, experiments, experimentalData, models, genericTopLevels,
 				plans, agents, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 		for (Usage usage : activity.getUsages()) {
 			usage.setSBOLDocument(this);
@@ -3535,7 +3967,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addAgent(Agent agent) throws SBOLValidationException {
-		addTopLevel(agent, agents, "agent", collections, componentDefinitions, models, genericTopLevels, plans,
+		addTopLevel(agent, agents, "agent", collections, componentDefinitions, experiments, experimentalData, models, genericTopLevels, plans,
 				activities, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 	}
 
@@ -3708,7 +4140,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addPlan(Plan plan) throws SBOLValidationException {
-		addTopLevel(plan, plans, "plan", collections, componentDefinitions, models, genericTopLevels, agents,
+		addTopLevel(plan, plans, "plan", collections, componentDefinitions, experiments, experimentalData, models, genericTopLevels, agents,
 				activities, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 	}
 
@@ -3769,7 +4201,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					plan = null;
 				}
 			}
 		}
@@ -3804,8 +4235,21 @@ public class SBOLDocument {
 		}
 	}
 	
+	Identified getIdentified(URI identifiedURI) {
+		Identified identified = getTopLevelLocalOnly(identifiedURI);
+		return identified;
+	}
+	
 	private TopLevel getTopLevelLocalOnly(URI topLevelURI) {
 		TopLevel topLevel = collections.get(topLevelURI);
+		if (topLevel != null) {
+			return topLevel;
+		}
+		topLevel = experiments.get(topLevelURI);
+		if (topLevel != null) {
+			return topLevel;
+		}
+		topLevel = experimentalData.get(topLevelURI);
 		if (topLevel != null) {
 			return topLevel;
 		}
@@ -3875,7 +4319,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					topLevel = null;
 				}
 			}
 		} 
@@ -3890,6 +4333,12 @@ public class SBOLDocument {
 	public Set<TopLevel> getTopLevels() {
 		Set<TopLevel> topLevels = new HashSet<>();
 		for (Collection topLevel : collections.values()) {
+			topLevels.add(topLevel);
+		}
+		for (Experiment topLevel : experiments.values()) {
+			topLevels.add(topLevel);
+		}
+		for (ExperimentalData topLevel : experimentalData.values()) {
 			topLevels.add(topLevel);
 		}
 		for (Sequence topLevel : sequences.values()) {
@@ -4014,7 +4463,7 @@ public class SBOLDocument {
 	void addNamespaceBinding(NamespaceBinding namespaceBinding) throws SBOLValidationException {
 		if (!namespaceBinding.getNamespaceURI().endsWith("#") && !namespaceBinding.getNamespaceURI().endsWith(":")
 				&& !namespaceBinding.getNamespaceURI().endsWith("/")) {
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10106");
 		}
 		nameSpaces.put(namespaceBinding.getPrefix(), namespaceBinding);
 	}
@@ -4199,6 +4648,8 @@ public class SBOLDocument {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((collections == null) ? 0 : collections.hashCode());
+		result = prime * result + ((experiments == null) ? 0 : experiments.hashCode());
+		result = prime * result + ((experimentalData == null) ? 0 : experimentalData.hashCode());
 		result = prime * result + ((componentDefinitions == null) ? 0 : componentDefinitions.hashCode());
 		result = prime * result + ((genericTopLevels == null) ? 0 : genericTopLevels.hashCode());
 		result = prime * result + ((activities == null) ? 0 : activities.hashCode());
@@ -4227,6 +4678,16 @@ public class SBOLDocument {
 			if (other.collections != null)
 				return false;
 		} else if (!collections.equals(other.collections))
+			return false;
+		if (experiments == null) {
+			if (other.experiments != null)
+				return false;
+		} else if (!experiments.equals(other.experiments))
+			return false;
+		if (experimentalData == null) {
+			if (other.experimentalData != null)
+				return false;
+		} else if (!experimentalData.equals(other.experimentalData))
 			return false;
 		if (componentDefinitions == null) {
 			if (other.componentDefinitions != null)
@@ -4384,6 +4845,11 @@ public class SBOLDocument {
 					throw new SBOLValidationException("sbol-12103", c);
 				}
 			}
+			for (Experiment c : experiments.values()) {
+				if (c.containsExperimentalData(topLevel.getIdentity())) {
+					throw new SBOLValidationException("sbol-1xxxx", c);
+				}
+			}
 		}
 		Set<TopLevel> setToRemove = new HashSet<>();
 		setToRemove.add(topLevel);
@@ -4418,6 +4884,8 @@ public class SBOLDocument {
 	 *             <li>{@link #removePlan(Plan)},</li>
 	 *             <li>{@link #removeGenericTopLevel(GenericTopLevel)},</li>
 	 *             <li>{@link #removeCollection(Collection)},</li>
+	 *             <li>{@link #removeExperiment(Experiment)},</li>
+	 *             <li>{@link #removeExperimentalData(ExperimentalData)},</li>
 	 *             <li>{@link #removeSequence(Sequence)},</li>
 	 *             <li>{@link #removeComponentDefinition(ComponentDefinition)},</li>
 	 *             <li>{@link #removeModel(Model)}, or</li>
@@ -4436,6 +4904,10 @@ public class SBOLDocument {
 			removePlan((Plan) topLevel);
 		else if (topLevel instanceof Collection)
 			removeCollection((Collection) topLevel);
+		else if (topLevel instanceof Experiment)
+			removeExperiment((Experiment) topLevel);
+		else if (topLevel instanceof ExperimentalData)
+			removeExperimentalData((ExperimentalData) topLevel);
 		else if (topLevel instanceof Sequence)
 			removeSequence((Sequence) topLevel);
 		else if (topLevel instanceof ComponentDefinition)
@@ -4765,7 +5237,8 @@ public class SBOLDocument {
 	public String toString() {
 		return "SBOLDocument [activities=" + activities + "agents=" + agents + "plans=" + plans + "implementations=" + implementations
 				+ "attachments=" + attachments + "combinatorialDerivations=" + combinatorialDerivations
-				+ "genericTopLevels=" + genericTopLevels + ", collections=" + collections + ", componentDefinitions=" + componentDefinitions
+				+ "genericTopLevels=" + genericTopLevels + ", collections=" + collections + ", experiments=" + experiments + ", experimentalData =" + experimentalData 
+				+ ", componentDefinitions=" + componentDefinitions
 				+ ", models=" + models + ", moduleDefinitions=" + moduleDefinitions + ", sequences=" + sequences
 				+ ", nameSpaces=" + nameSpaces + ", defaultURIprefix=" + defaultURIprefix + ", complete=" + complete
 				+ ", compliant=" + compliant + ", typesInURIs=" + typesInURIs + ", createDefaults=" + createDefaults

@@ -23,6 +23,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -30,6 +31,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
@@ -83,6 +85,46 @@ public class SynBioHubFrontend
         connectionManager = new PoolingHttpClientConnectionManager();
         client = HttpClients.custom().setConnectionManager(connectionManager).build();
     }
+    
+    /**
+     * Creates an instance of the SynBioHub API.
+     * @param backendUrl - URL for the SynBioHub instance.
+     * @param timeout - timeout for connections in seconds
+     */
+    public SynBioHubFrontend(String backendUrl,int timeout)
+    {
+        this.backendUrl = backendUrl;
+        this.uriPrefix = backendUrl;
+
+        connectionManager = new PoolingHttpClientConnectionManager();
+//        client = HttpClients.custom().setConnectionManager(connectionManager).build();
+    	RequestConfig config = RequestConfig.custom()
+    			.setConnectTimeout(timeout * 1000)
+    			.setConnectionRequestTimeout(timeout * 1000)
+    			.setSocketTimeout(timeout * 1000).build();
+    	client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+    }
+
+    /**
+     * Creates an instance of the SynBioHub API.
+     * @param backendUrl - URL for the SynBioHub instance.
+     * @param uriPrefix - prefix for all URIs stored in this repository
+     * @param timeout - timeout for connections in seconds
+     */
+    public SynBioHubFrontend(String backendUrl, String uriPrefix, int timeout)
+    {
+        this.backendUrl = backendUrl;
+        this.uriPrefix = uriPrefix;
+
+        connectionManager = new PoolingHttpClientConnectionManager();
+
+        RequestConfig config = RequestConfig.custom()
+                .setConnectTimeout(timeout * 1000)
+                .setConnectionRequestTimeout(timeout * 1000)
+                .setSocketTimeout(timeout * 1000).build();
+        client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+    }
+
 
     /**
      * Returns the URL for the SynBioHub instance.
@@ -119,11 +161,29 @@ public class SynBioHubFrontend
      */
     public SBOLDocument getSBOL(URI topLevelUri) throws SynBioHubException
     {
+         return getSBOL(topLevelUri,true);
+    }
+    
+    /**
+     * Retrieve SBOL TopLevel object from a SynBioHub instance using its URI.
+     *
+     * @param topLevelUri The URI of the SBOL TopLevel
+     * @param recursive indicates if the complete SBOL document should be fetched recursively
+     *
+     * @return A libSBOLj TopLevel instance corresponding to the TopLevel
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public SBOLDocument getSBOL(URI topLevelUri,boolean recursive) throws SynBioHubException
+    {
     	if (topLevelUri==null) return null;
         if (!topLevelUri.toString().startsWith(uriPrefix)) {
         	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
         }
         String url = topLevelUri + "/sbol";
+        if (!recursive) {
+        	url = topLevelUri + "/sbolnr";
+        }
         url = url.replace(uriPrefix, backendUrl);
 
         SBOLDocument document = fetchFromSynBioHub(url);
@@ -190,7 +250,26 @@ public class SynBioHubFrontend
         String url = topLevelUri + "/remove";
         url = url.replace(uriPrefix, backendUrl);
 
-        fetchFromSynBioHub(url);
+        removeFromSynBioHub(url);
+    }
+    
+    /**
+     * Remove SBOL TopLevel object from a SynBioHub instance using its URI,
+     * but leave references to this object, since it is going to be replaced.
+     *
+     * @param topLevelUri The URI of the SBOL TopLevel
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void replaceSBOL(URI topLevelUri) throws SynBioHubException
+    {
+        if (!topLevelUri.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelUri + "/replace";
+        url = url.replace(uriPrefix, backendUrl);
+
+        removeFromSynBioHub(url);
     }
 
    /**
@@ -678,8 +757,9 @@ public class SynBioHubFrontend
      */
     public void attachFile(URI topLevelUri, File file) throws SynBioHubException, FileNotFoundException
     {
+    	String name = file.getName();
     	InputStream inputStream = new FileInputStream(file);
-    	attachFile(topLevelUri,inputStream);
+    	attachFile(topLevelUri,inputStream,name);
     }
     
     /**
@@ -690,6 +770,19 @@ public class SynBioHubFrontend
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      */
     public void attachFile(URI topLevelUri, InputStream inputStream) throws SynBioHubException
+    {
+    	attachFile(topLevelUri,inputStream,"file");
+    }
+    
+    /**
+     * Attach a file to an object in SynBioHub.
+     * @param topLevelUri identity of the object to attach the file to
+     * @param inputStream the inputStream to attach
+     * @param filename name of file to attach
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void attachFile(URI topLevelUri, InputStream inputStream, String filename) throws SynBioHubException
     {
     	if (user.equals("")) {
     		Exception e = new Exception("Must be logged in to submit.");
@@ -708,7 +801,7 @@ public class SynBioHubFrontend
         params.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
         params.addTextBody("user", user);	
-        params.addBinaryBody("file", inputStream, ContentType.DEFAULT_BINARY, "file");
+        params.addBinaryBody("file", inputStream, ContentType.DEFAULT_BINARY, filename);
 	        
         try
         {
@@ -968,6 +1061,31 @@ public class SynBioHubFrontend
             throw new SynBioHubException("Error serializing SBOL document", e);
         }
     }
+    
+    private void removeFromSynBioHub(String url) throws SynBioHubException
+    {
+		HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+
+    	try
+    	{
+			HttpResponse response = client.execute(request);
+	
+			checkResponseCode(response);
+	        
+			HttpStream res = new HttpStream();
+			
+			res.inputStream = response.getEntity().getContent();
+			res.request = request;
+    	}
+    	catch(Exception e)
+    	{
+    		request.releaseConnection();
+
+    		throw new SynBioHubException("Error connecting to SynBioHub endpoint", e);    		
+    	}
+    }
 
     private SBOLDocument fetchFromSynBioHub(String url) throws SynBioHubException
     {
@@ -1100,7 +1218,7 @@ public class SynBioHubFrontend
 		HttpGet request = new HttpGet(url);
         request.setHeader("X-authorization", user);
         request.setHeader("Accept", "text/plain");
-
+        
     	try
     	{
 			HttpResponse response = client.execute(request);

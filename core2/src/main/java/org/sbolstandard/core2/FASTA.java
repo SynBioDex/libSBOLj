@@ -1,11 +1,7 @@
 package org.sbolstandard.core2;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
@@ -100,22 +96,6 @@ class FASTA {
 		}
 	}
 	
-	static boolean isFastaFile(String fileName) throws IOException {
-		File file = new File(fileName);
-		FileInputStream stream     = new FileInputStream(file);
-		BufferedInputStream buffer = new BufferedInputStream(stream);
-		String strLine;
-		BufferedReader br = new BufferedReader(new InputStreamReader(buffer));
-		strLine = br.readLine();
-		br.close();
-		return isFastaString(strLine);
-	}
-	
-	static boolean isFastaString(String inputString) {
-		if (inputString!=null && (inputString.startsWith(">")||inputString.startsWith(";"))) return true;
-		return false;
-	}
-	
 	/**
 	 * @param doc
 	 * @param URIprefix
@@ -154,7 +134,7 @@ class FASTA {
 	 * @throws SBOLValidationException if an SBOL validation rule was violated in {@link #createSequence(SBOLDocument, String, String, String, String, URI)}.
 	 * @throws IOException
 	 */
-	static void read(SBOLDocument doc,String stringBuffer,String URIprefix,String version,URI encoding) throws SBOLValidationException, IOException
+	static void read(SBOLDocument doc,String stringBuffer,String URIprefix,String displayId,String version,URI encoding) throws SBOLValidationException, IOException
 	{
 		// reset the global static variables needed for parsing
 		nextLine = null;
@@ -165,7 +145,6 @@ class FASTA {
 		String elements = null;
 		String description = "";
 		boolean sequenceMode = false;
-		String displayId;
 		BufferedReader br = new BufferedReader(new StringReader(stringBuffer));
 
 		while ((strLine = readFASTALine(br)) != null)   {
@@ -174,15 +153,18 @@ class FASTA {
 			if (strLine.startsWith(">")) {
 				if (sequenceMode) {
 					sequenceMode = false;
-					if (description.contains(":")) {
-						displayId = description.substring(0, description.indexOf(":")).trim();
-						description = description.substring(description.indexOf(":")+1).trim();
-					} else {
-						displayId = description;
+					if (displayId == null || displayId.equals("")) {
+						if (description.contains(":")) {
+							displayId = description.substring(0, description.indexOf(":")).trim();
+							description = description.substring(description.indexOf(":")+1).trim();
+						} else {
+							displayId = description;
+						}
 					}
 					displayId = URIcompliance.fixDisplayId(displayId);
 					Sequence sequence = createSequence(doc,URIprefix,displayId,version,sbSequence.toString(),encoding);
 					sequence.setDescription(description);
+					displayId = "";
 					description = "";
 					sbSequence = new StringBuilder();
 				}
@@ -190,15 +172,18 @@ class FASTA {
 			} else if (strLine.startsWith(";")) {
 				if (sequenceMode) {
 					sequenceMode = false;
-					if (description.contains(":")) {
-						displayId = description.substring(0, description.indexOf(":")).trim();
-						description = description.substring(description.indexOf(":")+1).trim();
-					} else {
-						displayId = description;
+					if (displayId == null || displayId.equals("")) {
+						if (description.contains(":")) {
+							displayId = description.substring(0, description.indexOf(":")).trim();
+							description = description.substring(description.indexOf(":")+1).trim();
+						} else {
+							displayId = description;
+						}
 					}
 					displayId = URIcompliance.fixDisplayId(displayId);
 					Sequence sequence = createSequence(doc,URIprefix,displayId,version,sbSequence.toString(),encoding);
 					sequence.setDescription(description);
+					displayId = "";
 					description = "";
 					sbSequence = new StringBuilder();
 				}

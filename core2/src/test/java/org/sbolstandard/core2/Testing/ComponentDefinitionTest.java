@@ -32,10 +32,10 @@ public class ComponentDefinitionTest {
 				doc.setDefaultURIprefix(prURI);
 				doc.setTypesInURIs(false);
 				doc.setComplete(true);
-				types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA));
+				types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA_REGION));
 				doc.createComponentDefinition("TetR_promoter", types); 
 				generic_seq = doc.createSequence("generic_seq", "ttgacagctagctcagtcctaggtataatgctagc", Sequence.IUPAC_DNA);
-				gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", "", ComponentDefinition.DNA);
+				gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", "", ComponentDefinition.DNA_REGION);
 				gRNA_b_gene.addSequence(generic_seq);
 		
 	}
@@ -43,7 +43,7 @@ public class ComponentDefinitionTest {
 	@Test
 	public void test_CD_addSequence() throws SBOLValidationException {
 		
-		doc.createComponentDefinition("CRa_U6","",ComponentDefinition.DNA);
+		doc.createComponentDefinition("CRa_U6","",ComponentDefinition.DNA_REGION);
 		Sequence gen_seq = doc.createSequence("CRa_U6_seq", CRa_U6_seq, Sequence.IUPAC_DNA);
 		doc.getComponentDefinition("CRa_U6", "").addSequence(gen_seq);
 		assertTrue(doc.getComponentDefinition("CRa_U6", "").getSequences().size() == 1);
@@ -61,7 +61,7 @@ public class ComponentDefinitionTest {
 		/*test ComponentMethods*/
 		
 		//create 
-		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
+		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA_REGION);
 		Component gRNA_promoter = gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
 		
 		//check that the component exists
@@ -90,7 +90,7 @@ public class ComponentDefinitionTest {
 	@Test
 	public void test_createSeqAnnot_CD() throws SBOLValidationException
 	{
-		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
+		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA_REGION);
 		
 		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
 		
@@ -113,7 +113,7 @@ public class ComponentDefinitionTest {
 	@Test
 	public void test_privateConst_SQ() throws SBOLValidationException
 	{
-		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
+		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA_REGION);
 		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
 		
 		//add SequenceAnnotation for CD with a displayID and LocationID
@@ -129,8 +129,8 @@ public class ComponentDefinitionTest {
 	@Test
 	public void test_seqConstraint_CD() throws SBOLValidationException
 	{
-		ComponentDefinition gRNA_gene_promoter_comp = doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
-		ComponentDefinition gRNA_gene_terminator_comp = doc.createComponentDefinition("gRNA_gene_terminator_comp", ComponentDefinition.DNA);
+		ComponentDefinition gRNA_gene_promoter_comp = doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA_REGION);
+		ComponentDefinition gRNA_gene_terminator_comp = doc.createComponentDefinition("gRNA_gene_terminator_comp", ComponentDefinition.DNA_REGION);
 
 		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
 		gRNA_b_gene.createComponent("gRNA_terminator", AccessType.PUBLIC, "gRNA_gene_terminator_comp");
@@ -161,9 +161,9 @@ public class ComponentDefinitionTest {
 		/*test: a precedes b and b precedes c*/
 		/*interesting test: have a seqAnnotation and Constraints conflict*/
 		
-		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
-		doc.createComponentDefinition("gRNA_gene_terminator_comp", ComponentDefinition.DNA);
-		doc.createComponentDefinition("gRNA_gene_gene_comp", ComponentDefinition.DNA);
+		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA_REGION);
+		doc.createComponentDefinition("gRNA_gene_terminator_comp", ComponentDefinition.DNA_REGION);
+		doc.createComponentDefinition("gRNA_gene_gene_comp", ComponentDefinition.DNA_REGION);
 
 		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
 		gRNA_b_gene.createComponent("gRNA_gene", AccessType.PUBLIC, "gRNA_gene_gene_comp");

@@ -49,18 +49,18 @@ public class ModuleDefinitionTest {
 		LacIInverter = geneticToggleSwitch.createModule("LacIInverter", "LacIInverter_MD");
 		
 		/*create CDs*/
-		TetR_CD = doc.createComponentDefinition("TetR_CD", ComponentDefinition.DNA);
-		LacI_CD = doc.createComponentDefinition("LacI_CD", ComponentDefinition.DNA);
+		TetR_CD = doc.createComponentDefinition("TetR_CD", ComponentDefinition.DNA_REGION);
+		LacI_CD = doc.createComponentDefinition("LacI_CD", ComponentDefinition.DNA_REGION);
 		
-		doc.createComponentDefinition("TetR_Promoter_CD", ComponentDefinition.DNA);
-		doc.createComponentDefinition("TetR_Terminator_CD", ComponentDefinition.DNA);
-		doc.createComponentDefinition("TetR_Gene_CD", ComponentDefinition.DNA);
+		doc.createComponentDefinition("TetR_Promoter_CD", ComponentDefinition.DNA_REGION);
+		doc.createComponentDefinition("TetR_Terminator_CD", ComponentDefinition.DNA_REGION);
+		doc.createComponentDefinition("TetR_Gene_CD", ComponentDefinition.DNA_REGION);
 
-		doc.createComponentDefinition("LacI_Promoter_CD", ComponentDefinition.DNA);
-		doc.createComponentDefinition("LacI_Terminator_CD", ComponentDefinition.DNA);
-		doc.createComponentDefinition("LacI_Gene_CD", ComponentDefinition.DNA);
+		doc.createComponentDefinition("LacI_Promoter_CD", ComponentDefinition.DNA_REGION);
+		doc.createComponentDefinition("LacI_Terminator_CD", ComponentDefinition.DNA_REGION);
+		doc.createComponentDefinition("LacI_Gene_CD", ComponentDefinition.DNA_REGION);
 		
-		doc.createComponentDefinition("target_gene", ComponentDefinition.DNA);
+		doc.createComponentDefinition("target_gene", ComponentDefinition.DNA_REGION);
 		TetR_CD.createComponent("gene", AccessType.PUBLIC, "target_gene");
 		
 		/*add the corresponding components to the appropriate CD*/

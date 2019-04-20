@@ -52,13 +52,13 @@ public class RepressionModel {
 		doc.createComponentDefinition("cas9_generic", version, ComponentDefinition.PROTEIN);
 		
 		// Create ComponentDefinition for gRNA_generic RNA
-		doc.createComponentDefinition("gRNA_generic",version, ComponentDefinition.RNA).addRole(SequenceOntology.SGRNA);
+		doc.createComponentDefinition("gRNA_generic",version, ComponentDefinition.RNA_REGION).addRole(SequenceOntology.SGRNA);
 
 		// Create ComponentDefinition for cas9_gRNA_complex
 		doc.createComponentDefinition("cas9_gRNA_complex",version, ComponentDefinition.COMPLEX);
 
 		// Create ComponentDefinition for target gene
-		doc.createComponentDefinition("target_gene",version, ComponentDefinition.DNA).addRole(SequenceOntology.PROMOTER);
+		doc.createComponentDefinition("target_gene",version, ComponentDefinition.DNA_REGION).addRole(SequenceOntology.PROMOTER);
 
 		// Create ComponentDefinition for target protein
 		doc.createComponentDefinition("target",version, ComponentDefinition.PROTEIN);
@@ -141,13 +141,13 @@ public class RepressionModel {
 		doc.createSequence("CRP_b_seq", version, CRP_b_seq_elements, Sequence.IUPAC_DNA);
 		
 		// Create ComponentDefinition for a Constitutive Promoter
-		doc.createComponentDefinition("pConst", version, ComponentDefinition.DNA).addRole(SequenceOntology.PROMOTER);
+		doc.createComponentDefinition("pConst", version, ComponentDefinition.DNA_REGION).addRole(SequenceOntology.PROMOTER);
 		
 		// Create ComponentDefinition for cas9m_BFP coding sequence
-		doc.createComponentDefinition("cas9m_BFP_cds", version, ComponentDefinition.DNA).addRole(SequenceOntology.CDS);
+		doc.createComponentDefinition("cas9m_BFP_cds", version, ComponentDefinition.DNA_REGION).addRole(SequenceOntology.CDS);
 		
 		// Create ComponentDefinition for cas9m_BFP gene
-		ComponentDefinition cas9m_BFP_gene = doc.createComponentDefinition("cas9m_BFP_gene", version, ComponentDefinition.DNA);
+		ComponentDefinition cas9m_BFP_gene = doc.createComponentDefinition("cas9m_BFP_gene", version, ComponentDefinition.DNA_REGION);
 		cas9m_BFP_gene.addRole(SequenceOntology.PROMOTER);
 		cas9m_BFP_gene.createSequenceConstraint("cas9m_BFP_gene_constraint", RestrictionType.PRECEDES, "pConst", "cas9m_BFP_cds");
 		
@@ -155,26 +155,26 @@ public class RepressionModel {
 		doc.createComponentDefinition("cas9m_BFP", version, ComponentDefinition.PROTEIN);
 		
 		// Create ComponentDefintion for CRa_U6 promoter
-		ComponentDefinition CRa_U6 = doc.createComponentDefinition("CRa_U6", version, ComponentDefinition.DNA);
+		ComponentDefinition CRa_U6 = doc.createComponentDefinition("CRa_U6", version, ComponentDefinition.DNA_REGION);
 		CRa_U6.addRole(SequenceOntology.PROMOTER);
 		CRa_U6.addSequence("CRa_U6_seq");
 		
 		// Create ComponentDefintion for gRNA_b coding sequence
-		ComponentDefinition gRNA_b_nc = doc.createComponentDefinition("gRNA_b_nc", version, ComponentDefinition.DNA);
+		ComponentDefinition gRNA_b_nc = doc.createComponentDefinition("gRNA_b_nc", version, ComponentDefinition.DNA_REGION);
 		gRNA_b_nc.addRole(SequenceOntology.CDS);
 		gRNA_b_nc.addSequence("gRNA_b_seq");
 		
 		// Create ComponentDefinition for gRNA_b terminator
-		doc.createComponentDefinition("gRNA_b_terminator", version, ComponentDefinition.DNA).addRole(SequenceOntology.TERMINATOR); 
+		doc.createComponentDefinition("gRNA_b_terminator", version, ComponentDefinition.DNA_REGION).addRole(SequenceOntology.TERMINATOR); 
 		
 		// Create ComponentDefinition for gRNA_b gene
-		ComponentDefinition gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", version, ComponentDefinition.DNA);
+		ComponentDefinition gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", version, ComponentDefinition.DNA_REGION);
 		gRNA_b_gene.addRole(SequenceOntology.PROMOTER);
 		gRNA_b_gene.createSequenceConstraint("gRNA_b_gene_constraint1", RestrictionType.PRECEDES, "CRa_U6", "gRNA_b_nc");
 		gRNA_b_gene.createSequenceConstraint("gRNA_b_gene_constraint2", RestrictionType.PRECEDES, "gRNA_b_nc","gRNA_b_terminator");
 
 		// Create ComponentDefinition for gRNA_b RNA
-		doc.createComponentDefinition("gRNA_b", version, ComponentDefinition.RNA).addRole(SequenceOntology.SGRNA);
+		doc.createComponentDefinition("gRNA_b", version, ComponentDefinition.RNA_REGION).addRole(SequenceOntology.SGRNA);
 		SequenceOntology so = new SequenceOntology();
 		URI sgrna = so.getURIbyName("sgRNA");
 		  
@@ -182,12 +182,12 @@ public class RepressionModel {
 		doc.createComponentDefinition("cas9m_BFP_gRNA_b", version, ComponentDefinition.COMPLEX);
 		
 		// Create ComponentDefinition for mKate coding sequence
-		ComponentDefinition mKate_cds = doc.createComponentDefinition("mKate_cds", version, ComponentDefinition.DNA);
+		ComponentDefinition mKate_cds = doc.createComponentDefinition("mKate_cds", version, ComponentDefinition.DNA_REGION);
 		mKate_cds.addRole(SequenceOntology.CDS);
 		mKate_cds.addSequence("mKate_seq");
 		
 		// Create ComponentDefinition for mKate gene
-		ComponentDefinition mKate_gene = doc.createComponentDefinition("mKate_gene", version, ComponentDefinition.DNA);
+		ComponentDefinition mKate_gene = doc.createComponentDefinition("mKate_gene", version, ComponentDefinition.DNA_REGION);
 		mKate_gene.addRole(SequenceOntology.PROMOTER);
 		mKate_gene.createSequenceConstraint("mKate_gene_constraint", RestrictionType.PRECEDES, "pConst", "mKate_cds");
 		
@@ -195,11 +195,11 @@ public class RepressionModel {
 		doc.createComponentDefinition("mKate", version, ComponentDefinition.PROTEIN);
 
 		// Create ComponentDefinition for Gal4VP16 coding sequence
-		ComponentDefinition Gal4VP16_cds = doc.createComponentDefinition("Gal4VP16_cds", version, ComponentDefinition.DNA);
+		ComponentDefinition Gal4VP16_cds = doc.createComponentDefinition("Gal4VP16_cds", version, ComponentDefinition.DNA_REGION);
 		Gal4VP16_cds.addRole(SequenceOntology.CDS);
 		
 		// Create ComponentDefintion for Gal4VP16 gene
-		ComponentDefinition Gal4VP16_gene = doc.createComponentDefinition("Gal4VP16_gene", version, ComponentDefinition.DNA);
+		ComponentDefinition Gal4VP16_gene = doc.createComponentDefinition("Gal4VP16_gene", version, ComponentDefinition.DNA_REGION);
 		Gal4VP16_gene.addRole(SequenceOntology.PROMOTER);
 		Gal4VP16_gene.createSequenceConstraint("GAL4VP16_gene_constraint", RestrictionType.PRECEDES, "pConst", "Gal4VP16_cds");
 		
@@ -207,16 +207,16 @@ public class RepressionModel {
 		doc.createComponentDefinition("Gal4VP16", version, ComponentDefinition.PROTEIN);
 		
 		// Create ComponentDefinition for CRP_b promoter
-		ComponentDefinition CRP_b = doc.createComponentDefinition("CRP_b", version, ComponentDefinition.DNA);
+		ComponentDefinition CRP_b = doc.createComponentDefinition("CRP_b", version, ComponentDefinition.DNA_REGION);
 		CRP_b.addRole(SequenceOntology.PROMOTER);
 		CRP_b.addSequence("CRP_b_seq");
 		
 		// Create ComponentDefintiion for EYFP coding sequence
-		ComponentDefinition EYFP_cds = doc.createComponentDefinition("EYFP_cds", version, ComponentDefinition.DNA);
+		ComponentDefinition EYFP_cds = doc.createComponentDefinition("EYFP_cds", version, ComponentDefinition.DNA_REGION);
 		EYFP_cds.addRole(SequenceOntology.CDS);
 		
 		// Create ComponentDefinition for EYFP gene
-		ComponentDefinition EYFP_gene = doc.createComponentDefinition("EYFP_gene", version, ComponentDefinition.DNA);
+		ComponentDefinition EYFP_gene = doc.createComponentDefinition("EYFP_gene", version, ComponentDefinition.DNA_REGION);
 		EYFP_gene.addRole(SequenceOntology.PROMOTER);
 		EYFP_gene.createSequenceConstraint("EYFP_gene_constraint", RestrictionType.PRECEDES, "CRP_b", "EYFP_cds");
 

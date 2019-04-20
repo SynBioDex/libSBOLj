@@ -83,6 +83,18 @@ public class ModuleDefinition extends TopLevel {
 					component.getAccess(), component.getDefinitionURI(), component.getDirection());
 			newComponent.copy(component);
 		}
+		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
+			if (!functionalComponent.getMapsTos().isEmpty()) {
+				FunctionalComponent copyComponent = this.getFunctionalComponent(functionalComponent.getDisplayId());
+				for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+					String displayId = URIcompliance.findDisplayId(mapsTo);
+					String localDisplayId = URIcompliance.findDisplayId(mapsTo.getLocal());
+					MapsTo newMapsTo = copyComponent.createMapsTo(displayId, mapsTo.getRefinement(), localDisplayId, 
+							mapsTo.getRemoteURI());
+					newMapsTo.copy(mapsTo);
+				}
+			}
+		}
 		for (Module subModule : moduleDefinition.getModules()) {
 			String displayId = URIcompliance.findDisplayId(subModule);
 			Module newModule = this.createModule(displayId, subModule.getDefinitionURI());

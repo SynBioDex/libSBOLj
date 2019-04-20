@@ -1,10 +1,10 @@
 package org.sbolstandard.core2;
 
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBinding;
 
 import javax.xml.namespace.QName;
 
-import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
+import org.sbolstandard.core.datatree.NamespaceBinding;
 /**
  * Provides qualified names for SBOL2.0 objects.
  * 
@@ -24,6 +24,7 @@ class Sbol2Terms
 	public static final NamespaceBinding sbol2 = NamespaceBinding("http://sbols.org/v2#", "sbol");
 	public static final NamespaceBinding dc = NamespaceBinding("http://purl.org/dc/terms/", "dcterms");
 	public static final NamespaceBinding prov = NamespaceBinding("http://www.w3.org/ns/prov#", "prov");
+	public static final NamespaceBinding om = NamespaceBinding("http://www.ontology-of-units-of-measure.org/resource/om-2/", "om");
 
 	static final class Description {
 		static final QName Description = rdf.withLocalPart("Description");
@@ -36,6 +37,7 @@ class Sbol2Terms
 	 */
 	static final class Activity {
 		static final QName Activity = prov.withLocalPart("Activity");
+		static final QName type 	  	   = sbol2.withLocalPart("type");
 		static final QName startedAtTime   = prov.withLocalPart("startedAtTime");
 		static final QName endedAtTime	   = prov.withLocalPart("endedAtTime");
 		static final QName wasInformedBy   = prov.withLocalPart("wasInformedBy");
@@ -80,6 +82,7 @@ class Sbol2Terms
 		static final QName Component = sbol2.withLocalPart("Component");
 		static final QName roles 	 = sbol2.withLocalPart("role");
 		static final QName roleIntegration = sbol2.withLocalPart("roleIntegration");
+		static final QName sourceLocation = sbol2.withLocalPart("sourceLocation");
 	}
 
 	/**
@@ -90,6 +93,24 @@ class Sbol2Terms
 		static final QName Collection = sbol2.withLocalPart("Collection");
 		static final QName hasMembers = sbol2.withLocalPart("member");
 		//		  static final QName access 	   = sbol2.withLocalPart("access");
+	}
+
+	/**
+	 * A group of qualified terms for Experiment related SBOL objects
+	 *
+	 */
+	static final class Experiment {
+		static final QName Experiment = sbol2.withLocalPart("Experiment");
+		static final QName hasExperimentalData = sbol2.withLocalPart("experimentalData");
+		//		  static final QName access 	   = sbol2.withLocalPart("access");
+	}
+
+	/**
+	 * A group of qualified terms for ExperimentalData related SBOL objects
+	 *
+	 */
+	static final class ExperimentalData {
+		static final QName ExperimentalData = sbol2.withLocalPart("ExperimentalData");
 	}
 
 	/**
@@ -241,6 +262,27 @@ class Sbol2Terms
 	 */
 	static final class Location {
 		static final QName Location = sbol2.withLocalPart("location");
+		static final QName sequence = sbol2.withLocalPart("sequence");
+	}
+
+	/**
+	 * A group of qualified terms for Measured related SBOL objects
+	 *
+	 */
+	static final class Measured {
+		static final QName Measured = sbol2.withLocalPart("Measured");
+		static final QName hasMeasure = sbol2.withLocalPart("measure");
+	}
+
+	/**
+	 * A group of qualified terms for Measured related SBOL objects
+	 *
+	 */
+	static final class Measure {
+		static final QName Measure = om.withLocalPart("Measure");
+		static final QName hasNumericalValue = om.withLocalPart("hasNumericalValue");
+		static final QName hasUnit = om.withLocalPart("hasUnit");
+		static final QName type = sbol2.withLocalPart("type");
 	}
 
 	/**

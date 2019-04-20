@@ -231,44 +231,49 @@ public class Sequence extends TopLevel{
 	public static String reverseComplement(String elements,URI type) {
 		String reverse = "";
 		for (int i = elements.length()-1; i >= 0; i--) {
-			if (elements.charAt(i)=='a') {
-				if (type.equals(ComponentDefinition.DNA)) {
+			if (elements.charAt(i)=='a' || elements.charAt(i)=='A') {
+				if (type.equals(ComponentDefinition.DNA_REGION)) {
 					reverse += 't';
 				} else {
 					reverse += 'u';
 				}
-			} else if ((elements.charAt(i)=='t')||(elements.charAt(i)=='u')) {
+			} else if ((elements.charAt(i)=='t')||(elements.charAt(i)=='u') || (elements.charAt(i)=='T')||(elements.charAt(i)=='U')) {
 				reverse += 'a';
-			} else if (elements.charAt(i)=='g') {
+			} else if (elements.charAt(i)=='g'||(elements.charAt(i)=='G')) {
 				reverse += 'c';
-			} else if (elements.charAt(i)=='c') {
+			} else if (elements.charAt(i)=='c'||(elements.charAt(i)=='C')) {
 				reverse += 'g';
-			} else if (elements.charAt(i)=='r') {
+			} else if (elements.charAt(i)=='r'||(elements.charAt(i)=='R')) {
 				reverse += 'y';
-			} else if (elements.charAt(i)=='y') {
+			} else if (elements.charAt(i)=='y'||(elements.charAt(i)=='Y')) {
 				reverse += 'r';
-			} else if (elements.charAt(i)=='s') {
+			} else if (elements.charAt(i)=='s'||(elements.charAt(i)=='S')) {
 				reverse += 'w';
-			} else if (elements.charAt(i)=='w') {
+			} else if (elements.charAt(i)=='w'||(elements.charAt(i)=='W')) {
 				reverse += 's';
-			} else if (elements.charAt(i)=='k') {
+			} else if (elements.charAt(i)=='k'||(elements.charAt(i)=='K')) {
 				reverse += 'm';
-			} else if (elements.charAt(i)=='m') {
+			} else if (elements.charAt(i)=='m'||(elements.charAt(i)=='M')) {
 				reverse += 'k';
-			} else if (elements.charAt(i)=='b') {
+			} else if (elements.charAt(i)=='b'||(elements.charAt(i)=='B')) {
 				reverse += 'v';
-			} else if (elements.charAt(i)=='v') {
+			} else if (elements.charAt(i)=='v'||(elements.charAt(i)=='V')) {
 				reverse += 'b';
-			} else if (elements.charAt(i)=='d') {
+			} else if (elements.charAt(i)=='d'||(elements.charAt(i)=='D')) {
 				reverse += 'h';
-			} else if (elements.charAt(i)=='h') {
+			} else if (elements.charAt(i)=='h'||(elements.charAt(i)=='H')) {
 				reverse += 'd';
-			} else if (elements.charAt(i)=='n') {
+			} else if (elements.charAt(i)=='n'||(elements.charAt(i)=='N')) {
 				reverse += 'n';
 			} else if (elements.charAt(i)=='.') {
 				reverse += '.';
 			} else if (elements.charAt(i)=='-') {
 				reverse += '-';
+			}
+		}
+		if(elements.length() > 0) {
+			if(Character.isUpperCase(elements.charAt(0))){
+				reverse.toUpperCase();
 			}
 		}
 		return reverse;

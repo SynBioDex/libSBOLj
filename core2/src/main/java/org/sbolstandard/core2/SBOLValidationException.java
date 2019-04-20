@@ -98,7 +98,7 @@ public class SBOLValidationException extends Exception {
 			if (validationRules == null) {
 				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
 				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
-						getResourceAsStream("/validation/rules2p2p0.txt"));
+						getResourceAsStream("/validation/rules2p3p0.txt"));
 				try {					
 					parse(new BufferedReader(f));
 					//writeRulesToXML("rules.xml");
@@ -112,13 +112,14 @@ public class SBOLValidationException extends Exception {
 			if (rule == null) {
 				throw new RuntimeException("Rule ID does not exist.");
 			}
-			sb.append(": " + rule.getDescription() + "\n");
-			sb.append("Reference: SBOL Version 2.2.0 " + rule.getReference() + "\n");
-			sb.append(": " + identity.toString());
+			sb.append(":\0 " +rule.getCondition()+ ":\0\n"+ rule.getDescription() + "\n\0");
+			sb.append("Reference: SBOL Version 2.3.0 " + rule.getReference() + "\n");
+			sb.append(":\0 " + identity.toString());
 		}
 		else {		
-			sb.append(": " + identity.toString());
+			sb.append(":\0 " + identity.toString());
 		}
+		sb.append("\0");
 		return sb.toString();
 	}
 
@@ -128,7 +129,7 @@ public class SBOLValidationException extends Exception {
 			if (validationRules == null) {
 				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
 				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
-						getResourceAsStream("/validation/rules2p2p0.txt"));
+						getResourceAsStream("/validation/rules2p3p0.txt"));
 				try {					
 					parse(new BufferedReader(f));
 					//writeRulesToXML("rules.xml");
@@ -139,13 +140,14 @@ public class SBOLValidationException extends Exception {
 			//printAllRules();
 			String key = message.trim();
 			SBOLValidationRule rule = validationRules.get(key);
-			sb.append(": ");
+			sb.append(":\0 ");
 			if (rule != null) {
+				sb.append(rule.getCondition()+":\0\n");
 				sb.append(rule.getDescription());
-				sb.append("\nReference: SBOL Version 2.2.0 "+rule.getReference());
+				sb.append("\n\0Reference: SBOL Version 2.3.0 "+rule.getReference());
 			} 
 			if (!objects.isEmpty()) {
-				sb.append("\n: ");
+				sb.append("\n:\0 ");
 				boolean first = true;
 				for (Identified obj : objects) {
 					if (first) {
@@ -158,12 +160,15 @@ public class SBOLValidationException extends Exception {
 						sb.append(obj.getIdentity());
 					}
 				}
+			} else {
+				sb.append("\0");
 			}
+			sb.append("\0");
 		}
 		else {		
 			//final StringBuilder sb = new StringBuilder(message);
 			if (!objects.isEmpty()) {
-				sb.append(": ");
+				sb.append(":\0 ");
 				boolean first = true;
 				for (Identified obj : objects) {
 					if (first) {
@@ -176,7 +181,10 @@ public class SBOLValidationException extends Exception {
 						sb.append(obj.getIdentity());
 					}
 				}
+			} else {
+				sb.append("\0");
 			}
+			sb.append("\0");
 			//return sb.toString();		
 		}
 		return sb.toString();

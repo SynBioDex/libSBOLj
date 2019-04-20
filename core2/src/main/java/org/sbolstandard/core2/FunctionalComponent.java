@@ -68,15 +68,16 @@ public class FunctionalComponent extends ComponentInstance {
 	void copy(FunctionalComponent functionalComponent) throws SBOLValidationException {
 		((ComponentInstance)this).copy((ComponentInstance)functionalComponent);
 		this.mapsTos = new HashMap<>();
-		if (!functionalComponent.getMapsTos().isEmpty()) {
-			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
-				String displayId = URIcompliance.findDisplayId(mapsTo);
-				String localDisplayId = URIcompliance.findDisplayId(mapsTo.getLocal());
-				MapsTo newMapsTo = this.createMapsTo(displayId, mapsTo.getRefinement(), localDisplayId, 
-						mapsTo.getRemoteURI());
-				newMapsTo.copy(mapsTo);
-			}
-		}
+		// TODO: moved this to later, since need to copy functionalComponents first
+//		if (!functionalComponent.getMapsTos().isEmpty()) {
+//			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+//				String displayId = URIcompliance.findDisplayId(mapsTo);
+//				String localDisplayId = URIcompliance.findDisplayId(mapsTo.getLocal());
+//				MapsTo newMapsTo = this.createMapsTo(displayId, mapsTo.getRefinement(), localDisplayId, 
+//						mapsTo.getRemoteURI());
+//				newMapsTo.copy(mapsTo);
+//			}
+//		}
 	}
 
 	/**

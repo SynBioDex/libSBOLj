@@ -1,8 +1,8 @@
 package org.sbolstandard.core2;
 
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperties;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NestedDocument;
+import static org.sbolstandard.core.datatree.Datatree.NamedProperties;
+import static org.sbolstandard.core.datatree.Datatree.NamedProperty;
+import static org.sbolstandard.core.datatree.Datatree.NestedDocument;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -10,13 +10,13 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import uk.ac.ncl.intbio.core.datatree.Literal.BooleanLiteral;
-import uk.ac.ncl.intbio.core.datatree.Literal.DoubleLiteral;
-import uk.ac.ncl.intbio.core.datatree.Literal.IntegerLiteral;
-import uk.ac.ncl.intbio.core.datatree.Literal.StringLiteral;
-import uk.ac.ncl.intbio.core.datatree.Literal.UriLiteral;
-import uk.ac.ncl.intbio.core.datatree.NamedProperty;
-import uk.ac.ncl.intbio.core.datatree.NestedDocument;
+import org.sbolstandard.core.datatree.Literal.BooleanLiteral;
+import org.sbolstandard.core.datatree.Literal.DoubleLiteral;
+import org.sbolstandard.core.datatree.Literal.IntegerLiteral;
+import org.sbolstandard.core.datatree.Literal.StringLiteral;
+import org.sbolstandard.core.datatree.Literal.UriLiteral;
+import org.sbolstandard.core.datatree.NamedProperty;
+import org.sbolstandard.core.datatree.NestedDocument;
 
 /**
  * Represents an Annotation object in the cSBOL data model.
@@ -122,18 +122,42 @@ public class Annotation implements Comparable<Annotation>  {
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
 	 * 12201, 12203, 12204, 12205, 12206
 	 */
-	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) throws SBOLValidationException {
+	Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) throws SBOLValidationException {
 		setQName(qName);
 		setNestedQName(nestedQName);
 		setNestedIdentity(nestedURI);
 		setAnnotations(annotations);
+	}
+	
+	/**
+	 * Creates an annotation with nested annotations using the given arguments, and then adds to this instance's list of annotations.
+	 * 
+	 * @param qName the QName of the annotation to be created
+	 * @param nestedQName the QName of the nested annotation
+	 * @param nestedId the id for the nested annotation
+	 * @param annotations the list of annotations used to construct the nested annotation
+	 * @return the created annotation
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
+	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12101, 12301.
+	 */
+	public Annotation createAnnotation(QName qName,QName nestedQName, String nestedId, List<Annotation> annotations) throws SBOLValidationException {
+		if (isNestedAnnotations() && nestedURI != null) {
+			URI nestednestedURI = URIcompliance.createCompliantURI(URIcompliance.extractPersistentId(nestedURI),
+					TopLevel.ANNOTATION, nestedId, URIcompliance.extractVersion(nestedURI), false);
+			Annotation annotation = new Annotation(qName, nestedQName, nestednestedURI, annotations);
+			nestedAnnotations.add(annotation);
+			return annotation;
+		} else {
+			// TODO: perhaps not the best error message
+			throw new SBOLValidationException("sbol-12205");
+		}
 	}
 
 	Annotation(NamedProperty<QName> value) throws SBOLValidationException {
 		if (value.getName().getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				value.getName().getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			if (value.getName().equals(Sbol2Terms.Identified.timeStamp)) {
-				System.out.println("Warning: sbol:timeStamp is deprecated");
+				System.err.println("Warning: sbol:timeStamp is deprecated");
 			}
 		}
 		setQName(value.getName());

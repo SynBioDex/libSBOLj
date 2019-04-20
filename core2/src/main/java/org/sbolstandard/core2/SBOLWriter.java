@@ -1,13 +1,13 @@
 package org.sbolstandard.core2;
 
-import static uk.ac.ncl.intbio.core.datatree.Datatree.DocumentRoot;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperties;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBindings;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NestedDocument;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.TopLevelDocument;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.TopLevelDocuments;
+import static org.sbolstandard.core.datatree.Datatree.DocumentRoot;
+import static org.sbolstandard.core.datatree.Datatree.NamedProperties;
+import static org.sbolstandard.core.datatree.Datatree.NamedProperty;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBinding;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBindings;
+import static org.sbolstandard.core.datatree.Datatree.NestedDocument;
+import static org.sbolstandard.core.datatree.Datatree.TopLevelDocument;
+import static org.sbolstandard.core.datatree.Datatree.TopLevelDocuments;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -33,16 +33,16 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import uk.ac.intbio.core.io.turtle.TurtleIo;
-import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
-import uk.ac.ncl.intbio.core.datatree.NamedProperty;
-import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
-import uk.ac.ncl.intbio.core.datatree.NestedDocument;
-import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
-import uk.ac.ncl.intbio.core.io.CoreIoException;
-import uk.ac.ncl.intbio.core.io.json.JsonIo;
-import uk.ac.ncl.intbio.core.io.json.StringifyQName;
-import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
+import org.sbolstandard.core.io.turtle.TurtleIo;
+import org.sbolstandard.core.datatree.DocumentRoot;
+import org.sbolstandard.core.datatree.NamedProperty;
+import org.sbolstandard.core.datatree.NamespaceBinding;
+import org.sbolstandard.core.datatree.NestedDocument;
+import org.sbolstandard.core.datatree.TopLevelDocument;
+import org.sbolstandard.core.io.CoreIoException;
+import org.sbolstandard.core.io.json.JsonIo;
+import org.sbolstandard.core.io.json.StringifyQName;
+import org.sbolstandard.core.io.rdf.RdfIo;
 
 /**
  * Provides methods to output SBOL files in XML/RDF format.
@@ -147,8 +147,8 @@ public class SBOLWriter
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
 		write(doc, buffer, fileType);
-		stream.close();
 		buffer.close();
+		stream.close();
 	}
 
 	/**
@@ -226,6 +226,8 @@ public class SBOLWriter
 			FASTA.write(doc, out);
 		} else if (fileType.equals(SBOLDocument.GENBANK)) {
 			GenBank.write(doc, out);
+		} else if (fileType.equals(SBOLDocument.SNAPGENE)) {
+			SnapGene.write(doc, out);
 		} else if (fileType.equals(SBOLDocument.JSON)) {
 			try {
 				writeJSON(new OutputStreamWriter(out),
@@ -319,6 +321,30 @@ public class SBOLWriter
 		}
 	}
 
+	private static void formatExperiments (Set<Experiment> experiments, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+		for(Experiment expt : experiments)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonTopLevelData(list, expt);
+			for (URI experimentalData : expt.getExperimentalDataURIs())
+			{
+				list.add(NamedProperty(Sbol2Terms.Experiment.hasExperimentalData, experimentalData));
+			}
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Experiment.Experiment, expt.getIdentity(), NamedProperties(list)));
+		}
+	}
+
+	private static void formatExperimentalData (Set<ExperimentalData> experimentalData, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+		for(ExperimentalData exptData : experimentalData)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonTopLevelData(list, exptData);
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ExperimentalData.ExperimentalData, exptData.getIdentity(), NamedProperties(list)));
+		}
+	}
+
 	private static void formatCommonIdentifiedData (List<NamedProperty<QName>> list, Identified t)
 	{
 		if(t.isSetPersistentIdentity())
@@ -341,6 +367,21 @@ public class SBOLWriter
 		{
 			if (!annotation.getValue().getName().getPrefix().equals("sbol"))
 				list.add(annotation.getValue());
+		}
+	}
+
+	private static void formatCommonMeasuredData (List<NamedProperty<QName>> comlist, Measured m)
+	{
+		formatCommonIdentifiedData(comlist,m);
+		for(Measure measure : m.getMeasures()) {
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonIdentifiedData(list, measure);
+			list.add(NamedProperty(Sbol2Terms.Measure.hasNumericalValue, measure.getNumericalValue()));
+			list.add(NamedProperty(Sbol2Terms.Measure.hasUnit, measure.getUnitURI()));
+			for(URI t : measure.getTypes())
+				list.add(NamedProperty(Sbol2Terms.Measure.type, t));
+			comlist.add(NamedProperty(Sbol2Terms.Measured.hasMeasure, 
+					NestedDocument(Sbol2Terms.Measure.Measure, measure.getIdentity(), NamedProperties(list))));
 		}
 	}
 
@@ -368,6 +409,10 @@ public class SBOLWriter
 			List<NamedProperty<QName>> list = new ArrayList<>();
 
 			formatCommonTopLevelData(list,activity);
+			for(URI types : activity.getTypes())
+			{
+				list.add(NamedProperty(Sbol2Terms.Activity.type, types));
+			}
 			if (activity.isSetStartedAtTime()) {
 				list.add(NamedProperty(Sbol2Terms.Activity.startedAtTime, activity.getStartedAtTime().toString()));
 			}
@@ -512,7 +557,7 @@ public class SBOLWriter
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
 
-			formatCommonIdentifiedData(list, f);
+			formatCommonMeasuredData(list, f);
 
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDefinitionURI()));
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, AccessType.convertToURI(f.getAccess())));
@@ -540,7 +585,7 @@ public class SBOLWriter
 		for(Interaction i : interactions)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
-			formatCommonIdentifiedData(list, i);
+			formatCommonMeasuredData(list, i);
 			for(URI type : i.getTypes())
 			{
 				list.add(NamedProperty(Sbol2Terms.Interaction.type, type));
@@ -609,7 +654,7 @@ public class SBOLWriter
 		for(Module m : module)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
-			formatCommonIdentifiedData(list, m);
+			formatCommonMeasuredData(list, m);
 			list.add(NamedProperty(Sbol2Terms.Module.hasDefinition, m.getDefinitionURI()));
 			List<NestedDocument<QName>> referenceList = getMapsTo(m.getMapsTos());
 			for(NestedDocument<QName> n : referenceList)
@@ -646,7 +691,7 @@ public class SBOLWriter
 		for(Participation p : participations)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
-			formatCommonIdentifiedData(list, p);
+			formatCommonMeasuredData(list, p);
 			for(URI r : p.getRoles())
 				list.add(NamedProperty(Sbol2Terms.Participation.role, r));
 			list.add(NamedProperty(Sbol2Terms.Participation.hasParticipant, p.getParticipantURI()));
@@ -722,7 +767,7 @@ public class SBOLWriter
 		for(Component s : components)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
-			formatCommonIdentifiedData(list, s);
+			formatCommonMeasuredData(list, s);
 			for (URI roles : s.getRoles())
 			{ 
 				list.add(NamedProperty(Sbol2Terms.Component.roles, roles));
@@ -732,6 +777,12 @@ public class SBOLWriter
 			}
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, AccessType.convertToURI(s.getAccess())));
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinitionURI()));
+			for (Location location : s.getLocations()) {
+				list.add(getLocation(location));
+			}
+			for (Location location : s.getSourceLocations()) {
+				list.add(getSourceLocation(location));
+			}
 			List<NestedDocument<QName>> referenceList = getMapsTo(s.getMapsTos());
 			for(NestedDocument<QName> n : referenceList)
 			{
@@ -794,6 +845,8 @@ public class SBOLWriter
 			property.add(NamedProperty(Sbol2Terms.Range.end, range.getEnd()));
 			if(range.isSetOrientation())
 				property.add(NamedProperty(Sbol2Terms.Range.orientation, OrientationType.convertToURI(range.getOrientation())));
+			if(range.isSetSequence())
+				property.add(NamedProperty(Sbol2Terms.Location.sequence, range.getSequenceURI()));
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(property)));
 		}
@@ -803,6 +856,8 @@ public class SBOLWriter
 			property.add(NamedProperty(Sbol2Terms.Cut.at, cut.getAt()));
 			if (cut.isSetOrientation())
 				property.add(NamedProperty(Sbol2Terms.Cut.orientation, OrientationType.convertToURI(cut.getOrientation())));
+			if(cut.isSetSequence())
+				property.add(NamedProperty(Sbol2Terms.Location.sequence, cut.getSequenceURI()));
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Cut.Cut, cut.getIdentity(), NamedProperties(property)));
 		}
@@ -811,7 +866,49 @@ public class SBOLWriter
 			GenericLocation genericLocation = (GenericLocation) location;
 			if (genericLocation.isSetOrientation())
 				property.add(NamedProperty(Sbol2Terms.GenericLocation.orientation, OrientationType.convertToURI(genericLocation.getOrientation())));
+			if(genericLocation.isSetSequence())
+				property.add(NamedProperty(Sbol2Terms.Location.sequence, genericLocation.getSequenceURI()));
 			return NamedProperty(Sbol2Terms.Location.Location,
+					NestedDocument(Sbol2Terms.GenericLocation.GenericLocation, genericLocation.getIdentity(), NamedProperties(property)));
+		}
+	}
+	
+	private static NamedProperty<QName> getSourceLocation(Location location)
+	{
+		List<NamedProperty<QName>> property = new ArrayList<>();
+		formatCommonIdentifiedData(property, location);
+
+		if(location instanceof Range)
+		{
+			Range range = (Range) location;
+			property.add(NamedProperty(Sbol2Terms.Range.start, range.getStart()));
+			property.add(NamedProperty(Sbol2Terms.Range.end, range.getEnd()));
+			if(range.isSetOrientation())
+				property.add(NamedProperty(Sbol2Terms.Range.orientation, OrientationType.convertToURI(range.getOrientation())));
+			if(range.isSetSequence())
+				property.add(NamedProperty(Sbol2Terms.Location.sequence, range.getSequenceURI()));
+			return NamedProperty(Sbol2Terms.Component.sourceLocation,
+					NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(property)));
+		}
+		else if(location instanceof Cut)
+		{
+			Cut cut = (Cut) location;
+			property.add(NamedProperty(Sbol2Terms.Cut.at, cut.getAt()));
+			if (cut.isSetOrientation())
+				property.add(NamedProperty(Sbol2Terms.Cut.orientation, OrientationType.convertToURI(cut.getOrientation())));
+			if(cut.isSetSequence())
+				property.add(NamedProperty(Sbol2Terms.Location.sequence, cut.getSequenceURI()));
+			return NamedProperty(Sbol2Terms.Component.sourceLocation,
+					NestedDocument(Sbol2Terms.Cut.Cut, cut.getIdentity(), NamedProperties(property)));
+		}
+		else 
+		{
+			GenericLocation genericLocation = (GenericLocation) location;
+			if (genericLocation.isSetOrientation())
+				property.add(NamedProperty(Sbol2Terms.GenericLocation.orientation, OrientationType.convertToURI(genericLocation.getOrientation())));
+			if(genericLocation.isSetSequence())
+				property.add(NamedProperty(Sbol2Terms.Location.sequence, genericLocation.getSequenceURI()));
+			return NamedProperty(Sbol2Terms.Component.sourceLocation,
 					NestedDocument(Sbol2Terms.GenericLocation.GenericLocation, genericLocation.getIdentity(), NamedProperties(property)));
 		}
 	}
@@ -925,7 +1022,7 @@ public class SBOLWriter
 		if (componentDefinition==null) {
 			throw new SBOLConversionException("ComponentDefinition not found.\n:");
 		}
-		if (!componentDefinition.getTypes().contains(ComponentDefinition.DNA)) {
+		if (!componentDefinition.getTypes().contains(ComponentDefinition.DNA_REGION)) {
 			throw new SBOLConversionException("SBOL 1.1 only supports DNA ComponentDefinitions.\n:"+componentDefinition.getIdentity());
 		}
 		if(componentDefinition.isSetDisplayId())
@@ -1104,7 +1201,7 @@ public class SBOLWriter
 			formatCollectionV1(collection, topLevelDoc);
 		}
 		for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
-			if (componentDefinition.getTypes().contains(ComponentDefinition.DNA)) {
+			if (componentDefinition.getTypes().contains(ComponentDefinition.DNA_REGION)) {
 				boolean skip = false;
 				for (Collection collection : doc.getCollections()) {
 					if (collection.getMemberURIs().contains(componentDefinition.getIdentity())) {
@@ -1152,6 +1249,8 @@ public class SBOLWriter
 		formatCombinatorialDerivation(doc.getCombinatorialDerivations(), topLevelDoc);
 		formatImplementation(doc.getImplementations(), topLevelDoc);
 		formatAttachments(doc.getAttachments(), topLevelDoc);
+		formatExperiments(doc.getExperiments(), topLevelDoc);
+		formatExperimentalData(doc.getExperimentalData(), topLevelDoc);
 		return topLevelDoc;
 	}
 

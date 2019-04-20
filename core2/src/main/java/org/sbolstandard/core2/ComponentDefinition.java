@@ -32,22 +32,70 @@ public class ComponentDefinition extends TopLevel {
 
 	/* Types */
 	/**
+	 * A physical entity consisting of a sequence of deoxyribonucleotide monophosphates; a deoxyribonucleic acid.
+     * Usage: DNA should be used for pools of individual DNA molecules. For describing subregions on those molecules 
+     * use DNARegion.  Examples: a chromosome, a plasmid. A specific example is chromosome 7 of Homo sapiens.
+	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">DNA</a>).
+	 * Aspects of the state of the DNA region, including cellular location and features, are defined here,
+	 * using properties inherited from PhysicalEntity.
+	 * Deprecated - please use DNA_REGION instead.
+	 */
+	@Deprecated
+	public static final URI DNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
+	
+	/**
+	 * A physical entity consisting of a sequence of deoxyribonucleotide monophosphates; a deoxyribonucleic acid.
+     * Usage: DNA should be used for pools of individual DNA molecules. For describing subregions on those molecules 
+     * use DNARegion.  Examples: a chromosome, a plasmid. A specific example is chromosome 7 of Homo sapiens.
+	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">DNA</a>).
+	 * Aspects of the state of the DNA region, including cellular location and features, are defined here,
+	 * using properties inherited from PhysicalEntity.
+	 */
+	public static final URI DNA_REGION = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
+	
+	/**
 	 * A physical entity consisting of a sequence of deoxyribonucleotide monophosphates; a deoxyribonucleic acid
 	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">DNA</a>).
+	 * Aspects of the state of the DNA molecule, including cellular location and features, are defined here,
+	 * using properties inherited from PhysicalEntity.
 	 */
-	public static final URI DNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
+	public static final URI DNA_MOLECULE = URI.create("http://www.biopax.org/release/biopax-level3.owl#Dna");
 
 	/**
-	 * A physical entity consisting of a sequence of ribonucleotide monophosphates; a ribonucleic acid
+	 * A region on a RNA molecule. Usage: RNARegion is not a pool of independent molecules but a subregion 
+	 * on these molecules. As such, every RNARegion has a defining RNA molecule. Examples: CDS, 3'; UTR, Hairpin
+	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">RNA</a>).
+	 * Aspects of the state of the RNA region, including cellular location and features, are defined here,
+	 * using properties inherited from PhysicalEntity.
+	 * Deprecated - please use RNA_REGION instead.
+	 */
+	@Deprecated
+	public static final URI RNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#RnaRegion");
+
+	/**
+	 * A region on a RNA molecule. Usage: RNARegion is not a pool of independent molecules but a subregion 
+	 * on these molecules. As such, every RNARegion has a defining RNA molecule. Examples: CDS, 3'; UTR, Hairpin
+	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">RNA</a>).
+	 * Aspects of the state of the RNA region, including cellular location and features, are defined here,
+	 * using properties inherited from PhysicalEntity.
+	 */
+	public static final URI RNA_REGION = URI.create("http://www.biopax.org/release/biopax-level3.owl#RnaRegion");
+	
+	/**
+	 * A physical entity consisting of a sequence of ribonucleotide monophosphates; a ribonucleic acid.
+	 * Usage: RNA should be used for pools of individual RNA molecules. For describing subregions on 
+	 * those molecules use RNARegion.  Examples: messengerRNA, microRNA, ribosomalRNA. A specific example 
+	 * is the let-7 microRNA.
 	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">RNA</a>).
 	 * Aspects of the state of the RNA molecule, including cellular location and features, are defined here,
 	 * using properties inherited from PhysicalEntity.
 	 */
-	public static final URI RNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#RnaRegion");
+	public static final URI RNA_MOLECULE = URI.create("http://www.biopax.org/release/biopax-level3.owl#Rna");
 
 	/**
 	 * A physical entity consisting of a sequence of amino acids; a protein monomer; a single polypeptide
-	 * chain (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">Protein</a>). Aspects of the state of the protein, including cellular location and features, are defined here,
+	 * chain (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">Protein</a>). Aspects 
+	 * of the state of the protein, including cellular location and features, are defined here,
 	 * using properties inherited from PhysicalEntity.
 	 */
 	public static final URI PROTEIN = URI.create("http://www.biopax.org/release/biopax-level3.owl#Protein");
@@ -148,6 +196,7 @@ public class ComponentDefinition extends TopLevel {
 	
 	void copy(ComponentDefinition componentDefinition) throws SBOLValidationException {
 		((TopLevel)this).copy((TopLevel)componentDefinition);
+		this.setSequences(componentDefinition.getSequenceURIs());
 		for (URI role : componentDefinition.getRoles()) {
 			this.addRole(URI.create(role.toString()));
 		}
@@ -156,6 +205,18 @@ public class ComponentDefinition extends TopLevel {
 			Component newComponent = this.createComponent(displayId, 
 					component.getAccess(), component.getDefinitionURI());
 			newComponent.copy(component);
+		}
+		for (Component component : componentDefinition.getComponents()) {
+			if (!component.getMapsTos().isEmpty()) {
+				Component copyComponent = this.getComponent(component.getDisplayId());
+				for (MapsTo mapsTo : component.getMapsTos()) {
+					String displayId = URIcompliance.findDisplayId(mapsTo);
+					String localDisplayId = URIcompliance.findDisplayId(mapsTo.getLocal());
+					MapsTo newMapsTo = copyComponent.createMapsTo(displayId, mapsTo.getRefinement(), localDisplayId, 
+							mapsTo.getRemoteURI());
+					newMapsTo.copy(mapsTo);
+				}
+			}	
 		}
 		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
 			String displayId = URIcompliance.findDisplayId(sequenceConstraint);
@@ -171,7 +232,6 @@ public class ComponentDefinition extends TopLevel {
 				displayId,"DUMMY__LOCATION");
 			newSequenceAnnotation.copy(sequenceAnnotation);
 		}
-		this.setSequences(componentDefinition.getSequenceURIs());
 	}
 
 	/**
@@ -182,8 +242,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10503.
 	 */
 	public boolean addType(URI typeURI) throws SBOLValidationException {
-		if (typeURI.equals(DNA)||typeURI.equals(RNA)||typeURI.equals(PROTEIN)||typeURI.equals(SMALL_MOLECULE)) {
-			if (this.containsType(DNA)||this.containsType(RNA)||this.containsType(PROTEIN)||this.containsType(SMALL_MOLECULE)) {
+		if (typeURI.equals(DNA_REGION)||typeURI.equals(RNA_REGION)||typeURI.equals(PROTEIN)||typeURI.equals(SMALL_MOLECULE)) {
+			if (this.containsType(DNA_REGION)||this.containsType(RNA_REGION)||this.containsType(PROTEIN)||this.containsType(SMALL_MOLECULE)) {
 				throw new SBOLValidationException("sbol-10503", this);
 			}
 		}
@@ -457,10 +517,10 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public String getImpliedNucleicAcidSequence() {
 		URI type = null;
-		if (this.getTypes().contains(ComponentDefinition.DNA)) {
-			type = ComponentDefinition.DNA;
-		} else if (this.getTypes().contains(ComponentDefinition.RNA)) {
-			type = ComponentDefinition.RNA;
+		if (this.getTypes().contains(ComponentDefinition.DNA_REGION)) {
+			type = ComponentDefinition.DNA_REGION;
+		} else if (this.getTypes().contains(ComponentDefinition.RNA_REGION)) {
+			type = ComponentDefinition.RNA_REGION;
 		} else {
 			return null;
 		}
@@ -493,15 +553,32 @@ public class ComponentDefinition extends TopLevel {
 				} else {
 					subElements = compDef.getImpliedNucleicAcidSequence();
 				}
-				for (Location location : sequenceAnnotation.getLocations()) {
+				String subElementsFinal = subElements;
+				for (Location sourceLocation : sequenceAnnotation.getComponent().getSortedSourceLocations()) {
+					subElementsFinal = "";
+					if (sourceLocation instanceof Range) {
+						Range range = (Range)sourceLocation;
+						for (int i = range.getStart()-1; i < range.getEnd(); i++) {
+							if (i < subElements.length()) {
+								subElementsFinal += subElements.charAt(i);
+							}
+						}
+						if (range.isSetOrientation() && range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
+							subElementsFinal = Sequence.reverseComplement(subElementsFinal, type);
+						}
+					}
+				}
+				for (Location location : sequenceAnnotation.getSortedLocations()) {
 					if (location instanceof Range) {
 						Range range = (Range)location;
 						if (range.isSetOrientation() && range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
-							subElements = Sequence.reverseComplement(subElements, type);
+							subElementsFinal = Sequence.reverseComplement(subElementsFinal, type);
 						}
-						for (int i = 0; i < subElements.length(); i++) {
-							// TODO: need to deal with when start index out of range
-							elementsArray[(range.getStart()+i)-1] = subElements.charAt(i);
+						for (int i = 0; i < subElementsFinal.length(); i++) {
+							if(range.getStart()+i>elementsArray.length) {
+								return null;
+							}
+							elementsArray[(range.getStart()+i)-1] = subElementsFinal.charAt(i);
 						}
 					}
 				}
@@ -825,6 +902,10 @@ public class ComponentDefinition extends TopLevel {
 		}
 		for (Location location : sequenceAnnotation.getLocations()) {
 			location.setSBOLDocument(this.getSBOLDocument());
+			location.setComponentDefinition(this);
+			if (location.isSetSequence() && !getSequenceURIs().contains(location.getSequenceURI())) {
+				throw new SBOLValidationException("sbol-11003",this);
+			}
 		}
 		addChildSafely(sequenceAnnotation, sequenceAnnotations, "sequenceAnnotation",
 				components, sequenceConstraints);
@@ -1271,7 +1352,7 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public boolean removeComponent(Component component) throws SBOLValidationException {
 		for (SequenceAnnotation sa : sequenceAnnotations.values()) {
-			if (sa.getComponentURI().equals(component.getIdentity())) {
+			if (sa.isSetComponent() && sa.getComponentURI().equals(component.getIdentity())) {
 				throw new SBOLValidationException("sbol-10905",sa);
 			}
 		}
@@ -1477,6 +1558,24 @@ public class ComponentDefinition extends TopLevel {
 			RestrictionType restriction, URI subjectURI, URI objectURI) throws SBOLValidationException {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() &&
+				this.getComponent(subjectURI)==null && this.getSBOLDocument().getComponentDefinition(subjectURI)!=null) {
+			ComponentDefinition subject = this.getSBOLDocument().getComponentDefinition(subjectURI);
+			Component subjectComp = this.getComponent(subject.getDisplayId());
+			if (subjectComp==null) {
+				subjectComp = this.createComponent(subject.getDisplayId(),AccessType.PUBLIC,subjectURI);
+			}
+			subjectURI = subjectComp.getIdentity();
+		}
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() &&
+				this.getComponent(objectURI)==null && this.getSBOLDocument().getComponentDefinition(objectURI)!=null) {
+			ComponentDefinition object = this.getSBOLDocument().getComponentDefinition(objectURI);
+			Component objectComp = this.getComponent(object.getDisplayId());
+			if (objectComp==null) {
+				objectComp = this.createComponent(object.getDisplayId(),AccessType.PUBLIC,objectURI);
+			}
+			objectURI = objectComp.getIdentity();	
+		}
 		SequenceConstraint sc = createSequenceConstraint(createCompliantURI(URIprefix, displayId, version),
 				restriction, subjectURI, objectURI);
 		sc.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));

@@ -41,13 +41,13 @@ public class FunctionalComponentTest {
 		copy_doc.setTypesInURIs(false);
 		copy_doc.setComplete(true);
 		
-		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", ComponentDefinition.DNA);
-		target_gene = doc.createComponentDefinition("target_gene", ComponentDefinition.DNA);
+		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", ComponentDefinition.DNA_REGION);
+		target_gene = doc.createComponentDefinition("target_gene", ComponentDefinition.DNA_REGION);
 		CRISPR_Template = doc.createModuleDefinition("CRISPR_Template");
 		gRNA_b_gene_fc = CRISPR_Template.createFunctionalComponent("gRNA_b_gene_fc", AccessType.PUBLIC, "gRNA_b_gene", DirectionType.OUT);
 		target_gene_fc = CRISPR_Template.createFunctionalComponent("target_gene_fc", AccessType.PUBLIC, "target_gene", DirectionType.NONE);
 
-		target_protein = doc.createComponentDefinition("target_protein", ComponentDefinition.DNA);
+		target_protein = doc.createComponentDefinition("target_protein", ComponentDefinition.DNA_REGION);
 		protein = gRNA_b_gene.createComponent("protein", AccessType.PUBLIC, "target_protein");
 		tar_protein = gRNA_b_gene_fc.createMapsTo("target_protein_mapsTo", RefinementType.USELOCAL, "target_gene_fc", "protein");
 

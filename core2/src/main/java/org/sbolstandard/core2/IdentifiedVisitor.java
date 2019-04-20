@@ -48,6 +48,15 @@ public abstract class IdentifiedVisitor
 					for (MapsTo m : c.getMapsTos()) {
 						visit(m, topLevel);
 					}
+					for (Location l : c.getLocations()) {
+						visit(l, topLevel);
+					}
+					for (Location s : c.getSourceLocations()) {
+						visit(s, topLevel);
+					}
+					for (Measure m : c.getMeasures()) {
+						visit(m, topLevel);
+					}
 				}
 				for (SequenceAnnotation sa : ((ComponentDefinition) topLevel).getSequenceAnnotations()) {
 					visit(sa,topLevel);
@@ -65,17 +74,29 @@ public abstract class IdentifiedVisitor
 					for (MapsTo m : c.getMapsTos()) {
 						visit(m,topLevel);
 					}
+					for (Measure m : c.getMeasures()) {
+						visit(m, topLevel);
+					}
 				}
 				for (Module mod : ((ModuleDefinition) topLevel).getModules()) {
 					visit(mod,topLevel);
 					for (MapsTo m : mod.getMapsTos()) {
 						visit(m,topLevel);
 					}
+					for (Measure m : mod.getMeasures()) {
+						visit(m, topLevel);
+					}
 				}
 				for (Interaction i : ((ModuleDefinition) topLevel).getInteractions()) {
 					visit(i,topLevel);
 					for (Participation p : i.getParticipations()) {
+						for (Measure m : p.getMeasures()) {
+							visit(m, topLevel);
+						}
 						visit(p,topLevel);
+					}
+					for (Measure m : i.getMeasures()) {
+						visit(m, topLevel);
 					}
 				}
 			} else if (topLevel instanceof Activity) {

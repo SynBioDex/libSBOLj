@@ -1206,4 +1206,17 @@ public class SystemsBiologyOntology {
 	 * (<a href="http://identifiers.org/biomodels.sbo/SBO:0000645">SBO:0000645</a>). 
 	 */
 	public static final URI TEMPLATE 				 = type("SBO:0000645");
+	/**
+	 * A value, numerical or symbolic, that defines certain characteristics of systems 
+	 * or system functions, or is necessary in their derivation.
+	 * (<a href="http://identifiers.org/biomodels.sbo/SBO:0000545">SBO:0000545</a>). 
+	 */
+	public static final URI SYSTEMS_DESCRIPTION_PARAMETER = type("SBO:0000545");
+	/**
+	 * A measure of the rate of growth of an organism, usually in culture. This can be expressed as increase in 
+	 * cell number or, more usually as an increase in dry weight of cells (grams), measured over a unit time period. 
+	 * Usually expressed as hour -1.
+	 * (<a href="http://identifiers.org/biomodels.sbo/SBO:0000545">SBO:0000610</a>). 
+	 */
+	public static final URI GROWTH_RATE = type("SBO:0000610");
 }
