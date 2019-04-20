@@ -1,2 +1,5 @@
+org.oboparser.obo
+org.oboparser.obo.annotations
+org.oboparser.obo.annotations.parsers
 org.sbolstandard.core2
 org.synbiohub.frontend
