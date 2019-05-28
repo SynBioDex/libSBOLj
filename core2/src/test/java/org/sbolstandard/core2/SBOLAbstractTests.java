@@ -1096,7 +1096,7 @@ public abstract class SBOLAbstractTests {
 				SBOLDocument actual = SBOLReader.read(file);
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				SBOLWriter.write(actual, out, SBOLDocument.GENBANK);
-				runTest("/SBOLTestSuite/SBOL2/"+f.getName().replace(".gb", ".xml"), actual, true);
+				runTest("/SBOLTestSuite/SBOL2/"+f.getName().replace(".gb", ".xml").replace(".gbk", ".xml"), actual, true);
 			}
 			catch (Exception e)
 			{

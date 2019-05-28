@@ -72,6 +72,8 @@ public class SBOLTestConversion {
 		if (file.getAbsolutePath().contains("multipleInstance.xml")) return;
 		if (file.getAbsolutePath().contains("sequence2.gb")) return;
 		if (file.getAbsolutePath().contains("sequence4.gb")) return;
+		if (file.getAbsolutePath().contains("pAGM1482.gb")) return;
+		if (file.getAbsolutePath().contains("pAGM5355.gb")) return;
 		if (file.getName().equals("manifest")) return;
 		if (file.isDirectory()) return;
 		//if (f.getAbsolutePath().contains("BBa_I0462.xml")) continue;
@@ -92,7 +94,11 @@ public class SBOLTestConversion {
 				System.out.println(file.getName() + " FAILED");
 				//System.out.println("Actual:  "+actual.toString());
 				//System.out.println("Expected:"+expected.toString());
-				//SBOLValidate.compareDocuments("expected", expected, "actual", actual);
+				//expected.write(System.out);
+				SBOLValidate.compareDocuments("expected", expected, "actual", actual);
+				for (String error : SBOLValidate.getErrors()) {
+					System.out.println(error);
+				}
 				//break;
 				//assert(false);
 				throw new AssertionError("Failed for " + file.getName());

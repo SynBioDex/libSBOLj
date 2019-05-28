@@ -92,8 +92,8 @@ public class GenbankTest {
 	@Test
 	public void testParseMultilineLabels() {
 		String genbank = 
-				"LOCUS       simple                    56 bp    DNA     circular      29-MAR-2016" + NEWLINE +
-				"LOCUS       simple                    60 bp    DNA     circular      29-MAR-2016" + NEWLINE +
+				"LOCUS       simple                    56 bp    DNA     circular      PRI 29-MAR-2016" + NEWLINE +
+				//"LOCUS       simple                    60 bp    DNA     circular      29-MAR-2016" + NEWLINE +
 				"FEATURES             Location/Qualifiers                        " + NEWLINE +
 				"     CDS             1..60                                      " + NEWLINE +
 				"                     /gene=\"dnaN\"                             " + NEWLINE +
