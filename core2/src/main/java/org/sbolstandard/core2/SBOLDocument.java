@@ -5235,9 +5235,9 @@ public class SBOLDocument {
 
 	@Override
 	public String toString() {
-		return "SBOLDocument [activities=" + activities + "agents=" + agents + "plans=" + plans + "implementations=" + implementations
-				+ "attachments=" + attachments + "combinatorialDerivations=" + combinatorialDerivations
-				+ "genericTopLevels=" + genericTopLevels + ", collections=" + collections + ", experiments=" + experiments + ", experimentalData =" + experimentalData 
+		return "SBOLDocument [activities=" + activities + ", agents=" + agents + ", plans=" + plans + ", implementations=" + implementations
+				+ ", attachments=" + attachments + ", combinatorialDerivations=" + combinatorialDerivations
+				+ ", genericTopLevels=" + genericTopLevels + ", collections=" + collections + ", experiments=" + experiments + ", experimentalData =" + experimentalData 
 				+ ", componentDefinitions=" + componentDefinitions
 				+ ", models=" + models + ", moduleDefinitions=" + moduleDefinitions + ", sequences=" + sequences
 				+ ", nameSpaces=" + nameSpaces + ", defaultURIprefix=" + defaultURIprefix + ", complete=" + complete
