@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.sbolstandard</groupId>
 		<artifactId>libSBOLj-parent</artifactId>
-		<version>2.4.0</version>
+		<version>2.4.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>libSBOLj</artifactId>
@@ -19,8 +19,6 @@
 
 	<dependencies>
 		<!-- dependencies used by libSBOLj -->
-
-		<!-- test dependencies -->
 		<dependency>
 			<groupId>org.sbolstandard</groupId>
 			<artifactId>sbol-data-core</artifactId>
