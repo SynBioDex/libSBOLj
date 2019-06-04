@@ -630,8 +630,15 @@ class GenBank {
 			rangeStr += ")";
 			writeGenBankLine(w,rangeStr,80,21);
 		}
+		boolean foundLabel = false;
 		for (Annotation a : sa.getAnnotations()) {
 			if (a.getQName().getLocalPart().equals("multiRangeType")) continue;
+			if (a.getQName().getLocalPart().equals("label")) foundLabel = true;
+			if (a.getQName().getLocalPart().equals("organism")) foundLabel = true;
+			if (a.getQName().getLocalPart().equals("Apeinfo_label")) foundLabel = true;
+			if (a.getQName().getLocalPart().equals("product")) foundLabel = true;
+			if (a.getQName().getLocalPart().equals("gene")) foundLabel = true;
+			if (a.getQName().getLocalPart().equals("note")) foundLabel = true;
 			if (a.isStringValue()) {
 				try {
 					int aInt = Integer.parseInt(a.getStringValue());
@@ -648,6 +655,9 @@ class GenBank {
 						a.getQName().getLocalPart()+"="+
 						a.getIntegerValue(),80,21);
 			}
+		}
+		if (!foundLabel && sa.isSetName()) {
+			writeGenBankLine(w,"                     /label="+ sa.getName(),80,21);
 		}
 	}
 
