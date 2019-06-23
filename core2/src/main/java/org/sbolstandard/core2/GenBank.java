@@ -1273,8 +1273,9 @@ class GenBank {
 								outerComplement = true;
 								orientation = OrientationType.REVERSECOMPLEMENT;
 								range = range.replace("complement(", "").replace(")","");
+								if ((range.startsWith("join")) || (range.startsWith("order"))) range += ")";
 							}
-
+							
 							if (range.startsWith("join")||range.startsWith("order")) {
 								String multiType = "join";
 								if (range.startsWith("order")) {
