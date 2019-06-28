@@ -569,6 +569,46 @@ public class SynBioHubFrontend
     }
     
     /**
+     * Perform a SPARQL admin query, must be logged in as an administrator
+     * @param query SPARQL query string
+     *
+     * @return result as a JSON string
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public String sparqlAdminQuery(String query) throws SynBioHubException
+    {
+        String url = backendUrl + "/admin/sparql";
+
+        url	+= "?query="+encodeUri(query);
+        
+        HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "application/json");
+
+        try
+        {
+            HttpResponse response = client.execute(request);
+
+            checkResponseCode(response);
+
+            InputStream inputStream = response.getEntity().getContent();
+            
+            String result = inputStreamToString(inputStream);
+
+            return result;
+        }
+        catch (Exception e)
+        {
+            throw new SynBioHubException(e);
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }
+    
+    /**
      * Search the default store for Collections that are members of the specified Collection
      *
      * @param parentCollectionUri URI for Collection to search for member Collections 
