@@ -418,7 +418,7 @@ final class URIcompliance {
 
 	private static final Pattern displayIDpatternPat = Pattern.compile(displayIDpattern);
 
-	private static final String versionPattern = "([0-9]+[a-zA-Z0-9_\\.-]*)?"; // ^ and $ are the beginning and end of the string anchors respectively. 
+	private static final String versionPattern = "[0-9]+[a-zA-Z0-9_\\.-]*"; // ^ and $ are the beginning and end of the string anchors respectively. 
 															// | is used to denote alternates. 
 
 	private static final Pattern versionPatternPat = Pattern.compile(versionPattern);
