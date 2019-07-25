@@ -2672,6 +2672,8 @@ public class SBOLValidate {
 				outputStream.println("Converting SnapGene to SBOL Version 2");
 			} else if (SBOLReader.isFastaFile(fileName)) {
 				outputStream.println("Converting FASTA to SBOL Version 2");
+			} else if (SBOLReader.isGFF3File(fileName)) {
+				outputStream.println("Converting GFF3 to SBOL Version 2");
 			} else if (SBOLReader.isGenBankFile(fileName)) {
 				outputStream.println("Converting GenBank to SBOL Version 2");
 			} else if (SBOLReader.getSBOLVersion(fileName).equals(SBOLReader.SBOLVERSION1)) {
@@ -2739,7 +2741,15 @@ public class SBOLValidate {
 						outputStream.println("Validation successful, no errors.");
 						SBOLWriter.write(doc, outputFile, SBOLDocument.FASTAformat);
 					}
-				} else if (snapGeneOut) {
+				} /* TODO
+				else if (gff3Out) {
+					if (outputFile.equals("")) {
+						SBOLWriter.write(doc, (outputStream), SBOLDocument.GFF3format);
+					} else {
+						outputStream.println("Validation successful, no errors.");
+						SBOLWriter.write(doc, outputFile, SBOLDocument.GFF3format);
+					}
+				} */else if (snapGeneOut) {
 					if (outputFile.equals("")) {
 						SBOLWriter.write(doc, (outputStream), SBOLDocument.SNAPGENE);
 					} else {

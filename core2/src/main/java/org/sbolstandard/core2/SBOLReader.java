@@ -678,6 +678,17 @@ public class SBOLReader
 				FASTA.read(SBOLDoc, inputStreamString, URIPrefix, defaultDisplayId, defaultVersion, defaultSequenceEncoding);
 				scanner.close();
 				return;
+			} else if (SBOLReader.isGFF3String(inputStreamString)) {
+				SBOLDoc.setCreateDefaults(true);
+				SBOLDoc.setCompliant(true);
+				if (URIPrefix==null) {
+					scanner.close();
+					throw new SBOLConversionException("No URI prefix has been provided.");
+				}
+				SBOLDoc.setDefaultURIprefix(URIPrefix);
+				GFF3.read(SBOLDoc, inputStreamString, URIPrefix, defaultVersion, defaultSequenceEncoding);
+				scanner.close();
+				return;
 			} else if (SBOLReader.isGenBankString(inputStreamString)) {
 				SBOLDoc.setCreateDefaults(true);
 				SBOLDoc.setCompliant(true);
@@ -7140,6 +7151,35 @@ public class SBOLReader
 		strLine = br.readLine();
 		br.close();
 		return isFastaString(strLine);
+	}
+	
+	/**
+	 * Check if a string begins with "##gff-version 3" indicating that it is GFF3 file string
+	 *
+	 * @param inputString input string to check if it is a GFF3 file string
+	 * @return true if the string begins with "##gff-version 3" indicating that it is a GFF3 file string
+	 */
+	public static boolean isGFF3String(String inputString) {
+		if (inputString!=null && inputString.startsWith("##gff-version 3")) return true;
+		return false;
+	}
+	
+	/**
+	 * Check if a file begins with "##gff-version 3" indicating that it is GFF3 file
+	 *
+	 * @param fileName file name of file to check if it is a GFF3 file
+	 * @return true if the string begins with "##gff-version 3" indicating that it is a GFF3 file
+	 * @throws IOException if there is an I/O exception reading the file
+	 */
+	public static boolean isGFF3File(String fileName) throws IOException {
+		File file = new File(fileName);
+		FileInputStream stream     = new FileInputStream(file);
+		BufferedInputStream buffer = new BufferedInputStream(stream);
+		String strLine;
+		BufferedReader br = new BufferedReader(new InputStreamReader(buffer));
+		strLine = br.readLine();
+		br.close();
+		return isGFF3String(strLine);
 	}
     
 	/**

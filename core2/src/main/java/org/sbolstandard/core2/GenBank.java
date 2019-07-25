@@ -676,7 +676,7 @@ class GenBank {
 		}
 	}
 	
-	private static int getFeatureStart(SequenceAnnotation sa) {
+	static int getFeatureStart(SequenceAnnotation sa) {
 		int featureStart = Integer.MAX_VALUE;
 		for (Location location : sa.getPreciseLocations()) {
 			if (location instanceof Range) {
@@ -696,7 +696,7 @@ class GenBank {
 	}
 	
 	
-	private static int getFeatureEnd(SequenceAnnotation sa) {
+	static int getFeatureEnd(SequenceAnnotation sa) {
 		int featureEnd = 0;
 		for (Location location : sa.getPreciseLocations()) {
 			if (location instanceof Range) {
@@ -716,7 +716,7 @@ class GenBank {
 	}
 	
 	// TODO: assumes any complement then entirely complemented, need to fix
-	private static boolean isInlineFeature(SequenceAnnotation sa) {
+	static boolean isInlineFeature(SequenceAnnotation sa) {
 		boolean inlineFeature = true;
 		for (Location location : sa.getPreciseLocations()) {
 			if (location.isSetOrientation() && location.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {

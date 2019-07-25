@@ -224,6 +224,8 @@ public class SBOLWriter
 		clearErrors();
 		if (fileType.equals(SBOLDocument.FASTAformat)) {
 			FASTA.write(doc, out);
+		} else if (fileType.equals(SBOLDocument.GFF3format)) {
+			GFF3.write(doc, out);
 		} else if (fileType.equals(SBOLDocument.GENBANK)) {
 			GenBank.write(doc, out);
 		} else if (fileType.equals(SBOLDocument.SNAPGENE)) {

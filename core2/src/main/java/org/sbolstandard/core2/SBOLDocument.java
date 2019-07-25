@@ -89,6 +89,10 @@ public class SBOLDocument {
 	 */
 	public static final String FASTAformat = "FASTA";
 	/**
+	 * Constant representing GFF3 file format
+	 */
+	public static final String GFF3format = "GFF3";
+	/**
 	 * Constant representing GenBank file format
 	 */
 	public static final String GENBANK = "GENBANK";

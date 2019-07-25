@@ -1,6 +1,10 @@
 package org.sbolstandard.core2;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 
 import org.synbiohub.frontend.SynBioHubException;
 import org.synbiohub.frontend.SynBioHubFrontend;
@@ -33,16 +37,46 @@ class readTester {
 
 	static String path = "/Users/myers/git/libSBOLj/core2/src/test/resources/";
 
-	public static void main(String[] args) throws SBOLValidationException, IOException, SBOLConversionException {
-		SBOLDocument doc = SBOLReader.read("/Users/myers/git/libSBOLj/core2/src/test/resources/SBOLTestSuite/SBOL2_bp/LocationToSequenceOutput.xml");
-		long submitStartTime = System.currentTimeMillis();
+	public static void main(String[] args) throws SBOLValidationException, IOException, SBOLConversionException, SynBioHubException {
+		SBOLReader.setURIPrefix("http://dummy.org");
+		SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/BBa_F2620-4.xml");
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		doc.write(out,SBOLDocument.GFF3format);
+		doc = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
+		doc.write(System.out,SBOLDocument.GFF3format);
 
-		doc = doc.changeURIPrefixVersion("https://synbiohub.org", "1", "1");
-		
-		long submitEndTime = System.currentTimeMillis();
-		double submitDuration = (submitEndTime - submitStartTime) * 1.0 / 1000;
+//		File dir = new File("/Users/myers/Downloads/GFF_v3_34_strains/");
+//		File[] directoryListing = dir.listFiles();
+//		if (directoryListing != null) {
+//			for (File child : directoryListing) {
+//				System.out.println("Reading: " + child.getAbsolutePath());
+//				SBOLDocument doc = SBOLReader.read(child);
+//				System.out.println("Writing: " + child.getAbsolutePath().replace(".gff", ".xml"));
+//				doc.write(System.out,SBOLDocument.GFF3format);
+//				break;
+//				//doc.write(child.getAbsolutePath().replace(".gff", ".xml"));
+//		    }
+//		} 
 
-		System.out.println("Change URI prefex Time (in sec): " + submitDuration);
-		doc.write(System.out);
+//		long submitStartTime = System.currentTimeMillis();
+//		SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777", "https://synbiohub.org");
+//		sbh.login("myers@ece.utah.edu", "test");
+//		String result = sbh.sparqlAdminQuery("SELECT ?s ?p ?o FROM <https://synbiohub.org/user/test> WHERE { ?s ?p ?o. }");
+//		System.out.println(result);
+
+//		SBOLDocument doc = SBOLValidate.validate(System.out,
+//				System.err, 
+//				"/Users/myers/Downloads/testannotation.xml", 
+//				"http://dummy.org/", "", false, false, false, false, "1", false, "", "", 
+//				"/Users/myers/Downloads/testannotation.xml", 
+//				"",	false, false, false, false, null, false, true, false);
+//		
+//		doc = doc.changeURIPrefixVersion("https://synbiohub.org", null, "1");
+//		
+//		long submitEndTime = System.currentTimeMillis();
+//		double submitDuration = (submitEndTime - submitStartTime) * 1.0 / 1000;
+//
+//		System.out.println("Change URI prefex Time (in sec): " + submitDuration);
+//		doc.write(System.out);
 	}
 }
