@@ -81,7 +81,7 @@ public class Sequence extends TopLevel{
 	}
 	
 	void copy(Sequence sequence) throws SBOLValidationException {
-		((TopLevel)this).copy((Identified)sequence);
+		((TopLevel)this).copy((TopLevel)sequence);
 	}
 
 	//	public Sequence(String authority, String Id, String elements, URI encoding) {

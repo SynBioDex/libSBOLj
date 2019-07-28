@@ -58,7 +58,7 @@ public class Model extends TopLevel {
 	}
 	
 	void copy(Model model) throws SBOLValidationException {
-		((TopLevel)this).copy((Identified)model);
+		((TopLevel)this).copy((TopLevel)model);
 	}
 
 	/**
