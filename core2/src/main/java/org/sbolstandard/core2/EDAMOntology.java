@@ -335,7 +335,6 @@ public class EDAMOntology {
 	 * (<a href="http://identifiers.org/edam/format_1915">FORMAT</a>).
 	 */
 	public static final URI FORMAT = type("format_1915");
-	//public static final URI FORMAT = URI.create("http://identifiers.org/edam/format_1915");
 
 	/**
 	 * Systems Biology Markup Language (SBML), the standard XML format for models of biological
@@ -343,7 +342,6 @@ public class EDAMOntology {
 	 * (<a href="http://identifiers.org/edam/format_2585">SBML</a>).
 	 */
 	public static final URI SBML = type("format_2585");
-	//public static final URI SBML = URI.create("http://identifiers.org/edam/format_2585");
 
 	/**
 	 * CellML, the format for mathematical models of biological and other networks
@@ -356,4 +354,10 @@ public class EDAMOntology {
 	 * (<a href="http://identifiers.org/edam/format_3156">BIOPAX</a>).
 	 */
 	public static final URI BIOPAX = type("format_3156");
+	
+	/**
+	 * PNG, a file format for image compression
+	 * (<a href="http://identifiers.org/edam/format_3603">SBML</a>).
+	 */
+	public static final URI PNG = type("format_3603");
 }
