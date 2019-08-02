@@ -142,36 +142,47 @@ class GenBank {
 
 	private static String convertSOtoGenBank(String soTerm) {
 		if (soTerm.equals("SO:0001023")) {return String.format("%-15s", "allele");}
+		if (soTerm.equals("SO:0000730")) {return String.format("%-15s", "assembly_gap");}
+		if (soTerm.equals("SO:0002174")) {return String.format("%-15s", "assembly_gap");}
 		if (soTerm.equals("SO:0000140")) {return String.format("%-15s", "attenuator");}
 		if (soTerm.equals("SO:0001834")) {return String.format("%-15s", "C_region");}
 		if (soTerm.equals("SO:0000172")) {return String.format("%-15s", "CAAT_signal");}
 		if (soTerm.equals("SO:0000316")) {return String.format("%-15s", "CDS");}
+		if (soTerm.equals("SO:0000577")) {return String.format("%-15s", "centromere");}
 		//if (soTerm.equals("SO:")) {return String.format("%-15s", "conflict");}
 		if (soTerm.equals("SO:0000297")) {return String.format("%-15s", "D-loop");}
 		if (soTerm.equals("SO:0000458")) {return String.format("%-15s", "D_segment");}
 		if (soTerm.equals("SO:0000165")) {return String.format("%-15s", "enhancer");}
 		if (soTerm.equals("SO:0000147")) {return String.format("%-15s", "exon");}
+		if (soTerm.equals("SO:0000730")) {return String.format("%-15s", "gap");} // TODO: alias with assembly_gap
 		if (soTerm.equals("SO:0000704")) {return String.format("%-15s", "gene");}
 		if (soTerm.equals("SO:0000173")) {return String.format("%-15s", "GC_signal");}
 		if (soTerm.equals("SO:0000723")) {return String.format("%-15s", "iDNA");}
 		if (soTerm.equals("SO:0000188")) {return String.format("%-15s", "intron");}
 		if (soTerm.equals("SO:0000470")) {return String.format("%-15s", "J_region");}
+		if (soTerm.equals("SO:0000470")) {return String.format("%-15s", "J_segment");} // TODO: alias with J_region
 		if (soTerm.equals("SO:0000286")) {return String.format("%-15s", "LTR");}
 		if (soTerm.equals("SO:0000419")) {return String.format("%-15s", "mat_peptide");}
 		if (soTerm.equals("SO:0000409")) {return String.format("%-15s", "misc_binding");}
 		if (soTerm.equals("SO:0000413")) {return String.format("%-15s", "misc_difference");}
 		if (soTerm.equals("SO:0000001")) {return String.format("%-15s", "misc_feature");}
+		if (soTerm.equals("SO:0001411")) {return String.format("%-15s", "misc_feature");}
 		if (soTerm.equals("SO:0001645")) {return String.format("%-15s", "misc_marker");}
 		if (soTerm.equals("SO:0000298")) {return String.format("%-15s", "misc_recomb");}
 		if (soTerm.equals("SO:0000233")) {return String.format("%-15s", "misc_RNA");}
+		if (soTerm.equals("SO:0000673")) {return String.format("%-15s", "misc_RNA");}
 		if (soTerm.equals("SO:0001411")) {return String.format("%-15s", "misc_signal");}
 		if (soTerm.equals("SO:0005836")) {return String.format("%-15s", "regulatory");}
 		if (soTerm.equals("SO:0000002")) {return String.format("%-15s", "misc_structure");}
+		if (soTerm.equals("SO:0001037")) {return String.format("%-15s", "mobile_element");}
 		if (soTerm.equals("SO:0000305")) {return String.format("%-15s", "modified_base");}
 		if (soTerm.equals("SO:0000234")) {return String.format("%-15s", "mRNA");}
 		//if (soTerm.equals("SO:")) {return String.format("%-15s", "mutation");}
 		if (soTerm.equals("SO:0001835")) {return String.format("%-15s", "N_region");}
 		//if (soTerm.equals("SO:")) {return String.format("%-15s", "old_sequence");}
+		if (soTerm.equals("SO:0000655")) {return String.format("%-15s", "ncRNA");}
+		if (soTerm.equals("SO:0000178")) {return String.format("%-15s", "operon");}
+		if (soTerm.equals("SO:0000724")) {return String.format("%-15s", "oriT");}
 		if (soTerm.equals("SO:0000551")) {return String.format("%-15s", "polyA_signal");}
 		if (soTerm.equals("SO:0000553")) {return String.format("%-15s", "polyA_site");}
 		if (soTerm.equals("SO:0000185")) {return String.format("%-15s", "precursor_RNA");}
@@ -180,6 +191,7 @@ class GenBank {
 		if (soTerm.equals("SO:0000112")) {return String.format("%-15s", "primer");}
 		if (soTerm.equals("SO:0005850")) {return String.format("%-15s", "primer_bind");}
 		if (soTerm.equals("SO:0000167")) {return String.format("%-15s", "promoter");}
+		if (soTerm.equals("SO:0001062")) {return String.format("%-15s", "propeptide");}
 		if (soTerm.equals("SO:0000410")) {return String.format("%-15s", "protein_bind");}
 		if (soTerm.equals("SO:0000139") || soTerm.equals("SO:0000552")) {return String.format("%-15s", "RBS");}
 		if (soTerm.equals("SO:0000296")) {return String.format("%-15s", "rep_origin");}
@@ -192,17 +204,22 @@ class GenBank {
 		if (soTerm.equals("SO:0000418")) {return String.format("%-15s", "sig_peptide");}
 		if (soTerm.equals("SO:0000274")) {return String.format("%-15s", "snRNA");}
 		if (soTerm.equals("SO:0000149")) {return String.format("%-15s", "source");}
+		if (soTerm.equals("SO:0002206")) {return String.format("%-15s", "source");}
 		if (soTerm.equals("SO:0000019")) {return String.format("%-15s", "stem_loop");}
 		if (soTerm.equals("SO:0000313")) {return String.format("%-15s", "stem_loop");}
 		if (soTerm.equals("SO:0000331")) {return String.format("%-15s", "STS");}
 		if (soTerm.equals("SO:0000174")) {return String.format("%-15s", "TATA_signal");}
+		if (soTerm.equals("SO:0000624")) {return String.format("%-15s", "telomere");}
 		if (soTerm.equals("SO:0000141")) {return String.format("%-15s", "terminator");}
+		if (soTerm.equals("SO:0000584")) {return String.format("%-15s", "tmRNA");}
 		if (soTerm.equals("SO:0000725")) {return String.format("%-15s", "transit_peptide");}
 		if (soTerm.equals("SO:0001054")) {return String.format("%-15s", "transposon");}
 		if (soTerm.equals("SO:0000253")) {return String.format("%-15s", "tRNA");}
-		// if (soTerm.equals("SO:")) {return String.format("%-15s", "unsure");}
+		if (soTerm.equals("SO:0001086")) {return String.format("%-15s", "unsure");}
 		if (soTerm.equals("SO:0001833")) {return String.format("%-15s", "V_region");}
+		if (soTerm.equals("SO:0000109")) {return String.format("%-15s", "variation");}
 		if (soTerm.equals("SO:0001060")) {return String.format("%-15s", "variation");}
+		if (soTerm.equals("SO:0000466")) {return String.format("%-15s", "V_segment");}
 		if (soTerm.equals("SO:0000175")) {return String.format("%-15s", "-10_signal");}
 		if (soTerm.equals("SO:0000176")) {return String.format("%-15s", "-35_signal");}
 		if (soTerm.equals("SO:0000557")) {return String.format("%-15s", "3'clip");}
@@ -221,6 +238,8 @@ class GenBank {
 	private static URI convertGenBanktoSO(String genBankTerm) {
 		if (genBankTerm.equals("allele")) {
 			return so.getURIbyId("SO:0001023");}
+		if (genBankTerm.equals("assembly_gap")) {
+			return so.getURIbyId("SO:0000730");}
 		if (genBankTerm.equals("attenuator")) {
 			return so.getURIbyId("SO:0000140");}
 		if (genBankTerm.equals("C_region")) {
@@ -229,6 +248,8 @@ class GenBank {
 			return so.getURIbyId("SO:0000172");}
 		if (genBankTerm.equals("CDS")) {
 			return so.getURIbyId("SO:0000316");}
+		if (genBankTerm.equals("centromere")) {
+			return so.getURIbyId("SO:0000577");}
 		/* if (genBankTerm.equals("conflict")) {
 		return so.getURIbyId("SO_");} */
 		if (genBankTerm.equals("D-loop")) {
@@ -239,6 +260,8 @@ class GenBank {
 			return so.getURIbyId("SO:0000165");}
 		if (genBankTerm.equals("exon")) {
 			return so.getURIbyId("SO:0000147");}
+		if (genBankTerm.equals("gap")) {
+			return so.getURIbyId("SO:0000730");}
 		if (genBankTerm.equals("gene")) {
 			return so.getURIbyId("SO:0000704");}
 		if (genBankTerm.equals("GC_signal")) {
@@ -249,6 +272,10 @@ class GenBank {
 			return so.getURIbyId("SO:0000188");}
 		if (genBankTerm.equals("J_region")) {
 			return so.getURIbyId("SO:0000470");}
+		if (genBankTerm.equals("J_gene_segment")) {
+			return so.getURIbyId("SO:0000470");}
+		if (genBankTerm.equals("J_segment")) {
+			return so.getURIbyId("SO:0000470");}
 		if (genBankTerm.equals("LTR")) {
 			return so.getURIbyId("SO:0000286");}
 		if (genBankTerm.equals("mat_peptide")) {
@@ -258,17 +285,23 @@ class GenBank {
 		if (genBankTerm.equals("misc_difference")) {
 			return so.getURIbyId("SO:0000413");}
 		if (genBankTerm.equals("misc_feature")) {
-			return so.getURIbyId("SO:0000001");}
+			return so.getURIbyId("SO:0001411");}
+//		return so.getURIbyId("SO:0000001");}
 		if (genBankTerm.equals("misc_marker")) {
 			return so.getURIbyId("SO:0001645");}
 		if (genBankTerm.equals("misc_recomb")) {
 			return so.getURIbyId("SO:0000298");}
 		if (genBankTerm.equals("misc_RNA")) {
-			return so.getURIbyId("SO:0000233");}
+			return so.getURIbyId("SO:0000673");}
+//		return so.getURIbyId("SO:0000233");}
 		if (genBankTerm.equals("misc_signal")) {
 			return so.getURIbyId("SO:0001411");}
 		if (genBankTerm.equals("misc_structure")) {
 			return so.getURIbyId("SO:0000002");}
+		if (genBankTerm.equals("mobile_element")) {
+			return so.getURIbyId("SO:0001037");}
+		if (genBankTerm.equals("mobile_genetic_element")) {
+			return so.getURIbyId("SO:0001037");}
 		if (genBankTerm.equals("modified_base")) {
 			return so.getURIbyId("SO:0000305");}
 		if (genBankTerm.equals("mRNA")) {
@@ -279,6 +312,12 @@ class GenBank {
 			return so.getURIbyId("SO:0001835");}
 		/* if (genBankTerm.equals("old_sequence")) {
 		return so.getURIbyId("SO_");} */
+		if (genBankTerm.equals("ncRNA")) {
+			return so.getURIbyId("SO:0000655");}
+		if (genBankTerm.equals("operon")) {
+			return so.getURIbyId("SO:0000178");}
+		if (genBankTerm.equals("oriT")) {
+			return so.getURIbyId("SO:0000724");}
 		if (genBankTerm.equals("polyA_signal")) {
 			return so.getURIbyId("SO:0000551");}
 		if (genBankTerm.equals("polyA_site")) {
@@ -293,8 +332,10 @@ class GenBank {
 			return so.getURIbyId("SO:0005850");}
 		if (genBankTerm.equals("promoter")) {
 			return so.getURIbyId("SO:0000167");}
-		if (genBankTerm.equals("protein_bind")) {
-			return so.getURIbyId("SO:0000410");}
+		if (genBankTerm.equals("promoter")) {
+			return so.getURIbyId("SO:0000167");}
+		if (genBankTerm.equals("propeptide")) {
+			return so.getURIbyId("SO:0001062");}
 		if (genBankTerm.equals("RBS")) {
 			return so.getURIbyId("SO:0000139");}
 		if (genBankTerm.equals("rep_origin")) {
@@ -316,23 +357,30 @@ class GenBank {
 		if (genBankTerm.equals("snRNA")) {
 			return so.getURIbyId("SO:0000274");}
 		if (genBankTerm.equals("source")) {
-			return so.getURIbyId("SO:0000149");}
+			return so.getURIbyId("SO:0002206");}
+//		return so.getURIbyId("SO:0000149");}
 		if (genBankTerm.equals("stem_loop")) {
 			return so.getURIbyId("SO:0000313");}
 		if (genBankTerm.equals("STS")) {
 			return so.getURIbyId("SO:0000331");}
 		if (genBankTerm.equals("TATA_signal")) {
 			return so.getURIbyId("SO:0000174");}
+		if (genBankTerm.equals("telomere")) {
+			return so.getURIbyId("SO:0000624");}
 		if (genBankTerm.equals("terminator")) {
 			return so.getURIbyId("SO:0000141");}
+		if (genBankTerm.equals("tmRNA")) {
+			return so.getURIbyId("SO:0000584");}
 		if (genBankTerm.equals("transit_peptide")) {
 			return so.getURIbyId("SO:0000725");}
 		if (genBankTerm.equals("transposon")) {
 			return so.getURIbyId("SO:0001054");}
 		if (genBankTerm.equals("tRNA")) {
 			return so.getURIbyId("SO:0000253");}
-		/* if (genBankTerm.equals("unsure")) {
-		return so.getURIbyId("SO_");} */
+		if (genBankTerm.equals("sequence_uncertainty")) {
+			return so.getURIbyId("SO:0001086");}
+		if (genBankTerm.equals("unsure")) {
+			return so.getURIbyId("SO:0001086");}
 		if (genBankTerm.equals("V_region")) {
 			return so.getURIbyId("SO:0001833");}
 		if (genBankTerm.equals("variation")) {
@@ -352,8 +400,11 @@ class GenBank {
 		if (genBankTerm.equals("regulatory")) {
 			return so.getURIbyId("SO:0005836");}
 		if (genBankTerm.equals("snoRNA")) {
-			return so.getURIbyId("SO:0000275");
-		}
+			return so.getURIbyId("SO:0000275");}
+		if (genBankTerm.equals("V_gene_segment")) {
+			return so.getURIbyId("SO:0000466");}
+		if (genBankTerm.equals("V_segment")) {
+			return so.getURIbyId("SO:0000466");}
 		return so.getURIbyId("SO:0000110");
 		//return null;
 		/*
