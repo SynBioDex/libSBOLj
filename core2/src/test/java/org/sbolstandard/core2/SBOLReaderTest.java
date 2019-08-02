@@ -39,6 +39,7 @@ public class SBOLReaderTest extends SBOLAbstractTests
 //		else
 		actual = SBOLReader.read(resourceAsStream);
 		if (!actual.equals(expected)) {
+			System.out.println("Differences found for " + fileName);
 			SBOLValidate.compareDocuments("actual", actual, "expected", expected);
 			for (String error : SBOLValidate.getErrors()) {
 				System.out.println(error);
