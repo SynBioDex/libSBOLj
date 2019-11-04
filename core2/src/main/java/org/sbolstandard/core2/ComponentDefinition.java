@@ -568,18 +568,21 @@ public class ComponentDefinition extends TopLevel {
 						}
 					}
 				}
+				int start = 0;
 				for (Location location : sequenceAnnotation.getSortedLocations()) {
 					if (location instanceof Range) {
 						Range range = (Range)location;
 						if (range.isSetOrientation() && range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
 							subElementsFinal = Sequence.reverseComplement(subElementsFinal, type);
 						}
-						for (int i = 0; i < subElementsFinal.length(); i++) {
-							if(range.getStart()+i>elementsArray.length) {
+						int end = range.getEnd() - range.getStart() + 1 + start;
+						for (int i = start /*0*/; i < end /*subElementsFinal.length()*/; i++) {
+							if(range.getStart()+(i-start)>elementsArray.length) {
 								return null;
 							}
-							elementsArray[(range.getStart()+i)-1] = subElementsFinal.charAt(i);
+							elementsArray[(range.getStart()+(i-start))-1] = subElementsFinal.charAt(i);
 						}
+						start = end;
 					}
 				}
 			}
