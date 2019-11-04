@@ -7,6 +7,8 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -122,6 +124,7 @@ class GFF3 {
 					} else {
 						w.write(".\t");
 					}
+					break;
 				}
 			}
 			annotation = sa.getAnnotation(new QName(GFF3NAMESPACE,PHASE,GFF3PREFIX));
@@ -203,6 +206,51 @@ class GFF3 {
 		return offset;
 	}
 	
+	private static void addSequenceAnnotation(ComponentDefinition cd, String id, String name, String type, 
+			String start, String end, String strand, int offset, String source, String score, String phase) 
+					throws SBOLConversionException, SBOLValidationException {
+		if (id==null) {
+			if (name!=null) { 
+				id = URIcompliance.fixDisplayId(name);
+			} else {
+				id = "SequeanceAnnotation"+start;
+			}
+		}
+		SequenceOntology so = new SequenceOntology();
+		URI typeURI = so.getURIbyName(type);
+		if (typeURI==null) {
+			System.out.println("id = " + id + " name = " + name + " type = " + type + " start = "+start+ " end = " + end);
+			throw new SBOLConversionException("Type " + type + " is not a valid Sequence Ontology (SO) term");
+		}
+		int startInt = Integer.parseInt(start) - offset;
+		int endInt = Integer.parseInt(end) - offset;
+		SequenceAnnotation sa = cd.getSequenceAnnotation(id);
+		if (sa == null) {
+			if (strand.equals("+")) {
+				sa = cd.createSequenceAnnotation(id, "Range", startInt, endInt, OrientationType.INLINE);
+			} else if (strand.equals("-")) {
+				sa = cd.createSequenceAnnotation(id, "Range", startInt, endInt, OrientationType.REVERSECOMPLEMENT);
+			} else {
+				sa = cd.createSequenceAnnotation(id, "Range", startInt, endInt);
+			}
+			sa.setName(name);
+			sa.addRole(typeURI);
+			sa.createAnnotation(new QName(GFF3NAMESPACE, SOURCE, GFF3PREFIX), source);
+			sa.createAnnotation(new QName(GFF3NAMESPACE, SCORE, GFF3PREFIX), score);
+			sa.createAnnotation(new QName(GFF3NAMESPACE, PHASE, GFF3PREFIX), phase);
+		} else {
+			int i = 1;
+			while (sa.getLocation("Range"+i)!=null) i++;
+			if (strand.equals("+")) {
+				sa.addRange("Range"+i, startInt, endInt, OrientationType.INLINE);
+			} else if (strand.equals("-")) {
+				sa.addRange("Range"+i, startInt, endInt, OrientationType.REVERSECOMPLEMENT);
+			} else {
+				sa.addRange("Range"+i, startInt, endInt);
+			}
+		}
+	}
+	
 	/**
 	 * @param doc
 	 * @param stringBuffer
@@ -215,6 +263,7 @@ class GFF3 {
 	 */
 	static void read(SBOLDocument doc,String stringBuffer,String URIprefix,String version,URI encoding) throws SBOLValidationException, IOException, SBOLConversionException
 	{
+		Set<ComponentDefinition> parentCDs = new HashSet<>();
 		// reset the global static variables needed for parsing
 		nextLine = null;
 		//lineCounter = 0;
@@ -249,7 +298,6 @@ class GFF3 {
 				String attributesCol = splits[8];
 				String id = null;
 				String name = null;
-				String parent = null;
 				int offset = 0;
 				ComponentDefinition cd = doc.getComponentDefinition(seqId, version);
 				ComponentDefinition parentCD = null;
@@ -257,51 +305,39 @@ class GFF3 {
 					throw new SBOLConversionException("Sequence region missing for sequence " + seqId);
 				}
 				String [] attributes = attributesCol.split(";");
+				parentCDs.clear();
 				for (String attribute : attributes) {
 					if (attribute.startsWith("ID=")) {
 						id = attribute.replace("ID=", "");
 					} else if (attribute.startsWith("Name=")) {
 						name = attribute.replace("Name=", "");
 					} else if (attribute.startsWith("Parent=")) {
-						parent = attribute.replace("Parent=", "");
-						parentCD = doc.getComponentDefinition(parent, version);
-						if (parentCD == null) {
-							//System.out.println("id="+id+" name="+name+" parent="+parent);
-							cd = findParent(doc,parent);
-							SequenceAnnotation sa = cd.getSequenceAnnotation(parent);
-							parentCD = doc.createComponentDefinition(parent, version, ComponentDefinition.DNA_REGION);
-							parentCD.setRoles(sa.getRoles());
-							sa.clearRoles();
-							cd.createComponent(parent+"_comp", AccessType.PUBLIC, parentCD.getDisplayId());
-							sa.setComponent(parent+"_comp");
+						String [] parents = attribute.replace("Parent=", "").split(",");
+						for (String parent : parents) {
+							parentCD = doc.getComponentDefinition(parent, version);
+							if (parentCD == null) {
+								cd = findParent(doc,parent);
+								SequenceAnnotation sa = cd.getSequenceAnnotation(parent);
+								parentCD = doc.createComponentDefinition(parent, version, ComponentDefinition.DNA_REGION);
+								parentCD.setRoles(sa.getRoles());
+								sa.clearRoles();
+								cd.createComponent(parent+"_comp", AccessType.PUBLIC, parentCD.getDisplayId());
+								sa.setComponent(parent+"_comp");
+							}
+							//offset = findOffset(doc,parent);
+							parentCDs.add(parentCD);
+							//cd = parentCD;
 						}
-						offset = findOffset(doc,parent);
-						cd = parentCD;
 					}
 				}
-				if (id==null) {
-					id = URIcompliance.fixDisplayId(name);
-				}
-				SequenceOntology so = new SequenceOntology();
-				URI typeURI = so.getURIbyName(type);
-				if (typeURI==null) {
-					throw new SBOLConversionException("Type " + type + " is not a valid Sequence Ontology (SO) term");
-				}
-				int startInt = Integer.parseInt(start) - offset;
-				int endInt = Integer.parseInt(end) - offset;
-				SequenceAnnotation sa;
-				if (strand.equals("+")) {
-					sa = cd.createSequenceAnnotation(id, "Range", startInt, endInt, OrientationType.INLINE);
-				} else if (strand.equals("-")) {
-					sa = cd.createSequenceAnnotation(id, "Range", startInt, endInt, OrientationType.REVERSECOMPLEMENT);
+				if (parentCDs.size() > 0) {
+					for (ComponentDefinition pCD : parentCDs) {
+						offset = findOffset(doc,pCD.getDisplayId());
+						addSequenceAnnotation(pCD, id, name, type, start, end, strand, offset, source, score, phase); 
+					}
 				} else {
-					sa = cd.createSequenceAnnotation(id, "Range", startInt, endInt);
+					addSequenceAnnotation(cd, id, name, type, start, end, strand, 0, source, score, phase); 
 				}
-				sa.setName(name);
-				sa.addRole(typeURI);
-				sa.createAnnotation(new QName(GFF3NAMESPACE, SOURCE, GFF3PREFIX), source);
-				sa.createAnnotation(new QName(GFF3NAMESPACE, SCORE, GFF3PREFIX), score);
-				sa.createAnnotation(new QName(GFF3NAMESPACE, PHASE, GFF3PREFIX), phase);
 			}
 		}
 		br.close();
