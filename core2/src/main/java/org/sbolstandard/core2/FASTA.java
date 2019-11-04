@@ -198,10 +198,14 @@ class FASTA {
 			}
 		}
 		if (description.contains(":")) {
-			displayId = description.substring(0, description.indexOf(":")).trim();
+			if (displayId == null || displayId.equals("")) {
+				displayId = description.substring(0, description.indexOf(":")).trim();
+			}	
 			description = description.substring(description.indexOf(":")+1).trim();
 		} else {
-			displayId = description;
+			if (displayId == null || displayId.equals("")) {
+				displayId = description;
+			}	
 		}
 		displayId = URIcompliance.fixDisplayId(displayId);
 		Sequence sequence = createSequence(doc,URIprefix,displayId,version,sbSequence.toString(),encoding);
