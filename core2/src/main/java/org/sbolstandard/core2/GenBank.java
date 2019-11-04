@@ -310,8 +310,8 @@ class GenBank {
 		return so.getURIbyId("SO_");} */
 		if (genBankTerm.equals("N_region")) {
 			return so.getURIbyId("SO:0001835");}
-		/* if (genBankTerm.equals("old_sequence")) {
-		return so.getURIbyId("SO_");} */
+		if (genBankTerm.equals("old_sequence")) {
+			return so.getURIbyId("SO:0000413");} // TODO: alias with misc_difference
 		if (genBankTerm.equals("ncRNA")) {
 			return so.getURIbyId("SO:0000655");}
 		if (genBankTerm.equals("operon")) {
