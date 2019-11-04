@@ -577,10 +577,12 @@ public class ComponentDefinition extends TopLevel {
 						}
 						int end = range.getEnd() - range.getStart() + 1 + start;
 						for (int i = start /*0*/; i < end /*subElementsFinal.length()*/; i++) {
-							if(range.getStart()+(i-start)>elementsArray.length) {
+							if(range.getStart()+(i-start)-1>elementsArray.length) {
 								return null;
 							}
-							elementsArray[(range.getStart()+(i-start))-1] = subElementsFinal.charAt(i);
+							if (i < subElementsFinal.length()) {
+								elementsArray[(range.getStart()+(i-start))-1] = subElementsFinal.charAt(i);
+							}
 						}
 						start = end;
 					}
