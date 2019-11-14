@@ -292,6 +292,7 @@ public class SequenceOntology {
 	 */
 	public final Set<URI> getDescendantURIsOf(String parentId) {
 		Set<String> descendents = getDescendantsOf(parentId);
+		if (descendents==null) return null;
 		Set<URI> descendentURIs = new HashSet<URI>();
 		for (String child : descendents) {
 			descendentURIs.add(getURIbyId(child));
@@ -308,6 +309,7 @@ public class SequenceOntology {
 	 */
 	public final Set<URI> getDescendantURIsOf(URI parentURI) {
 		Set<String> descendents = getDescendantsOf(parentURI);
+		if (descendents==null) return null;
 		Set<URI> descendentURIs = new HashSet<URI>();
 		for (String child : descendents) {
 			descendentURIs.add(getURIbyId(child));
@@ -325,6 +327,7 @@ public class SequenceOntology {
 
 	public final Set<String> getDescendantNamesOf(String parentId) {
 		Set<String> descendents = getDescendantsOf(parentId);
+		if (descendents==null) return null;
 		Set<String> descendentNames = new HashSet<String>();
 		for (String child : descendents) {
 			descendentNames.add(getName(child));
@@ -342,6 +345,7 @@ public class SequenceOntology {
 
 	public final Set<String> getDescendantNamesOf(URI parentURI) {
 		Set<String> descendents = getDescendantsOf(parentURI);
+		if (descendents==null) return null;
 		Set<String> descendentNames = new HashSet<String>();
 		for (String child : descendents) {
 			descendentNames.add(getName(child));
