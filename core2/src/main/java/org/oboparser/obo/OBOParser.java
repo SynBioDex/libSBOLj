@@ -6,9 +6,9 @@ import java.util.regex.*;
 public class OBOParser {
 	
 	public static void main(String[] args) { 
-		File f = new File(args[0]);
-		OBOParser parser = new OBOParser();
 		try {
+			File f = new File(args[0]);
+			OBOParser parser = new OBOParser();
 			parser.parse(f);
 			OBOOntology ontology = parser.getOntology();
 			

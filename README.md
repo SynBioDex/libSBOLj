@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/SynBioDex/libSBOLj.svg?branch=master)](https://travis-ci.org/SynBioDex/libSBOLj)
+
 [libSBOLj](https://github.com/SynBioDex/libSBOLj) provides the core Java interfaces and their implementation for 
 the [Synthetic Biology Open Language (SBOL)](http://www.sbolstandard.org/sbolstandard/specification). The library provides an API to 
 work with SBOL objects, the functionality to read and write SBOL documents as XML/RDF files, and a validator to check the 
