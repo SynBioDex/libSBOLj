@@ -59,13 +59,13 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	private SequenceAnnotation(SequenceAnnotation sequenceAnnotation) throws SBOLValidationException {
 		super(sequenceAnnotation);
 		this.locations = new HashMap<>();
+		this.roles = new HashSet<>();
 		for (Location location : sequenceAnnotation.getLocations()) {
 			addLocation(location.deepCopy());
 		}
 		if (sequenceAnnotation.isSetComponent()) {
 			this.setComponent(sequenceAnnotation.getComponentURI());
 		}
-		this.roles = new HashSet<>();
 		for (URI role : sequenceAnnotation.getRoles()) {
 			this.addRole(URI.create(role.toString()));
 		}

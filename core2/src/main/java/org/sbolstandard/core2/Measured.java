@@ -42,6 +42,7 @@ public abstract class Measured extends Identified {
 	 */
 	Measured(Measured measured) throws SBOLValidationException {
 		super(measured);
+		this.measures = new HashMap<>();
 		setMeasures(measured.getMeasures());
 	}
 	
