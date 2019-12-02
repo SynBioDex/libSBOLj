@@ -707,8 +707,20 @@ class GenBank {
 						a.getIntegerValue(),80,21);
 			}
 		}
-		if (!foundLabel && sa.isSetName()) {
-			writeGenBankLine(w,"                     /label="+ sa.getName(),80,21);
+		if (!foundLabel) {
+			String label = null; 
+			if (sa.isSetName()) {
+				label = sa.getName();
+			} else if (sa.isSetComponent() && sa.getComponent() != null &&
+					sa.getComponent().isSetName()) {
+				label = sa.getComponent().getName();
+			} else if (sa.isSetComponent() && sa.getComponent().getDefinition() != null &&
+					sa.getComponent().getDefinition().isSetName()) {
+				label = sa.getComponent().getDefinition().getName();
+			} 
+			if (label!=null) {
+				writeGenBankLine(w,"                     /label="+ label,80,21);
+			}
 		}
 	}
 

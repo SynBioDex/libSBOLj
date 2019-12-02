@@ -138,8 +138,18 @@ class GFF3 {
 				featureId = sa.getComponentDefinition().getDisplayId();
 			}
 			w.write("ID="+featureId);
+			String label = null; 
 			if (sa.isSetName()) {
-				w.write(";Name="+sa.getName());
+				label = sa.getName();
+			} else if (sa.isSetComponent() && sa.getComponent() != null &&
+					sa.getComponent().isSetName()) {
+				label = sa.getComponent().getName();
+			} else if (sa.isSetComponent() && sa.getComponent().getDefinition() != null &&
+					sa.getComponent().getDefinition().isSetName()) {
+				label = sa.getComponent().getDefinition().getName();
+			} 
+			if (label!=null) {
+				w.write(";Name="+label);
 			}
 			if (parentId!=null) {
 				w.write(";Parent="+parentId);
