@@ -1689,6 +1689,50 @@ public class ComponentDefinition extends TopLevel {
 		}
 	}
 
+	static ComponentDefinition flatten(ComponentDefinition componentDefinition) throws SBOLValidationException {
+		if (componentDefinition == null) return null;
+		ComponentDefinition flatCD = new ComponentDefinition(componentDefinition);
+		for (Component component : componentDefinition.getComponents()) {
+			SequenceAnnotation sa = flatCD.getSequenceAnnotation(component);
+			ComponentDefinition recurseCD = flatten(component.getDefinition());
+			sa.unsetComponent();
+			sa.setRoles(recurseCD.getRoles());
+			flatCD.removeComponent(component);
+			List<SequenceAnnotation> sortedSAs = recurseCD.getSortedSequenceAnnotations();
+			int numSAs = sortedSAs.size();
+			int count = 0;
+			if (numSAs > 0) { 
+				for (Location sortLoc : sa.getSortedLocations()) {
+					if (sortLoc instanceof Range) {
+						Range range = (Range)sortLoc;
+						int start = range.getStart();
+						int end = range.getEnd();
+						int newStart = 0;
+						int newEnd = 0;
+						do { 
+							SequenceAnnotation sa2 = sortedSAs.get(count);
+							count++;
+							String displayId = URIcompliance.findDisplayId(sa2);
+							SequenceAnnotation sa2Copy = flatCD.createSequenceAnnotation(
+									displayId,"DUMMY__LOCATION");
+							sa2Copy.copy(sa2);
+							for (Location sortLoc2 : sa2Copy.getSortedLocations()) {
+								if (sortLoc2 instanceof Range) {
+									Range range2 = (Range)sortLoc2;
+									newStart = range2.getStart()+start-1;
+									newEnd = range2.getEnd()+start-1;
+									range2.setEnd(newEnd);
+									range2.setStart(newStart);
+								}
+							}
+						} while (count < numSAs && newEnd < end);
+					}
+				}
+			}
+		}
+		return flatCD;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateCompliantURI(java.lang.String, java.lang.String, java.lang.String)
 	 */
