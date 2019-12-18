@@ -52,7 +52,13 @@ public class SnapGene {
 		{
 			String filename = RandomStringUtils.randomAlphanumeric(8);
 			params.addTextBody("detectFeatures", "false");
-	        params.addBinaryBody("fileToUpload", inputStream, ContentType.DEFAULT_BINARY, filename + ".dna");
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int len;
+			while ((len = inputStream.read(buffer)) != -1) {
+				os.write(buffer,0,len);
+			}
+	        params.addBinaryBody("fileToUpload", os.toByteArray(), ContentType.DEFAULT_BINARY, filename + ".dna");
 			request.setEntity(params.build());
 			HttpResponse response = client.execute(request);
 			checkResponseCode(response);
@@ -88,7 +94,6 @@ public class SnapGene {
 		ComponentDefinition rootCD = document.getRootComponentDefinitions().iterator().next();
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		document.write(baos,SBOLDocument.GENBANK);
-		InputStream inputStream = new ByteArrayInputStream(baos.toByteArray());
 		HttpPost request = new HttpPost(SNAPGENE_POSTFILEURL);
 		try
 		{
@@ -100,7 +105,7 @@ public class SnapGene {
 			MultipartEntityBuilder params = MultipartEntityBuilder.create();        
 			params.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 			params.addTextBody("detectFeatures", "false");
-	        params.addBinaryBody("fileToUpload", inputStream, ContentType.DEFAULT_BINARY, rootCD.getDisplayId()+".gb");
+	        params.addBinaryBody("fileToUpload", baos.toByteArray(), ContentType.DEFAULT_BINARY, rootCD.getDisplayId()+".gb");
 			request.setEntity(params.build());
 			HttpResponse response = client.execute(request);
 			checkResponseCode(response);
