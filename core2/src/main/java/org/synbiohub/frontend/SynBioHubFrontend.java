@@ -192,6 +192,226 @@ public class SynBioHubFrontend
     }
     
     /**
+     * Retrieve a GFF3 version of a topLevel object from a SynBioHub instance using its URI,
+     * and save to the path provided.
+     *
+     * @param topLevelURI The URI of the SBOL Attachment object
+     * @param path The path to store the downloaded attachment
+     * @return the name of the file being downloaded
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getGFF3(URI topLevelURI, String path) throws SynBioHubException, IOException
+    {
+        if (!topLevelURI.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelURI + "/gff";
+        url = url.replace(uriPrefix, backendUrl);
+
+        return fetchContentSaveToFile(url,null,path);
+    }
+    
+    /**
+     * Retrieve a GFF3 version of a topLevel object from a SynBioHub instance using its URI,
+     * and save into the provided output stream.
+     *
+     * @param topLevelURI The URI of the SBOL Attachment object
+     * @param outputStream The output stream to store the downloaded attachment
+     * @return the name of the file being downloaded
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getGFF3(URI topLevelURI, OutputStream outputStream) throws SynBioHubException, IOException
+    {
+        if (!topLevelURI.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelURI + "/gff";
+        url = url.replace(uriPrefix, backendUrl);
+
+        return fetchContentSaveToFile(url,outputStream,null);
+    }
+    
+    /**
+     * Retrieve a GenBank version of a topLevel object from a SynBioHub instance using its URI,
+     * and save to the path provided.
+     *
+     * @param topLevelURI The URI of the SBOL Attachment object
+     * @param path The path to store the downloaded attachment
+     * @return the name of the file being downloaded
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getGenBank(URI topLevelURI, String path) throws SynBioHubException, IOException
+    {
+        if (!topLevelURI.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelURI + "/gb";
+        url = url.replace(uriPrefix, backendUrl);
+
+        return fetchContentSaveToFile(url,null,path);
+    }
+    
+    /**
+     * Retrieve a GenBank version of a topLevel object from a SynBioHub instance using its URI,
+     * and save into the provided output stream.
+     *
+     * @param topLevelURI The URI of the SBOL Attachment object
+     * @param outputStream The output stream to store the downloaded attachment
+     * @return the name of the file being downloaded
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getGenBank(URI topLevelURI, OutputStream outputStream) throws SynBioHubException, IOException
+    {
+        if (!topLevelURI.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelURI + "/gb";
+        url = url.replace(uriPrefix, backendUrl);
+
+        return fetchContentSaveToFile(url,outputStream,null);
+    }
+    
+    /**
+     * Retrieve a FASTA version of a topLevel object from a SynBioHub instance using its URI,
+     * and save to the path provided.
+     *
+     * @param topLevelURI The URI of the SBOL Attachment object
+     * @param path The path to store the downloaded attachment
+     * @return the name of the file being downloaded
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getFASTA(URI topLevelURI, String path) throws SynBioHubException, IOException
+    {
+        if (!topLevelURI.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelURI + "/fasta";
+        url = url.replace(uriPrefix, backendUrl);
+
+        return fetchContentSaveToFile(url,null,path);
+    }
+    
+    /**
+     * Retrieve a GenBank version of a topLevel object from a SynBioHub instance using its URI,
+     * and save into the provided output stream.
+     *
+     * @param topLevelURI The URI of the SBOL Attachment object
+     * @param outputStream The output stream to store the downloaded attachment
+     * @return the name of the file being downloaded
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getFASTA(URI topLevelURI, OutputStream outputStream) throws SynBioHubException, IOException
+    {
+        if (!topLevelURI.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelURI + "/fasta";
+        url = url.replace(uriPrefix, backendUrl);
+
+        return fetchContentSaveToFile(url,outputStream,null);
+    }
+    
+    /**
+     * Retrieve a JSON version of a topLevel object from a SynBioHub instance using its URI,
+     * and save to the path provided.
+     *
+     * @param topLevelURI The URI of the SBOL Attachment object
+     * @param path The path to store the downloaded attachment
+     * @return the name of the file being downloaded
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getJSON(URI topLevelURI, String path) throws SynBioHubException, IOException
+    {
+        if (!topLevelURI.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelURI + "/summary";
+        url = url.replace(uriPrefix, backendUrl);
+
+        return fetchContentSaveToFile(url,null,path);
+    }
+    
+    /**
+     * Retrieve a JSON version of a topLevel object from a SynBioHub instance using its URI,
+     * and save into the provided output stream.
+     *
+     * @param topLevelURI The URI of the SBOL Attachment object
+     * @param outputStream The output stream to store the downloaded attachment
+     * @return the name of the file being downloaded
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getJSON(URI topLevelURI, OutputStream outputStream) throws SynBioHubException, IOException
+    {
+        if (!topLevelURI.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelURI + "/summary";
+        url = url.replace(uriPrefix, backendUrl);
+
+        return fetchContentSaveToFile(url,outputStream,null);
+    }
+    
+    /**
+     * Retrieve a COMBINE Archive version of a topLevel object from a SynBioHub instance using its URI,
+     * and save to the path provided.
+     *
+     * @param topLevelURI The URI of the SBOL Attachment object
+     * @param path The path to store the downloaded attachment
+     * @return the name of the file being downloaded
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getArchive(URI topLevelURI, String path) throws SynBioHubException, IOException
+    {
+        if (!topLevelURI.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelURI + "/omex";
+        url = url.replace(uriPrefix, backendUrl);
+
+        return fetchContentSaveToFile(url,null,path);
+    }
+    
+    /**
+     * Retrieve a COMBINE Archive version of a topLevel object from a SynBioHub instance using its URI,
+     * and save into the provided output stream.
+     *
+     * @param topLevelURI The URI of the SBOL Attachment object
+     * @param outputStream The output stream to store the downloaded attachment
+     * @return the name of the file being downloaded
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getArchive(URI topLevelURI, OutputStream outputStream) throws SynBioHubException, IOException
+    {
+        if (!topLevelURI.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelURI + "/omex";
+        url = url.replace(uriPrefix, backendUrl);
+
+        return fetchContentSaveToFile(url,outputStream,null);
+    }
+        
+    /**
      * Retrieve an attachment from a SynBioHub instance using its URI,
      * and save to the path provided.
      *
