@@ -368,6 +368,50 @@ public class SynBioHubFrontend
     }
     
     /**
+     * Retrieve metadata for a topLevel object from a SynBioHub instance using its URI,
+     * and save to the path provided.
+     *
+     * @param topLevelURI The URI of the SBOL Attachment object
+     * @param path The path to store the downloaded attachment
+     * @return the name of the file being downloaded
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getMetadata(URI topLevelURI, String path) throws SynBioHubException, IOException
+    {
+        if (!topLevelURI.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelURI + "/metadata";
+        url = url.replace(uriPrefix, backendUrl);
+
+        return fetchContentSaveToFile(url,null,path);
+    }
+    
+    /**
+     * Retrieve metadata for a topLevel object from a SynBioHub instance using its URI,
+     * and save into the provided output stream.
+     *
+     * @param topLevelURI The URI of the SBOL Attachment object
+     * @param outputStream The output stream to store the downloaded attachment
+     * @return the name of the file being downloaded
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getMetadata(URI topLevelURI, OutputStream outputStream) throws SynBioHubException, IOException
+    {
+        if (!topLevelURI.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelURI + "/metadata";
+        url = url.replace(uriPrefix, backendUrl);
+
+        return fetchContentSaveToFile(url,outputStream,null);
+    }
+    
+    /**
      * Retrieve a COMBINE Archive version of a topLevel object from a SynBioHub instance using its URI,
      * and save to the path provided.
      *
