@@ -1045,7 +1045,7 @@ public class SynBioHubFrontend
     public void attachFile(URI topLevelUri, InputStream inputStream, String filename) throws SynBioHubException
     {
     	if (user.equals("")) {
-    		Exception e = new Exception("Must be logged in to submit.");
+    		Exception e = new Exception("Must be logged in to add attachments.");
     		throw new SynBioHubException(e);
     	}
         String url = topLevelUri + "/attach";
@@ -1066,6 +1066,51 @@ public class SynBioHubFrontend
         try
         {
             request.setEntity(params.build());
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Attach a URL to an object in SynBioHub.
+     * @param topLevelUri identity of the object to attach the file to
+     * @param attachmentURL the URL to attach
+     * @param attachmentType the format type of the object at the URL
+     * @param name the name of the attachment 
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void attachURL(URI topLevelUri, URI attachmentURL, URI attachmentType, String name) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to add attachments.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = topLevelUri + "/attachUrl";
+        url = url.replace(uriPrefix, backendUrl);
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("user", user));
+        arguments.add(new BasicNameValuePair("url", attachmentURL.toString()));
+        arguments.add(new BasicNameValuePair("name", name));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
             HttpResponse response = client.execute(request);
             checkResponseCode(response);
         }
