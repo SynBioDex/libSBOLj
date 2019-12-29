@@ -1171,6 +1171,89 @@ public class SynBioHubFrontend
     }   
     
     /**
+     * Update mutable description of an object in SynBioHub.
+     * @param topLevelUri identity of the object to attach the file to
+     * @param value the new value for the mutable description
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void updateMutableDescription(URI topLevelUri, String value) throws SynBioHubException
+    {
+    	updateMutable(topLevelUri,value,"updateMutableDescription");
+    }
+    
+    /**
+     * Update mutable notes of an object in SynBioHub.
+     * @param topLevelUri identity of the object to attach the file to
+     * @param value the new value for the mutable notes
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void updateMutableNotes(URI topLevelUri, String value) throws SynBioHubException
+    {
+    	updateMutable(topLevelUri,value,"updateMutableNotes");
+    }
+    
+    /**
+     * Update mutable source of an object in SynBioHub.
+     * @param topLevelUri identity of the object to attach the file to
+     * @param value the new value for the mutable source
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void updateMutableSource(URI topLevelUri, String value) throws SynBioHubException
+    {
+    	updateMutable(topLevelUri,value,"updateMutableSource");
+    }
+    
+    /**
+     * Update citations of an object in SynBioHub.
+     * @param topLevelUri identity of the object to attach the file to
+     * @param value a comma separated list of PubMed ids
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void updateCitations(URI topLevelUri, String value) throws SynBioHubException
+    {
+    	updateMutable(topLevelUri,value,"updateCitations");
+    }
+    
+    private void updateMutable(URI topLevelUri, String value, String endpoint) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to update mutable descriptions.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/" + endpoint;
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("user", user));
+        arguments.add(new BasicNameValuePair("uri", topLevelUri.toString()));
+        arguments.add(new BasicNameValuePair("value", value));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
      * Add SBOL document to an existing private collection on SynBioHub
      * @param collectionUri Identity of the private collection
      * @param overwrite if object exists in collection, overwrite it
