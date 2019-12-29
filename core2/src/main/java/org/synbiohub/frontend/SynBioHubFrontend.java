@@ -1080,7 +1080,7 @@ public class SynBioHubFrontend
     
     /**
      * Attach a file to an object in SynBioHub.
-     * @param topLevelUri identity of the object to attach the file to
+     * @param topLevelUri identity of the object to attach the URL to
      * @param inputStream the inputStream to attach
      * @param filename name of file to attach
      * 
@@ -1172,7 +1172,7 @@ public class SynBioHubFrontend
     
     /**
      * Update mutable description of an object in SynBioHub.
-     * @param topLevelUri identity of the object to attach the file to
+     * @param topLevelUri identity of the object to update
      * @param value the new value for the mutable description
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
@@ -1184,7 +1184,7 @@ public class SynBioHubFrontend
     
     /**
      * Update mutable notes of an object in SynBioHub.
-     * @param topLevelUri identity of the object to attach the file to
+     * @param topLevelUri identity of the object to update
      * @param value the new value for the mutable notes
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
@@ -1196,7 +1196,7 @@ public class SynBioHubFrontend
     
     /**
      * Update mutable source of an object in SynBioHub.
-     * @param topLevelUri identity of the object to attach the file to
+     * @param topLevelUri identity of the object to update
      * @param value the new value for the mutable source
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
@@ -1208,7 +1208,7 @@ public class SynBioHubFrontend
     
     /**
      * Update citations of an object in SynBioHub.
-     * @param topLevelUri identity of the object to attach the file to
+     * @param topLevelUri identity of the object to update
      * @param value a comma separated list of PubMed ids
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
@@ -1234,6 +1234,137 @@ public class SynBioHubFrontend
         arguments.add(new BasicNameValuePair("user", user));
         arguments.add(new BasicNameValuePair("uri", topLevelUri.toString()));
         arguments.add(new BasicNameValuePair("value", value));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Edit field of an object in SynBioHub.
+     * @param topLevelUri identity of the object to edit
+     * @param field field of the object to edit
+     * @param previous previous value of the field
+     * @param object new value of the field
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void editField(URI topLevelUri, String field, String previous, String object) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to edit fields.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = topLevelUri + "/edit/"+field;
+        url = url.replace(uriPrefix, backendUrl);
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("user", user));
+        arguments.add(new BasicNameValuePair("previous", previous));
+        arguments.add(new BasicNameValuePair("object", object));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Add field to an object in SynBioHub.
+     * @param topLevelUri identity of the object to add
+     * @param field field of the object to add to
+     * @param object new value of the field to add
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void addField(URI topLevelUri, String field, String object) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to add to fields.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = topLevelUri + "/add/"+field;
+        url = url.replace(uriPrefix, backendUrl);
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("user", user));
+        arguments.add(new BasicNameValuePair("object", object));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Remove field from an object in SynBioHub.
+     * @param topLevelUri identity of the object to remove
+     * @param field field of the object to remove from
+     * @param object value of the field to remove
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void removeField(URI topLevelUri, String field, String object) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to remove from fields.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = topLevelUri + "/remove/"+field;
+        url = url.replace(uriPrefix, backendUrl);
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("user", user));
+        arguments.add(new BasicNameValuePair("object", object));
 	        
         try
         {
