@@ -500,6 +500,24 @@ public class SynBioHubFrontend
     }
     
     /**
+     * Remove SBOL Collection from a SynBioHub instance using its URI.
+     *
+     * @param topLevelUri The URI of the SBOL Collection
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void removeCollection(URI topLevelUri) throws SynBioHubException
+    {
+        if (!topLevelUri.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelUri + "/removeCollection";
+        url = url.replace(uriPrefix, backendUrl);
+
+        removeFromSynBioHub(url);
+    }
+    
+    /**
      * Remove SBOL TopLevel object from a SynBioHub instance using its URI.
      *
      * @param topLevelUri The URI of the SBOL TopLevel
@@ -610,20 +628,8 @@ public class SynBioHubFrontend
         }
     	return search(query);
     }
-
-    /**
-     * Search this SynBioHub instance for objects matching a search query
-     * 
-     * @param query the search query
-     *
-     * @return An ArrayList of MetaData for objects that match the specified search query
-     *
-     * @throws SynBioHubException if there was an error communicating with the SynBioHub
-     */
-    public ArrayList<IdentifiedMetadata> search(SearchQuery query) throws SynBioHubException
-    {
-        String url = backendUrl + "/search/";
-
+    
+    private String constructQueryURL(String url,SearchQuery query) {
         //query.offset = offset;
         //query.limit = limit;
 
@@ -659,7 +665,28 @@ public class SynBioHubFrontend
         } else if (query.getLimit()!=null) {
         	url += "/?limit="+query.getLimit();
         }
+        
+    	return url;
+    }
 
+    /**
+     * Search this SynBioHub instance for objects matching a search query
+     * 
+     * @param query the search query
+     *
+     * @return An ArrayList of MetaData for objects that match the specified search query
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public ArrayList<IdentifiedMetadata> search(SearchQuery query) throws SynBioHubException
+    {
+        String url = backendUrl + "/search/";
+
+        //query.offset = offset;
+        //query.limit = limit;
+
+        url = constructQueryURL(url,query);
+ 
        	//System.out.println(url);
         Gson gson = new Gson();
 
@@ -883,10 +910,63 @@ public class SynBioHubFrontend
     public ArrayList<IdentifiedMetadata> getSubCollectionMetadata(URI parentCollectionUri)
             throws SynBioHubException
     {
-        if (!parentCollectionUri.toString().startsWith(uriPrefix)) {
+    	return search(parentCollectionUri,"subCollections",0);
+    }
+    
+    /**
+     * Search for uses of an object in SynBioHub
+     * returns up to 50 starting from the offset
+     *
+     * @param topLevelUri URI for object to search for uses of
+     * @param offset offset of first object to return
+     * @return An ArrayList of IdentifiedMetaData objects with a summary of all uses.
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public ArrayList<IdentifiedMetadata> getUses(URI topLevelUri,int offset) throws SynBioHubException
+    {
+    	return search(topLevelUri,"uses",offset);
+    }
+    
+    /**
+     * Search for twins of an object in SynBioHub
+     * returns up to 50 starting from the offset
+     *
+     * @param topLevelUri URI for object to search for twins of
+     * @param offset offset of first object to return
+     * @return An ArrayList of IdentifiedMetaData objects with a summary of all twins.
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public ArrayList<IdentifiedMetadata> getTwins(URI topLevelUri,int offset) throws SynBioHubException
+    {
+    	return search(topLevelUri,"twins",offset);
+    }
+    
+    /**
+     * Search for similar objects in SynBioHub
+     * @param offset offset of first object to return
+     * returns up to 50 starting from the offset
+     *
+     * @param topLevelUri URI for object to search for similar objects of
+     * @return An ArrayList of IdentifiedMetaData objects with a summary of all similar.
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public ArrayList<IdentifiedMetadata> getSimilar(URI topLevelUri,int offset) throws SynBioHubException
+    {
+    	return search(topLevelUri,"similar",offset);
+    }
+    
+    private ArrayList<IdentifiedMetadata> search(URI topLevelUri, String searchType, int offset) throws SynBioHubException
+        {
+        if (!topLevelUri.toString().startsWith(uriPrefix)) {
         	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
         }
-        String url = parentCollectionUri + "/subCollections";
+        String url = topLevelUri + "/" + searchType;
+        if (offset!=0) {
+        	url += "/?offset="+offset;
+        }
         url = url.replace(uriPrefix, backendUrl);
 
         Gson gson = new Gson();
@@ -917,38 +997,6 @@ public class SynBioHubFrontend
             request.releaseConnection();
         }
     }
-
-//    /**
-//     * Upload an SBOLDocument to the SynBioHub.
-//     * 
-//     * @param document The document to upload
-//     *
-//     * @throws SynBioHubException if there was an error communicating with the SynBioHub
-//     */
-//    public void upload(SBOLDocument document) throws SynBioHubException
-//    {
-//        String url = backendUrl;
-//
-//        HttpPost request = new HttpPost(url);
-//                
-//        try
-//        {
-//            request.setEntity(new StringEntity(serializeDocument(document)));
-//            request.setHeader("Content-Type", "application/rdf+xml");
-//            
-//            HttpResponse response = client.execute(request);
-//            
-//            checkResponseCode(response);
-//        }
-//        catch (Exception e)
-//        {
-//            throw new SynBioHubException(e);
-//        }
-//        finally
-//        {
-//            request.releaseConnection();
-//        }
-//    }
     
     /**
 	 * Sets the user to null to indicate that no user is logged in.
@@ -1037,6 +1085,57 @@ public class SynBioHubFrontend
 			}	
 		}
 	}
+	
+    /**
+     * Update a collection icon for a collection in SynBioHub.
+     * @param topLevelUri identity of the collection
+     * @param filename the name of the file for the collection icon
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws FileNotFoundException  if the file is not found
+     */
+    public void updateCollectionIcon(URI topLevelUri, String filename) throws SynBioHubException, FileNotFoundException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to update a collection icon.");
+    		throw new SynBioHubException(e);
+    	}
+    	File file =  new File(filename);
+     	InputStream inputStream = new FileInputStream(file);
+
+    	String url = topLevelUri + "/icon";
+        url = url.replace(uriPrefix, backendUrl);
+
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        MultipartEntityBuilder params = MultipartEntityBuilder.create();        
+
+        /* example for setting a HttpMultipartMode */
+        params.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+        params.addTextBody("user", user);	
+        params.addTextBody("collectionUri", topLevelUri.toString());	
+        params.addBinaryBody("collectionIcon", inputStream, ContentType.DEFAULT_BINARY, filename);
+	        
+        try
+        {
+            request.setEntity(params.build());
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    } 
 	
     /**
      * Attach a file to an object in SynBioHub.
@@ -1382,7 +1481,162 @@ public class SynBioHubFrontend
         {
             request.releaseConnection();
         }
+    } 
+    
+    /**
+     * Add owner to an object in SynBioHub.
+     * @param topLevelUri identity of the object to add owner to
+     * @param userId user id of owner being added
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void addOwner(URI topLevelUri, String userId) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to add an owner.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = topLevelUri + "/addOwner";
+        url = url.replace(uriPrefix, backendUrl);
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("user", uriPrefix+"/user/"+userId));
+        arguments.add(new BasicNameValuePair("uri", topLevelUri.toString()));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
     }   
+    
+    /**
+     * Remove owner from an object in SynBioHub.
+     * @param topLevelUri identity of the object to remove an owner from
+     * @param userId user id of owner being removed
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void removeOwner(URI topLevelUri, String userId) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to remove an owner.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = topLevelUri + "/removeOwner/"+userId;
+        url = url.replace(uriPrefix, backendUrl);
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("userUri", uriPrefix+"/user/"+userId));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    } 
+    
+    /**
+     * Move a private collection into an existing public collection.
+     * @param topLevelUri identity of the collection to make public
+     * @param collectionUri identity of the public collection
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void moveToPublicCollection(URI topLevelUri, URI collectionUri) throws SynBioHubException
+    {
+    	makePublic(topLevelUri,collectionUri,"existing","","","","","");
+    }
+    
+    /**
+     * Move a private collection into a new public collection.
+     * @param topLevelUri identity of the collection to make public
+     * @param id id for the new collection
+     * @param version version for the new collection
+     * @param name name for the new collection (optional: default is existing name)
+     * @param description description for the new collection (optional: default is existing description)
+     * @param citations comma-separated listed of PubMed ids (optional: default is existing citations)
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void moveToNewPublicCollection(URI topLevelUri, String id, String version,
+    		String name, String description, String citations) throws SynBioHubException
+    {
+    	makePublic(topLevelUri,null,"new",id,version,name,description,citations);
+    }
+    
+    private void makePublic(URI topLevelUri, URI collectionUri, String tabState, String id, 
+    		String version, String name, String description, String citations) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to make a collection public.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = topLevelUri + "/makePublic";
+        url = url.replace(uriPrefix, backendUrl);
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("user", user));
+        arguments.add(new BasicNameValuePair("collections", 
+        		collectionUri!=null?collectionUri.toString():""));
+        arguments.add(new BasicNameValuePair("tabState", tabState));
+        arguments.add(new BasicNameValuePair("id", id));
+        arguments.add(new BasicNameValuePair("version", version));
+        arguments.add(new BasicNameValuePair("name", id));
+        arguments.add(new BasicNameValuePair("description", description));
+        arguments.add(new BasicNameValuePair("citations", citations));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }
     
     /**
      * Add SBOL document to an existing private collection on SynBioHub
