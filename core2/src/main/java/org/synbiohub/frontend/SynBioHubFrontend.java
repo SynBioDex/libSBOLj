@@ -668,7 +668,7 @@ public class SynBioHubFrontend
         
     	return url;
     }
-
+    
     /**
      * Search this SynBioHub instance for objects matching a search query
      * 
@@ -716,6 +716,27 @@ public class SynBioHubFrontend
         {
             request.releaseConnection();
         }
+    }
+    
+    /**
+     * Search this SynBioHub instance for objects matching a search query
+     * and return the number of matches
+     * 
+     * @param query the search query
+     *
+     * @return the number of objects matching a search query
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public int searchCount(SearchQuery query) throws SynBioHubException
+    {
+        String url = backendUrl + "/searchCount/";
+
+        //query.offset = offset;
+        //query.limit = limit;
+
+        url = constructQueryURL(url,query);
+        return fetchCount(url);
     }
     
     /**
