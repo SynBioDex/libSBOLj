@@ -28,7 +28,6 @@ class GFF3 {
 	
 	// "look-ahead" line
 	private static String nextLine = null;
-	private static final int lineWidth = 80;
 
 	/**
 	 * Serializes all Sequence in an SBOLDocument to the given output stream in FASTA format.
@@ -277,13 +276,33 @@ class GFF3 {
 		// reset the global static variables needed for parsing
 		nextLine = null;
 		//lineCounter = 0;
+		boolean sequenceMode = false;
+		String contigId = null;
+		StringBuilder sbSequence = new StringBuilder();
 
 		String strLine;
 		BufferedReader br = new BufferedReader(new StringReader(stringBuffer));
 		
 		while ((strLine = readGFF3Line(br)) != null)   {
 			strLine = strLine.trim();
-			if (strLine.startsWith("##gff-version 3")) {
+			if (strLine.startsWith(">")) {
+				if (sequenceMode) {
+					Sequence sequence = doc.createSequence(contigId+"_seq",version,
+							sbSequence.toString(),Sequence.IUPAC_DNA);
+					sbSequence = new StringBuilder();
+					ComponentDefinition cd = doc.getComponentDefinition(contigId, version);
+					if (cd != null) {
+						cd.addSequence(sequence);
+					} 
+				}
+				sequenceMode = true;
+				contigId = URIcompliance.fixDisplayId(strLine.replaceFirst(">", "").trim());
+			} else if (sequenceMode){
+				String[] strSplit = strLine.split(" ");
+				for (int i = 0; i < strSplit.length; i++) {
+					sbSequence.append(strSplit[i]);
+				}
+			} else if (strLine.startsWith("##gff-version 3")) {
 				// skip
 			} else if (strLine.startsWith("##sequence-region")) {
 				String [] splits = strLine.split("\\s+");
@@ -318,7 +337,7 @@ class GFF3 {
 				parentCDs.clear();
 				for (String attribute : attributes) {
 					if (attribute.startsWith("ID=")) {
-						id = attribute.replace("ID=", "");
+						id = URIcompliance.fixDisplayId(attribute.replace("ID=", ""));
 					} else if (attribute.startsWith("Name=")) {
 						name = attribute.replace("Name=", "");
 					} else if (attribute.startsWith("Parent=")) {
@@ -348,6 +367,15 @@ class GFF3 {
 				} else {
 					addSequenceAnnotation(cd, id, name, type, start, end, strand, 0, source, score, phase); 
 				}
+			} 
+		}
+		if (sequenceMode) {
+			Sequence sequence = doc.createSequence(contigId+"_seq",version,
+					sbSequence.toString(),Sequence.IUPAC_DNA);
+			sbSequence = new StringBuilder();
+			ComponentDefinition cd = doc.getComponentDefinition(contigId, version);
+			if (cd != null) {
+				cd.addSequence(sequence);
 			}
 		}
 		br.close();
