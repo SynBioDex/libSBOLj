@@ -1271,6 +1271,7 @@ public class SynBioHubFrontend
         arguments.add(new BasicNameValuePair("user", user));
         arguments.add(new BasicNameValuePair("url", attachmentURL.toString()));
         arguments.add(new BasicNameValuePair("name", name));
+        arguments.add(new BasicNameValuePair("type", attachmentType.toString()));
 	        
         try
         {
