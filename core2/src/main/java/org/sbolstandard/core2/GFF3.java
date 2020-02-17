@@ -60,6 +60,11 @@ class GFF3 {
 		for (ComponentDefinition componentDefinition : document.getRootComponentDefinitions()) {
 			write(w,componentDefinition,componentDefinition.getDisplayId(),null,0,true,0);
 		}
+		for (ComponentDefinition componentDefinition : document.getRootComponentDefinitions()) {
+			w.write(">" + componentDefinition.getDisplayId() + "\n");
+			Sequence seq = componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA);
+			FASTA.writeFASTALine(w, seq.getElements());
+		}
 		w.close();
 	}
 	

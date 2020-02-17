@@ -22,7 +22,7 @@ class FASTA {
 
 	//private static int lineCounter = 0;
 	
-	private static void writeFASTALine(Writer w, String line, int margin) throws IOException {
+	static void writeFASTALine(Writer w, String line, int margin) throws IOException {
 		if (line.length() < margin) {
 			w.write(line+"\n");
 		} else {
@@ -45,6 +45,9 @@ class FASTA {
 		}
 	}
 
+	static void writeFASTALine(Writer w, String line) throws IOException {
+		writeFASTALine(w,line,lineWidth);
+	}
 	/**
 	 * Serializes all Sequence in an SBOLDocument to the given output stream in FASTA format.
 	 * @param document a given SBOLDocument
@@ -71,7 +74,7 @@ class FASTA {
 		} else {
 			w.write("> " + sequence.getDisplayId() + "\n");
 		}
-		writeFASTALine(w,sequence.getElements(),lineWidth);
+		writeFASTALine(w,sequence.getElements());
 	}
 
 	private static String readFASTALine(BufferedReader br) throws IOException {
