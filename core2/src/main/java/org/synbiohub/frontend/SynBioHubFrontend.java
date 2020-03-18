@@ -186,9 +186,12 @@ public class SynBioHubFrontend
         }
         url = url.replace(uriPrefix, backendUrl);
 
-        SBOLDocument document = fetchFromSynBioHub(url);
-
-        return document;
+        try {
+        	SBOLDocument document = fetchFromSynBioHub(url);
+        	return document;
+        } catch (NotFoundException e) {
+        	return null;
+        }
     }
     
     /**
@@ -1021,11 +1024,38 @@ public class SynBioHubFrontend
     
     /**
 	 * Sets the user to null to indicate that no user is logged in.
+     * @throws SynBioHubException 
      */
-    public void logout() 
+    public void logout() throws SynBioHubException 
     {
-    	user = "";
-    	username = null;
+        String url = backendUrl + "/logout";
+
+        HttpPost request = new HttpPost(url);
+        request.setHeader("Accept", "text/plain");
+        request.setHeader("X-authorization", user);
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+                
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(params));
+            request.setHeader("Content-Type", "application/x-www-form-urlencoded");
+             
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+
+        	user = "";
+        	username = null;
+        }
+        catch (Exception e)
+        {
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
     }
     
     /**
@@ -1934,7 +1964,7 @@ public class SynBioHubFrontend
         {
             stream = fetchContentAsInputStream(url);
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             throw new SynBioHubException("Error connecting to SynBioHub endpoint", e);
         }
@@ -2071,13 +2101,7 @@ public class SynBioHubFrontend
 			
 			return res;
     	}
-    	catch(SynBioHubException e)
-    	{
-    		request.releaseConnection();
-    		
-    		throw e;
-    	}
-    	catch(IOException e)
+    	catch(Exception e)
     	{
     		request.releaseConnection();
     		
@@ -2114,7 +2138,7 @@ public class SynBioHubFrontend
             default:
             	HttpEntity entity = response.getEntity();
                 try {
-					throw new SynBioHubException(inputStreamToString(entity.getContent()));
+					throw new SynBioHubException(statusCode+" "+inputStreamToString(entity.getContent()));
 				}
 				catch (UnsupportedOperationException | IOException e) {
 					throw new SynBioHubException(statusCode+"");
