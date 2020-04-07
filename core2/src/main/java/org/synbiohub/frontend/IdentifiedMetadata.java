@@ -12,8 +12,8 @@ public class IdentifiedMetadata
 	 */
 	@Override
 	public String toString() {
-		return "IdentifiedMetadata [type =" + type + ", uri=" + uri + ", name=" + name + ", displayId=" + displayId
-				+ ", description=" + description + ", version=" + version + "]";
+		return "IdentifiedMetadata [type=" + type + ", uri=" + uri + ", name=" + name + ", displayId=" + displayId
+				+ ", description=" + description + ", version=" + version + ", triplestore=" + triplestore + "]";
 	}
 
 	private String type;
@@ -22,7 +22,22 @@ public class IdentifiedMetadata
 	private String displayId;
 	private String description;
     private String version;
+    private String triplestore;
     
+	/**
+	 * @return triplestore
+	 */
+	public String getTriplestore() {
+		return triplestore;
+	}
+
+	/**
+	 * @param triplestore set private/public triplestore 
+	 */
+	public void setTriplestore(String triplestore) {
+		this.triplestore = triplestore;
+	}
+
 	/**
 	 * @return URI 
 	 */

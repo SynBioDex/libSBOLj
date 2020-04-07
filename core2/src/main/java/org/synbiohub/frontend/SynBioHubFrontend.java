@@ -56,7 +56,7 @@ public class SynBioHubFrontend
     HttpClient client;
     String backendUrl;
     String uriPrefix;
-    String user = "";
+    public String user = "";
     String username = null;
 
     /**
@@ -753,6 +753,90 @@ public class SynBioHubFrontend
             throws SynBioHubException
     {
         String url = backendUrl + "/rootCollections";
+
+        Gson gson = new Gson();
+
+        HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+
+        try
+        {
+            HttpResponse response = client.execute(request);
+
+            checkResponseCode(response);
+
+            InputStream inputStream = response.getEntity().getContent();
+
+            ArrayList<IdentifiedMetadata> metadataList = gson.fromJson(
+            		new InputStreamReader(inputStream),
+            			new TypeToken<ArrayList<IdentifiedMetadata>>(){}.getType());
+            
+            return metadataList;
+        }
+        catch (Exception e)
+        {
+            throw new SynBioHubException(e);
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }
+    
+    /**
+     * Search the default store for submissions from the specified user
+     *
+     * @return An ArrayList of MetaData for all submissions for the specified user.
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public ArrayList<IdentifiedMetadata> getSubmissionsMetadata()
+            throws SynBioHubException
+    {
+        String url = backendUrl + "/manage";
+
+        Gson gson = new Gson();
+
+        HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+
+        try
+        {
+            HttpResponse response = client.execute(request);
+
+            checkResponseCode(response);
+
+            InputStream inputStream = response.getEntity().getContent();
+
+            ArrayList<IdentifiedMetadata> metadataList = gson.fromJson(
+            		new InputStreamReader(inputStream),
+            			new TypeToken<ArrayList<IdentifiedMetadata>>(){}.getType());
+            
+            return metadataList;
+        }
+        catch (Exception e)
+        {
+            throw new SynBioHubException(e);
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }
+    
+    /**
+     * Search the default store for objects that are shared with the specified user
+     *
+     * @return An ArrayList of MetaData for all shared objects.
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public ArrayList<IdentifiedMetadata> getSharedMetadata()
+            throws SynBioHubException
+    {
+        String url = backendUrl + "/shared";
 
         Gson gson = new Gson();
 
@@ -1668,7 +1752,7 @@ public class SynBioHubFrontend
         arguments.add(new BasicNameValuePair("tabState", tabState));
         arguments.add(new BasicNameValuePair("id", id));
         arguments.add(new BasicNameValuePair("version", version));
-        arguments.add(new BasicNameValuePair("name", id));
+        arguments.add(new BasicNameValuePair("name", name));
         arguments.add(new BasicNameValuePair("description", description));
         arguments.add(new BasicNameValuePair("citations", citations));
 	        

@@ -1065,9 +1065,11 @@ class GenBank {
 					String topology = m.group(7);
 
 					// linear vs. circular construct
-					if (topology.startsWith("linear") || topology.startsWith("circular")) {
-						if (topology.startsWith("circular")) circular = true;
-						//annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
+					if (topology != null) {
+						if (topology.startsWith("linear") || topology.startsWith("circular")) {
+							if (topology.startsWith("circular")) circular = true;
+							//annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
+						}
 					}
 
 					String division = null;
