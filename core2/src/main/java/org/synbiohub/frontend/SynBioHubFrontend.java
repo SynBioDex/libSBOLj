@@ -35,6 +35,9 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLReader;
 import org.sbolstandard.core2.SBOLValidationException;
@@ -56,7 +59,7 @@ public class SynBioHubFrontend
     HttpClient client;
     String backendUrl;
     String uriPrefix;
-    public String user = "";
+    String user = "";
     String username = null;
 
     /**
@@ -869,6 +872,1232 @@ public class SynBioHubFrontend
     }
     
     /**
+     * Get configuration of a SynBioHub
+     *
+     * @return A JSON object of the configuration of a SynBioHub
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public JSONObject getConfig() throws SynBioHubException
+    {
+    	return getConfig("");
+    }
+    
+    /**
+     * Get graphs in a SynBioHub
+     *
+     * @return A JSON array of the graphs in a SynBioHub
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public JSONArray getGraphs() throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to get the graphs.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/graphs";
+
+        HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+
+        try
+        {
+            HttpResponse response = client.execute(request);
+
+            checkResponseCode(response);
+
+            InputStream inputStream = response.getEntity().getContent();
+
+            JSONParser parser = new JSONParser();
+            JSONArray config = (JSONArray) parser.parse(inputStreamToString(inputStream));
+            
+            return config;
+        }
+        catch (Exception e)
+        {
+            throw new SynBioHubException(e);
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }
+    
+    /**
+     * Get graphs in a SynBioHub
+     *
+     * @return A JSONObject of the graphs in a SynBioHub
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public JSONArray getLogs() throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to get the logs.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/log";
+
+        HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+
+        try
+        {
+            HttpResponse response = client.execute(request);
+
+            checkResponseCode(response);
+
+            InputStream inputStream = response.getEntity().getContent();
+
+            JSONParser parser = new JSONParser();
+            JSONArray config = (JSONArray) parser.parse(inputStreamToString(inputStream));
+            
+            return config;
+        }
+        catch (Exception e)
+        {
+            throw new SynBioHubException(e);
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }
+    
+    /**
+     * Get mail configuration of a SynBioHub
+     *
+     * @return A JSON object of the mail configuration of a SynBioHub
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public JSONObject getMailConfig() throws SynBioHubException
+    {
+    	return getConfig("mail");
+    }
+    
+    /**
+     * Set the mail configuration for a SynBioHub
+     * 
+     * @param key SendGrid API Key
+     * @param fromEmail SendGrid from Email
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void setMailConfig(String key, String fromEmail) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to set the mail configuration.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/mail";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("key", key));
+        arguments.add(new BasicNameValuePair("fromEmail", fromEmail));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Get plugin configuration for a SynBioHub
+     *
+     * @return A JSON object of the plugin configuration for a SynBioHub
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public JSONObject getPluginsConfig() throws SynBioHubException
+    {
+    	return getConfig("plugins");
+    }
+    
+    /**
+     * Edit a plugin configuration in a SynBioHub
+     * 
+     * @param id Id of plugin
+     * @param category Type of plugin (rendering, submit, download)
+     * @param name Name of the plugin
+     * @param pluginURL URL for the plugin
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void editPluginConfig(int id, String category, String name, String pluginURL) throws SynBioHubException
+    {
+        id = id + 1;
+    	savePluginConfig(Integer.toString(id), category, name, pluginURL);
+    }
+    
+    /**
+     * Add a plugin configuration to a SynBioHub
+     * 
+     * @param category Type of plugin (rendering, submit, download)
+     * @param name Name of the plugin
+     * @param pluginURL URL for the plugin
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void addPluginConfig(String category, String name, String pluginURL) throws SynBioHubException
+    {
+    	savePluginConfig("New", category, name, pluginURL);
+    }
+    
+    /**
+     * Save a plugin configuration to a SynBioHub
+     * 
+     * @param id Id of plugin, if adding a plugin, id should be New
+     * @param category Type of plugin (rendering, submit, download)
+     * @param name Name of the plugin
+     * @param pluginURL URL for the plugin
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    private void savePluginConfig(String id, String category, String name, String pluginURL) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to add a plugin configuration.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/savePlugin";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("id", id));
+        arguments.add(new BasicNameValuePair("category", category));
+        arguments.add(new BasicNameValuePair("name", name));
+        arguments.add(new BasicNameValuePair("url", pluginURL));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+
+    /**
+     * Delete a plugin configuration to a SynBioHub
+     * 
+     * @param id Id of plugin
+     * @param category Type of plugin (rendering, submit, download)
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void deletePluginConfig(int id, String category) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to delete a plugin configuration.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/deletePlugin";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        id = id + 1;
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("id", Integer.toString(id)));
+        arguments.add(new BasicNameValuePair("category", category));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }  
+    
+    /**
+     * Get registries configuration for a SynBioHub
+     *
+     * @return A JSON object of the registries configuration for a SynBioHub
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public JSONObject getRegistriesConfig() throws SynBioHubException
+    {
+    	return getConfig("registries");
+    }
+    
+    /**
+     * Save a registry configuration for a SynBioHub
+     * 
+     * @param uriPrefix URI prefix for the registry
+     * @param registryURL URL for the registry
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void saveRegistryConfig(String uriPrefix, String registryURL) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to save a registry configuration.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/saveRegistry";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("uri", uriPrefix));
+        arguments.add(new BasicNameValuePair("url", registryURL));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+
+    /**
+     * Delete a registry configuration in a SynBioHub
+     * 
+     * @param uriPrefix URI prefix of the registry to delete
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void deleteRegistryConfig(String uriPrefix) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to remove a registry configuration.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/deleteRegistry";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("uri", uriPrefix));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }
+    
+    /**
+     * Update the administrator email configuration for a SynBioHub
+     * 
+     * @param administratorEmail Administrator email address
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void updateAdministratorEmailConfig(String administratorEmail) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to update the administrator email configuration.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/setAdministratorEmail";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("administratorEmail", administratorEmail));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Retrieve update from Web-of-Registries for a SynBioHub
+     *   
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void retreiveUpdateFromWebOfRegistries() throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to retrieve update from Web-of-Registries.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/retrieveFromWebOfRegistries";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+	        
+        try
+        {
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    } 
+    
+    /**
+     * Send request to join Web-of-Registries for a SynBioHub
+     * 
+     * @param administratorEmail Administrator email address
+     * @param webOfRegistries URL for the Web-of-Registries
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void requestToJoinWebOfRegistries(String administratorEmail, String webOfRegistries) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to send request to join Web-of-Registries.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/federate";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("administratorEmail", administratorEmail));
+        arguments.add(new BasicNameValuePair("webOfRegistries", webOfRegistries));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Get remotes configuration for a SynBioHub
+     *
+     * @return A JSON object of the remotes configuration for a SynBioHub
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public JSONObject getRemotesConfig() throws SynBioHubException
+    {
+    	return getConfig("remotes");
+    }
+    
+    /**
+     * Save a Benchling remote configuration for a SynBioHub
+     * 
+     * @param id Id of the Benchling remote
+     * @param remoteURL URL for the Benchling remote
+     * @param benchlingApiToken API token for the Benchling remote
+     * @param rejectUnauthorized Check SSL certificate?
+     * @param folderPrefix Prefix to use for folders on Benchling
+     * @param sequenceSuffix Suffix to use for sequences found on Benchling
+     * @param defaultFolderId Default folder on Benchling to access
+     * @param isPublic Should the remote be visible publicly? 
+     * @param rootCollectionDisplayId Display id for the root collection on the remote
+     * @param rootCollectionName Name for the root collection on the remote
+     * @param rootCollectionDescription Description for the root collection on the remote
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void saveBenchlingRemoteConfig(String id, String remoteURL, String benchlingApiToken, 
+    		boolean rejectUnauthorized, String folderPrefix, String sequenceSuffix, String defaultFolderId, 
+    		boolean isPublic, String rootCollectionDisplayId, String rootCollectionName, 
+    		String rootCollectionDescription) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to save a Benchling remote configuration.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/saveRemote";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("type", "benchling"));
+        arguments.add(new BasicNameValuePair("id", id));
+        arguments.add(new BasicNameValuePair("url", remoteURL));
+        arguments.add(new BasicNameValuePair("benchlingApiToken", benchlingApiToken));
+        if (rejectUnauthorized) {
+        	arguments.add(new BasicNameValuePair("rejectUnauthorized", "on"));
+        }
+        arguments.add(new BasicNameValuePair("folderPrefix", folderPrefix));
+        arguments.add(new BasicNameValuePair("sequenceSuffix", sequenceSuffix));
+        arguments.add(new BasicNameValuePair("defaultFolderId", defaultFolderId));
+        if (isPublic) {
+        	arguments.add(new BasicNameValuePair("isPublic", "on"));
+        }
+        arguments.add(new BasicNameValuePair("rootCollectionDisplayId", rootCollectionDisplayId));
+        arguments.add(new BasicNameValuePair("rootCollectionName", rootCollectionName));
+        arguments.add(new BasicNameValuePair("rootCollectionDescription", rootCollectionDescription));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Save a ICE remote configuration for a SynBioHub
+     * 
+     * @param id Id of the ICE remote
+     * @param remoteURL URL for the ICE remote
+     * @param iceApiTokenClient ICE API token client
+     * @param iceApiToken ICE API token
+     * @param iceApiTokenOwner ICE API token owner
+     * @param iceCollection ICE collection
+     * @param rejectUnauthorized Check SSL certificate?
+     * @param folderPrefix Prefix to use for folders on ICE
+     * @param sequenceSuffix Suffix to use for sequences found on Benchling
+     * @param defaultFolderId Default folder on Benchling to access
+     * @param groupId Group id on ICE
+     * @param pi Principal Investigator name
+     * @param piEmail Principal Investigator email
+     * @param isPublic Should the remote be visible publicly? 
+     * @param partNumberPrefix Prefix to use for parts
+     * @param rootCollectionDisplayId Display id for the root collection on the remote
+     * @param rootCollectionName Name for the root collection on the remote
+     * @param rootCollectionDescription Description for the root collection on the remote
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void saveICERemoteConfig(String id, String remoteURL, String iceApiTokenClient, String iceApiToken,
+    		String iceApiTokenOwner, String iceCollection, boolean rejectUnauthorized, String folderPrefix, 
+    		String sequenceSuffix, String defaultFolderId, String groupId, String pi, String piEmail, 
+    		boolean isPublic, String partNumberPrefix, String rootCollectionDisplayId, String rootCollectionName, 
+    		String rootCollectionDescription) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to save a ICE remote configuration.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/saveRemote";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("type", "ice"));
+        arguments.add(new BasicNameValuePair("id", id));
+        arguments.add(new BasicNameValuePair("url", remoteURL));
+        arguments.add(new BasicNameValuePair("iceApiTokenClient", iceApiTokenClient));
+        arguments.add(new BasicNameValuePair("iceApiToken", iceApiToken));
+        arguments.add(new BasicNameValuePair("iceApiTokenOwner", iceApiTokenOwner));
+        arguments.add(new BasicNameValuePair("iceCollection", iceCollection));
+        if (rejectUnauthorized) {
+        	arguments.add(new BasicNameValuePair("rejectUnauthorized", "on"));
+        }
+        arguments.add(new BasicNameValuePair("folderPrefix", folderPrefix));
+        arguments.add(new BasicNameValuePair("sequenceSuffix", sequenceSuffix));
+        arguments.add(new BasicNameValuePair("defaultFolderId", defaultFolderId));
+        arguments.add(new BasicNameValuePair("groupId", groupId));
+        arguments.add(new BasicNameValuePair("pi", pi));
+        arguments.add(new BasicNameValuePair("piEmail", piEmail));
+        if (isPublic) {
+        	arguments.add(new BasicNameValuePair("isPublic", "on"));
+        }
+        arguments.add(new BasicNameValuePair("partNumberPrefix", partNumberPrefix));
+        arguments.add(new BasicNameValuePair("rootCollectionDisplayId", rootCollectionDisplayId));
+        arguments.add(new BasicNameValuePair("rootCollectionName", rootCollectionName));
+        arguments.add(new BasicNameValuePair("rootCollectionDescription", rootCollectionDescription));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }  
+    
+    /**
+     * Delete a remote configuration in a SynBioHub
+     * 
+     * @param id Id of the remote configuration to remove
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void deleteRemoteConfig(String id) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to remove a remote configuration.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/deleteRemote";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("id", id));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }
+    
+    /**
+     * Get explorer configuration for a SynBioHub
+     *
+     * @return A JSON object of the explorer configuration for a SynBioHub
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public JSONObject getExplorerConfig() throws SynBioHubException
+    {
+    	return getConfig("explorer");
+    }
+    
+    /**
+     * Set the explorer configuration for a SynBioHub
+     * 
+     * @param useSBOLExplorer Boolean indicating whether SBOLExplorer is to be used or not
+     * @param SBOLExplorerEndpoint The endpoint where SBOLExplorer can be found
+     * @param useDistributedSearch Boolean indicating whether distributed search should be used
+     * @param pagerankTolerance The Pagerank tolerance factor
+     * @param uclustIdentity The UClust clustering identity 
+     * @param synbiohubPublicGraph The SynBioHub public graph for this instance
+     * @param elasticsearchEndpoint The endpoint where Elasticsearch can be found
+     * @param elasticsearchIndexName The Elasticsearch index name
+     * @param sparqlEndpoint The Virtuoso SPARQL endpoint
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void setExplorerConfig(boolean useSBOLExplorer, String SBOLExplorerEndpoint, boolean useDistributedSearch,
+    		String pagerankTolerance, String uclustIdentity, String synbiohubPublicGraph, String elasticsearchEndpoint,
+    		String elasticsearchIndexName, String sparqlEndpoint) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to set the explorer configuration.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/explorer";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        if (useSBOLExplorer) {
+        	arguments.add(new BasicNameValuePair("useSBOLExplorer", "true"));
+        }
+        arguments.add(new BasicNameValuePair("SBOLExplorerEndpoint", SBOLExplorerEndpoint));
+        if (useDistributedSearch) {
+        	arguments.add(new BasicNameValuePair("useDistributedSearch", "true"));
+        }
+        arguments.add(new BasicNameValuePair("pagerankTolerance", pagerankTolerance));
+        arguments.add(new BasicNameValuePair("uclustIdentity", uclustIdentity));
+        arguments.add(new BasicNameValuePair("synbiohubPublicGraph", synbiohubPublicGraph));
+        arguments.add(new BasicNameValuePair("elasticsearchEndpoint", elasticsearchEndpoint));
+        arguments.add(new BasicNameValuePair("elasticsearchIndexName", elasticsearchIndexName));
+        arguments.add(new BasicNameValuePair("sparqlEndpoint", sparqlEndpoint));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Update SBOLExplorer index
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void updateExplorerIndex() throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to update the SBOLExplorer index.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/explorerUpdateIndex";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+	        
+        try
+        {
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+
+    /**
+     * Get the SBOLExplorer log file
+     * 
+     * @param path Path where to store the SBOLExplorer log file
+     *
+     * @return the filename of the SBOLExplorer log file
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getExplorerLog(String path) throws SynBioHubException, IOException
+    {
+        String url = backendUrl + "/admin/explorerLog";
+
+        return fetchContentSaveToFile(url,null,path);
+    }
+    
+    /**
+     * Get the SBOLExplorer log file
+     * 
+     * @param outputStream OutputStream to return the SBOLExplorer log
+     *	
+     * @return the filename of the SBOLExplorer log file
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getExplorerLog(OutputStream outputStream) throws SynBioHubException, IOException
+    {
+        String url = backendUrl + "/admin/explorerLog";
+
+        return fetchContentSaveToFile(url,outputStream,null);
+    }
+    
+    /**
+     * Get theme configuration for a SynBioHub
+     *
+     * @return A JSON object of the theme configuration for a SynBioHub
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public JSONObject getThemeConfig() throws SynBioHubException
+    {
+    	return getConfig("theme");
+    }
+    
+    /**
+     * Set the theme configuration for a SynBioHub
+     * 
+     * @param instanceName Name of the SynBioHub instance
+     * @param frontPageText Text to show on front page of the SynBioHub intance
+     * @param baseColor Base color to use fo this SynBioHub instance
+     * @param showModuleInteractions Should module interactions be shown using VisBol
+     * @param logoInputStream InputStream for logo file
+     * @param logoFileName Name of the logo file
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws FileNotFoundException 
+     */
+    public void setThemeConfig(String instanceName, String frontPageText, String baseColor,
+    		boolean showModuleInteractions, String logoFileName) throws SynBioHubException, FileNotFoundException
+    {
+    	setThemeConfig(instanceName, frontPageText, baseColor, showModuleInteractions, new File(logoFileName));
+    }
+    
+    /**
+     * Set the theme configuration for a SynBioHub
+     * 
+     * @param instanceName Name of the SynBioHub instance
+     * @param frontPageText Text to show on front page of the SynBioHub intance
+     * @param baseColor Base color to use fo this SynBioHub instance
+     * @param showModuleInteractions Should module interactions be shown using VisBol
+     * @param logoInputStream InputStream for logo file
+     * @param logoFile File for the logo file
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws FileNotFoundException 
+     */
+    public void setThemeConfig(String instanceName, String frontPageText, String baseColor,
+    		boolean showModuleInteractions, File logoFile) throws SynBioHubException, FileNotFoundException
+    {
+    	String name = logoFile.getName();
+    	InputStream inputStream = new FileInputStream(logoFile);
+    	setThemeConfig(instanceName, frontPageText, baseColor, showModuleInteractions, inputStream, name);
+    }
+    
+    /**
+     * Set the theme configuration for a SynBioHub
+     * 
+     * @param instanceName Name of the SynBioHub instance
+     * @param frontPageText Text to show on front page of the SynBioHub intance
+     * @param baseColor Base color to use fo this SynBioHub instance
+     * @param showModuleInteractions Should module interactions be shown using VisBol
+     * @param logoInputStream InputStream for logo file
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void setThemeConfig(String instanceName, String frontPageText, String baseColor,
+    		boolean showModuleInteractions, InputStream logoInputStream) throws SynBioHubException
+    {
+    	setThemeConfig(instanceName, frontPageText, baseColor, showModuleInteractions, logoInputStream, "file");
+    }
+    
+    /**
+     * Set the theme configuration for a SynBioHub
+     * 
+     * @param instanceName Name of the SynBioHub instance
+     * @param frontPageText Text to show on front page of the SynBioHub intance
+     * @param baseColor Base color to use fo this SynBioHub instance
+     * @param showModuleInteractions Should module interactions be shown using VisBol
+     * @param logoInputStream InputStream for logo file
+     * @param logoFileName Name of the logo file
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void setThemeConfig(String instanceName, String frontPageText, String baseColor,
+    		boolean showModuleInteractions, InputStream logoInputStream, String logoFileName) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to set the theme configuration.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/theme";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        MultipartEntityBuilder params = MultipartEntityBuilder.create();        
+        params.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+        params.addTextBody("instanceName", instanceName);
+        params.addTextBody("frontPageText", frontPageText);
+        params.addTextBody("baseColor", baseColor);
+        if (showModuleInteractions) {
+        	params.addTextBody("showModuleInteractions", "true");
+        }
+        if (logoInputStream != null) {
+        	params.addBinaryBody("logo", logoInputStream, ContentType.DEFAULT_BINARY, logoFileName);
+        } else {
+        	params.addTextBody("logo", "");
+        }
+        
+        try
+        {
+            request.setEntity(params.build());
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Get users configuration for a SynBioHub
+     *
+     * @return A JSON object of the users configuration for a SynBioHub
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public JSONObject getUsersConfig() throws SynBioHubException
+    {
+    	return getConfig("users");
+    }
+    
+    /**
+     * Set the users configuration for a SynBioHub
+     * 
+     * @param allowPublicSignup Flag indicating if public signup is allowed 
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void setUsersConfig(boolean allowPublicSignup) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to set the users configuration.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/users";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+    
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        if (allowPublicSignup) {
+        	arguments.add(new BasicNameValuePair("allowPublicSignup", "true"));
+        }
+        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Add a new uesr to a SynBioHub
+     * 
+     * @param username username of new user
+     * @param name name of new user
+     * @param email email of new user
+     * @param affiliation affiliation of new user
+     * @param isMember is the new user a member of the team
+     * @param isCurator is the new user a curator
+     * @param isAdmin is the new user an administrator
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void addNewUser(String username, String name, String email, String affiliation, 
+    		boolean isMember, boolean isCurator, boolean isAdmin) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to add a new user.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/newUser";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+    
+        List<NameValuePair> arguments = new ArrayList<>(4);
+    	arguments.add(new BasicNameValuePair("username", username));
+    	arguments.add(new BasicNameValuePair("name", name));
+    	arguments.add(new BasicNameValuePair("email", email));
+    	arguments.add(new BasicNameValuePair("affiliation", affiliation));
+        if (isMember) {
+        	arguments.add(new BasicNameValuePair("isMember", "true"));
+        }
+        if (isCurator) {
+        	arguments.add(new BasicNameValuePair("isCurator", "true"));
+        }
+        if (isAdmin) {
+        	arguments.add(new BasicNameValuePair("isAdmin", "true"));
+        }
+        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Update a uesr on a SynBioHub
+     *
+     * @param id Id of the user to update
+     * @param username username of new user
+     * @param name name of new user
+     * @param email email of new user
+     * @param affiliation affiliation of new user
+     * @param isMember is the new user a member of the team
+     * @param isCurator is the new user a curator
+     * @param isAdmin is the new user an administrator
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void updateUser(int id, String username, String name, String email, String affiliation, 
+    		boolean isMember, boolean isCurator, boolean isAdmin) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to update a user.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/updateUser";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+    
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("id", Integer.toString(id)));
+    	arguments.add(new BasicNameValuePair("username", username));
+    	arguments.add(new BasicNameValuePair("name", name));
+    	arguments.add(new BasicNameValuePair("email", email));
+    	arguments.add(new BasicNameValuePair("affiliation", affiliation));
+        if (isMember) {
+        	arguments.add(new BasicNameValuePair("isMember", "true"));
+        }
+        if (isCurator) {
+        	arguments.add(new BasicNameValuePair("isCurator", "true"));
+        }
+        if (isAdmin) {
+        	arguments.add(new BasicNameValuePair("isAdmin", "true"));
+        }
+        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Delete a user from a SynBioHub
+     * 
+     * @param id Id of user to delete
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void deleteUser(int id) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to delete a user.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin/deleteUser";
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("id", Integer.toString(id)));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }  
+    
+    /**
+     * Get remotes configuration for a SynBioHub
+     *
+     * @return A JSON object of the remotes configuration for a SynBioHub
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    private JSONObject getConfig(String configType) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		String configTypeStr = " ";
+            if (!configType.equals("")) {
+            	configTypeStr += configType + " ";
+            }
+    		Exception e = new Exception("Must be logged in to get the"+ configTypeStr + "configuration.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = backendUrl + "/admin";
+        if (!configType.equals("")) {
+        	url += "/" + configType;
+        }
+
+        HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+
+        try
+        {
+            HttpResponse response = client.execute(request);
+
+            checkResponseCode(response);
+
+            InputStream inputStream = response.getEntity().getContent();
+
+            JSONParser parser = new JSONParser();
+            JSONObject config = (JSONObject) parser.parse(inputStreamToString(inputStream));
+            
+            return config;
+        }
+        catch (Exception e)
+        {
+            throw new SynBioHubException(e);
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }
+    
+    /**
      * Fetch data about all registries in the web of registries.
      *
      * @return An ArrayList of WebOfRegistriesData describing each registry in the web of registries.
@@ -1334,10 +2563,7 @@ public class SynBioHubFrontend
         request.setHeader("Accept", "text/plain");
         
         MultipartEntityBuilder params = MultipartEntityBuilder.create();        
-
-        /* example for setting a HttpMultipartMode */
         params.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-
         params.addTextBody("user", user);	
         params.addBinaryBody("file", inputStream, ContentType.DEFAULT_BINARY, filename);
 	        
@@ -1960,8 +3186,6 @@ public class SynBioHubFrontend
         request.setHeader("Accept", "text/plain");
         
         MultipartEntityBuilder params = MultipartEntityBuilder.create();        
-
-        /* example for setting a HttpMultipartMode */
         params.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         if (uri==null) {
         	params.addTextBody("id", id);
