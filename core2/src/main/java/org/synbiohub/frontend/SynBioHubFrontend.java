@@ -1727,11 +1727,10 @@ public class SynBioHubFrontend
      * @param frontPageText Text to show on front page of the SynBioHub intance
      * @param baseColor Base color to use fo this SynBioHub instance
      * @param showModuleInteractions Should module interactions be shown using VisBol
-     * @param logoInputStream InputStream for logo file
      * @param logoFileName Name of the logo file
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException if the file is not found
      */
     public void setThemeConfig(String instanceName, String frontPageText, String baseColor,
     		boolean showModuleInteractions, String logoFileName) throws SynBioHubException, FileNotFoundException
@@ -1746,11 +1745,10 @@ public class SynBioHubFrontend
      * @param frontPageText Text to show on front page of the SynBioHub intance
      * @param baseColor Base color to use fo this SynBioHub instance
      * @param showModuleInteractions Should module interactions be shown using VisBol
-     * @param logoInputStream InputStream for logo file
      * @param logoFile File for the logo file
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException if the file is not found
      */
     public void setThemeConfig(String instanceName, String frontPageText, String baseColor,
     		boolean showModuleInteractions, File logoFile) throws SynBioHubException, FileNotFoundException
@@ -2057,19 +2055,204 @@ public class SynBioHubFrontend
      */    
     private JSONObject getConfig(String configType) throws SynBioHubException
     {
-    	if (user.equals("")) {
-    		String configTypeStr = " ";
-            if (!configType.equals("")) {
-            	configTypeStr += configType + " ";
-            }
-    		Exception e = new Exception("Must be logged in to get the"+ configTypeStr + "configuration.");
-    		throw new SynBioHubException(e);
+    	String configTypeStr = "";
+    	if (!configType.equals("")) {
+    		configTypeStr += configType + " ";
     	}
+    	configTypeStr += "configuration";
         String url = backendUrl + "/admin";
         if (!configType.equals("")) {
         	url += "/" + configType;
         }
+        return getJSON(url,configTypeStr);
+    }
+    
+    /**
+     * Get logged in user profile from a SynBioHub
+     *
+     * @return A JSON object of the logged in user profile from a SynBioHub
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public JSONObject getUserProfile() throws SynBioHubException
+    {
+    	return getJSON(backendUrl+"/profile","user profile");
+    }
+    
+    /**
+     * Register a new user in SynBioHub
+     * 
+     * @param username User name of the user
+     * @param name Name of the user
+     * @param affiliation Affilation of the user
+     * @param email Email address of the user
+     * @param password Password for the user
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void registerUser(String username, String name, String affiliation, String email, String password) throws SynBioHubException
+    {
+    	addUpdateUserProfile(username,name,affiliation,email,password);
+    }
+    
+    /**
+     * Update the logged in user's profile
+     * 
+     * @param name Name of the user
+     * @param affiliation Affilation of the user
+     * @param email Email address of the user
+     * @param password Password for the user
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void updateUserProfile(String name, String affiliation, String email, String password) throws SynBioHubException
+    {
+    	addUpdateUserProfile(null,name,affiliation,email,password);
+    }
+    
+    /**
+     * Update the logged in user's profile
+     * 
+     * @param username User name of the user
+     * @param name Name of the user
+     * @param affiliation Affilation of the user
+     * @param email Email address of the user
+     * @param password Password for the user
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    private void addUpdateUserProfile(String username, String name, String affiliation, String email, String password) throws SynBioHubException
+    {
+    	if (username == null && user.equals("")) {
+    		Exception e = new Exception("Must be logged in to update the logged in user's profile.");
+    		throw new SynBioHubException(e);
+    	}
+    	String url;
+    	if (username != null) {
+            url = backendUrl + "/register";
+    	} else {
+            url = backendUrl + "/profile";
+    	}    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        if (username != null) {
+            arguments.add(new BasicNameValuePair("username", username));
+        }
+        arguments.add(new BasicNameValuePair("name", name));
+        arguments.add(new BasicNameValuePair("affiliation", affiliation));
+        arguments.add(new BasicNameValuePair("email", email));
+        arguments.add(new BasicNameValuePair("password1", password));
+        arguments.add(new BasicNameValuePair("password2", password));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Request password reset
+     * 
+     * @param email Email address of the user to send password reset link
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void requestPasswordReset(String email) throws SynBioHubException
+    {
+    	String url = backendUrl + "/resetPassword";
 
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("email", email));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }  
+    
+    /**
+     * Set new password
+     * 
+     * @param token Token received by email to reset a password
+     * @param password New password
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void setNewPassword(String token, String password) throws SynBioHubException
+    {
+    	String url = backendUrl + "/setNewPassword";
+
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(4);
+        arguments.add(new BasicNameValuePair("token", token));
+        arguments.add(new BasicNameValuePair("password1", password));
+        arguments.add(new BasicNameValuePair("password2", password));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Get remotes configuration for a SynBioHub
+     *
+     * @return A JSON object of the remotes configuration for a SynBioHub
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    private JSONObject getJSON(String url,String message) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to get the "+ message + ".");
+    		throw new SynBioHubException(e);
+    	}
         HttpGet request = new HttpGet(url);
         request.setHeader("X-authorization", user);
         request.setHeader("Accept", "text/plain");
@@ -2337,7 +2520,7 @@ public class SynBioHubFrontend
     
     /**
 	 * Sets the user to null to indicate that no user is logged in.
-     * @throws SynBioHubException 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub 
      */
     public void logout() throws SynBioHubException 
     {
