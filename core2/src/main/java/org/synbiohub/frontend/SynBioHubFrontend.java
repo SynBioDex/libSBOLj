@@ -3029,6 +3029,88 @@ public class SynBioHubFrontend
     } 
     
     /**
+     * Add member to a collection.
+     * @param collectionUri URI of collection to add a member to
+     * @param memberUri URI of the object to add as a member
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void addMember(URI collectionUri, URI memberUri) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to add to fields.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = memberUri.toString() + "/addToCollection";
+        url = url.replace(uriPrefix, backendUrl);
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(1);
+        arguments.add(new BasicNameValuePair("collections", collectionUri.toString()));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
+     * Remove member of a collection.
+     * @param collectionUri URI of collection to remove a member from
+     * @param memberUri URI of the object to remove as a member
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void removeMember(URI collectionUri, URI memberUri) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to add to fields.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = collectionUri + "/removeMembership";
+        url = url.replace(uriPrefix, backendUrl);
+    
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        List<NameValuePair> arguments = new ArrayList<>(1);
+        arguments.add(new BasicNameValuePair("member", memberUri.toString()));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(arguments));
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+    
+    /**
      * Add owner to an object in SynBioHub.
      * @param topLevelUri identity of the object to add owner to
      * @param userId user id of owner being added
