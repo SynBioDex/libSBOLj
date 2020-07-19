@@ -2048,6 +2048,13 @@ public class SBOLDocument {
 				}
 			}
 		}
+		for (CombinatorialDerivation combinatorialDerivation : getCombinatorialDerivations()) {
+			for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+				for (ComponentDefinition variant : variableComponent.getVariants()) {
+					componentDefs.remove(variant);
+				}
+			}
+		}
 		return componentDefs;
 	}
 
