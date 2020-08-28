@@ -1283,10 +1283,16 @@ public class SBOLReader
 				if (pair.getLeft().equals(key))
 				{
 					subject = componentDefMap.get(key);
+					if (subject == null) {
+						throw new SBOLValidationException("sbol-11402",sc_identity);
+					}
 				}
 				else if (pair.getRight().equals(key))
 				{
 					object = componentDefMap.get(key);
+					if (subject == null) {
+						throw new SBOLValidationException("sbol-11404",sc_identity);
+					}
 				}
 			}
 
