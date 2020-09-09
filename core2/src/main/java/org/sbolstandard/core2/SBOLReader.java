@@ -1290,7 +1290,7 @@ public class SBOLReader
 				else if (pair.getRight().equals(key))
 				{
 					object = componentDefMap.get(key);
-					if (subject == null) {
+					if (object == null) {
 						throw new SBOLValidationException("sbol-11404",sc_identity);
 					}
 				}
