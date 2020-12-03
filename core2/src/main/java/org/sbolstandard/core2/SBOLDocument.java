@@ -100,6 +100,10 @@ public class SBOLDocument {
 	 * Constant representing SnapGene file format
 	 */
 	public static final String SNAPGENE = "SNAPGENE";
+	/**
+	 * Constant representing CSV file format
+	 */
+	public static final String CSV = "CSV";
 
 	/**
 	 * Creates a new SBOLDocument instance with one empty list for the namespaces
@@ -2058,6 +2062,22 @@ public class SBOLDocument {
 		return componentDefs;
 	}
 
+	/**
+	 * Returns the set of root combinatorial derivations. A root combinatorial derivation is
+	 * a combinatorial derivation that is not referenced by a variable components variant derivations.
+	 * 
+	 * @return the set of root combinatorial derivations
+	 */
+	public Set<CombinatorialDerivation> getRootCombinatorialDerivations(){
+		Set<CombinatorialDerivation> combinatorialDerivs = getCombinatorialDerivations();
+		for(CombinatorialDerivation combinatorialDerivation : getCombinatorialDerivations()){
+			for(VariableComponent component : combinatorialDerivation.getVariableComponents()) {
+				combinatorialDerivs.removeAll(component.getVariantDerivations());
+			}
+		}
+		return combinatorialDerivs;
+	}
+	
 	/**
 	 * Returns the set of root module definitions. A root module definition is a
 	 * module definition that is not referenced by a child module.

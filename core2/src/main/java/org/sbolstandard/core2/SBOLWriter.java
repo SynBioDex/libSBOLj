@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 import javanet.staxutils.IndentingXMLStreamWriter;
 
@@ -230,6 +231,14 @@ public class SBOLWriter
 			GenBank.write(doc, out);
 		} else if (fileType.equals(SBOLDocument.SNAPGENE)) {
 			SnapGene.write(doc, out);
+		} else if (fileType.equals(SBOLDocument.CSV)) {
+			try {
+				writeCSV(new OutputStreamWriter(out), doc);
+			} catch (IOException e) {
+				throw new SBOLConversionException(e);
+			} catch (SBOLValidationException e) {
+				throw new SBOLConversionException(e);
+			}
 		} else if (fileType.equals(SBOLDocument.JSON)) {
 			try {
 				writeJSON(new OutputStreamWriter(out),
@@ -281,6 +290,29 @@ public class SBOLWriter
 		}
 	}
 
+	private static void writeCSV(Writer stream, SBOLDocument document) throws IOException, SBOLValidationException {
+		for(ComponentDefinition rootCompDef : document.getRootComponentDefinitions()) {
+			StringBuilder sb = new StringBuilder();
+			Stack<ComponentDefinition> compDefStack = new Stack<ComponentDefinition>();
+			compDefStack.push(rootCompDef);
+			while(!compDefStack.isEmpty()) {
+				ComponentDefinition cd = compDefStack.pop();
+				List<Component> components = cd.getSortedComponents();
+				if(components.size() > 0) {
+					for(int i = components.size()-1; i >= 0; i--) {
+						compDefStack.push(components.get(i).getDefinition());
+					}
+				}else {
+					sb.append(cd.getDisplayId()+",");
+				}
+			}
+			sb.setLength(sb.length() - 1);
+			sb.append("\n");
+			stream.write(sb.toString());
+		}
+		stream.flush();
+	}
+	
 	private static void writeJSON(Writer stream, DocumentRoot<QName> document) throws CoreIoException
 	{
 		HashMap<String, Object> config = new HashMap<>();
