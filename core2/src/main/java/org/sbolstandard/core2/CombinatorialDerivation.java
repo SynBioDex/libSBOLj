@@ -582,4 +582,376 @@ public class CombinatorialDerivation extends TopLevel {
 						: "")
 				+ "]";
 	}
+	
+	/**
+	 * Enumerates this combinatorial and adds the resulting ComponentDefinitions to the containing SBOLDocument.
+	 * @return - The list of resulting ComponentDefinitions
+	 * @throws SBOLValidationException
+	 */
+	public Set<ComponentDefinition> enumerate() throws SBOLValidationException {
+		return enumerate(getSBOLDocument());
+	}
+	
+	/**
+	 * Enumerates this combinatorial and adds the resulting ComponentDefinitions to the given SBOLDocument.
+	 * @param document - The document that component definitions will be added to.
+	 * @return - The list of resulting ComponentDefinitions
+	 * @throws SBOLValidationException
+	 */
+	public HashSet<ComponentDefinition> enumerate(SBOLDocument document) throws SBOLValidationException{
+		return CombinatorialDerivation.CombinatorialExpansionUtil.enumerate(document, this);
+	}
+	
+	/**
+	 * Taken from SBOLDesigner
+	 */
+	static class CombinatorialExpansionUtil {
+
+		private static ComponentDefinition createTemplateCopy(SBOLDocument doc, CombinatorialDerivation derivation)
+				throws SBOLValidationException {
+			ComponentDefinition template = derivation.getTemplate();
+
+			String uniqueId = getUniqueDisplayId(null, null, template.getDisplayId() + "_GeneratedInstance",
+					template.getVersion(), "CD", doc);
+			//ComponentDefinition copy = (ComponentDefinition) doc.createCopy(template, uniqueId, template.getVersion());
+			ComponentDefinition copy = doc.createComponentDefinition(uniqueId, template.getVersion(), template.getTypes());
+			copy.setRoles(template.getRoles());
+			Component prev = null;
+			Component curr;
+			for(Component c : template.getSortedComponents())
+			{
+				curr = copy.createComponent(c.getDisplayId(), c.getAccess(), c.getDefinitionURI());
+				if(prev != null)
+				{
+					uniqueId = getUniqueDisplayId(copy, null,
+							copy.getDisplayId() + "_SequenceConstraint", null, "SequenceConstraint", null);
+					copy.createSequenceConstraint(uniqueId, RestrictionType.PRECEDES, prev.getIdentity(),
+							curr.getIdentity());
+				}
+				prev = curr;
+			}
+			copy.addWasDerivedFrom(template.getIdentity());
+			copy.addWasDerivedFrom(derivation.getIdentity());
+			for (Component component : copy.getComponents()) {
+				component.addWasDerivedFrom(template.getComponent(component.getDisplayId()).getIdentity());
+			}
+
+			//copy.clearSequenceAnnotations();
+
+			return copy;
+		}
+
+		private static HashSet<ComponentDefinition> enumerate(SBOLDocument doc, CombinatorialDerivation derivation)
+				throws SBOLValidationException {
+			HashSet<ComponentDefinition> parents = new HashSet<>();
+			parents.add(createTemplateCopy(doc, derivation));
+			for (VariableComponent vc : derivation.getVariableComponents()) {
+				HashSet<ComponentDefinition> newParents = new HashSet<>();
+				for (ComponentDefinition parent : parents) {
+					for (HashSet<ComponentDefinition> children : group(collectVariants(doc, vc), vc.getOperator())) {
+						
+						// create copy of parent
+						String uniqueId = getUniqueDisplayId(null, null, parent.getDisplayId(),
+								parent.getVersion(), "CD", doc);
+						ComponentDefinition newParent = (ComponentDefinition) doc.createCopy(parent, uniqueId, "1");
+
+						// add children
+						ComponentDefinition template = derivation.getTemplate();
+						addChildren(template, template.getComponent(vc.getVariableURI()), newParent, children);
+
+						// add to newParents
+						newParents.add(newParent);
+					}
+				}
+
+				parents = newParents;
+			}
+
+			return parents;
+		}
+		
+
+		private static void addChildren(ComponentDefinition originalTemplate, Component originalComponent,
+				ComponentDefinition newParent, HashSet<ComponentDefinition> children) throws SBOLValidationException {
+			Component newComponent = newParent.getComponent(originalComponent.getDisplayId());
+			newComponent.addWasDerivedFrom(originalComponent.getIdentity());
+
+			if (children.isEmpty()) {
+				removeConstraintReferences(newParent, newComponent);
+				for (SequenceAnnotation sa : newParent.getSequenceAnnotations()) {
+					if (sa.isSetComponent() && sa.getComponentURI().equals(newComponent.getIdentity())) {
+						newParent.removeSequenceAnnotation(sa);
+					}
+				}
+				newParent.removeComponent(newComponent);
+				return;
+			}
+
+			boolean first = true;
+			for (ComponentDefinition child : children) {
+				if (first) {
+					// take over the definition of newParent's version of the
+					// original component
+					newComponent.setDefinition(child.getIdentity());
+					first = false;
+				} else {
+					// create a new component
+					String uniqueId = getUniqueDisplayId(newParent, null, child.getDisplayId() + "_Component",
+							"1", "Component", null);
+					Component link = newParent.createComponent(uniqueId, AccessType.PUBLIC, child.getIdentity());
+					link.addWasDerivedFrom(originalComponent.getIdentity());
+
+					// create a new 'prev precedes link' constraint
+					Component oldPrev = getBeforeComponent(originalTemplate, originalComponent);
+					if (oldPrev != null) {
+						Component newPrev = newParent.getComponent(oldPrev.getDisplayId());
+						if (newPrev != null) {
+							uniqueId = getUniqueDisplayId(newParent, null,
+									newParent.getDisplayId() + "_SequenceConstraint", null, "SequenceConstraint", null);
+							newParent.createSequenceConstraint(uniqueId, RestrictionType.PRECEDES, newPrev.getIdentity(),
+									link.getIdentity());
+						}
+					}
+
+					// create a new 'link precedes next' constraint
+					Component oldNext = getAfterComponent(originalTemplate, originalComponent);
+					if (oldNext != null) {
+						Component newNext = newParent.getComponent(oldNext.getDisplayId());
+						if (newNext != null) {
+							uniqueId = getUniqueDisplayId(newParent, null,
+									newParent.getDisplayId() + "_SequenceConstraint", null, "SequenceConstraint", null);
+							newParent.createSequenceConstraint(uniqueId, RestrictionType.PRECEDES, link.getIdentity(),
+									newNext.getIdentity());
+						}
+					}
+				}
+			}
+		}
+
+		private static void removeConstraintReferences(ComponentDefinition newParent, Component newComponent) throws SBOLValidationException {
+			Component subject = null;
+			Component object = null;
+			for (SequenceConstraint sc : newParent.getSequenceConstraints()) {
+				if (sc.getSubject().equals(newComponent)) {
+					object = sc.getObject();
+					//If we know what the new subject of this sequence constraint should be, modify it
+					if(subject != null) {
+						sc.setSubject(subject.getIdentity());
+						object = null;
+						subject = null;
+					}else {//else remove it
+						newParent.removeSequenceConstraint(sc);
+					}
+				}
+				if(sc.getObject().equals(newComponent)){
+					subject = sc.getSubject();
+					//If we know what the new object of this sequence constraint should be, modify it
+					if(object != null) {
+						sc.setObject(object.getIdentity());
+						object = null;
+						subject = null;
+					}else {//else remove it
+						newParent.removeSequenceConstraint(sc);
+					}
+				}
+			}
+		}
+
+		private static Component getBeforeComponent(ComponentDefinition template, Component component) {
+			for (SequenceConstraint sc : template.getSequenceConstraints()) {
+				if (sc.getRestriction().equals(RestrictionType.PRECEDES) && sc.getObject().equals(component)) {
+					return sc.getSubject();
+				}
+			}
+			return null;
+		}
+
+		private static Component getAfterComponent(ComponentDefinition template, Component component) {
+			for (SequenceConstraint sc : template.getSequenceConstraints()) {
+				if (sc.getRestriction().equals(RestrictionType.PRECEDES) && sc.getSubject().equals(component)) {
+					return sc.getObject();
+				}
+			}
+			return null;
+		}
+
+		private static HashSet<HashSet<ComponentDefinition>> group(HashSet<ComponentDefinition> variants,
+				OperatorType operator) {
+			HashSet<HashSet<ComponentDefinition>> groups = new HashSet<>();
+
+			for (ComponentDefinition CD : variants) {
+				HashSet<ComponentDefinition> group = new HashSet<>();
+				group.add(CD);
+				groups.add(group);
+			}
+
+			if (operator == OperatorType.ONE) {
+				return groups;
+			}
+
+			if (operator == OperatorType.ZEROORONE) {
+				groups.add(new HashSet<>());
+				return groups;
+			}
+
+			groups.clear();
+			generateCombinations(groups, variants.toArray(new ComponentDefinition[0]), 0, new HashSet<>());
+			if (operator == OperatorType.ONEORMORE) {
+				return groups;
+			}
+
+			if (operator == OperatorType.ZEROORMORE) {
+				groups.add(new HashSet<>());
+				return groups;
+			}
+
+			throw new IllegalArgumentException(operator.toString() + " operator not supported");
+		}
+
+		/**
+		 * Generates all combinations except the empty set.
+		 */
+		private static void generateCombinations(HashSet<HashSet<ComponentDefinition>> groups,
+				ComponentDefinition[] variants, int i, HashSet<ComponentDefinition> set) {
+			if (i == variants.length) {
+				if (!set.isEmpty()) {
+					groups.add(set);
+				}
+				return;
+			}
+
+			HashSet<ComponentDefinition> no = new HashSet<>(set);
+			generateCombinations(groups, variants, i + 1, no);
+
+			HashSet<ComponentDefinition> yes = new HashSet<>(set);
+			yes.add(variants[i]);
+			generateCombinations(groups, variants, i + 1, yes);
+		}
+
+		private static HashSet<ComponentDefinition> collectVariants(SBOLDocument doc, VariableComponent vc)
+				throws SBOLValidationException {
+			HashSet<ComponentDefinition> variants = new HashSet<>();
+
+			//Recursively collect variants from possible nested VariantDerivations 
+//			for(CombinatorialDerivation cd : vc.getVariantDerivations())
+//			{
+//				for (VariableComponent v : cd.getVariableComponents()) {
+//					variants.addAll(collectVariants(doc, v));
+//					
+//				}
+//			}
+			// add all variants
+			variants.addAll(vc.getVariants());
+
+			// add all variants from variantCollections
+			for (Collection c : vc.getVariantCollections()) {
+				for (TopLevel tl : c.getMembers()) {
+					if (tl instanceof ComponentDefinition) {
+						variants.add((ComponentDefinition) tl);
+					}
+				}
+			}
+
+			// add all variants from variantDerivations
+			for (CombinatorialDerivation derivation : vc.getVariantDerivations()) {
+				variants.addAll(enumerate(doc, derivation));
+			}
+
+			return variants;
+		}
+		
+		/**
+		 * Returns an int which guarantees a unique URI. Pass in the parent CD (if
+		 * dataType isn't a TopLevel), the displayId you want, the version (if
+		 * dataType is a TopLevel), the type of object, and the SBOLDocument
+		 * containing the design.
+		 * 
+		 * @throws SBOLValidationException
+		 */
+		public static String getUniqueDisplayId(ComponentDefinition comp, CombinatorialDerivation derivation,
+				String displayId, String version, String dataType, SBOLDocument design) throws SBOLValidationException {
+			// if can get using some displayId, then try the next number
+			switch (dataType) {
+			case "CD":
+				for (int i = 1; true; i++) {
+					if (i == 1 && design.getComponentDefinition(displayId, version) == null) {
+						return displayId;
+					}
+					if (design.getComponentDefinition(displayId + i, version) == null) {
+						return displayId + i;
+					}
+				}
+			case "SequenceAnnotation":
+				for (int i = 1; true; i++) {
+					if (i == 1 && comp.getSequenceAnnotation(displayId) == null) {
+						return displayId;
+					}
+					if (comp.getSequenceAnnotation(displayId + i) == null) {
+						return displayId + i;
+					}
+				}
+			case "SequenceConstraint":
+				for (int i = 1; true; i++) {
+					if (i == 1 && comp.getSequenceConstraint(displayId) == null) {
+						return displayId;
+					}
+					if (comp.getSequenceConstraint(displayId + i) == null) {
+						return displayId + i;
+					}
+				}
+			case "Component":
+				for (int i = 1; true; i++) {
+					if (i == 1 && comp.getComponent(displayId) == null) {
+						return displayId;
+					}
+					if (comp.getComponent(displayId + i) == null) {
+						return displayId + i;
+					}
+				}
+			case "Sequence":
+				for (int i = 1; true; i++) {
+					if (i == 1 && design.getSequence(displayId, version) == null) {
+						return displayId;
+					}
+					if (design.getSequence(displayId + i, version) == null) {
+						return displayId + i;
+					}
+				}
+			case "Range":
+				test: for (int i = 1; true; i++) {
+					for (SequenceAnnotation sa : comp.getSequenceAnnotations()) {
+						if (i == 1 && sa.getLocation(displayId) != null) {
+							continue test;
+						}
+						if (sa.getLocation(displayId + i) != null) {
+							continue test;
+						}
+					}
+					// This will always return Range, Range2, Range3... etc,
+					// skipping Range1
+					return i == 1 ? displayId : displayId + i;
+				}
+			case "CombinatorialDerivation":
+				for (int i = 1; true; i++) {
+					if (i == 1 && design.getCombinatorialDerivation(displayId, version) == null) {
+						return displayId;
+					}
+					if (design.getCombinatorialDerivation(displayId + i, version) == null) {
+						return displayId + i;
+					}
+				}
+			case "VariableComponent":
+				for (int i = 1; true; i++) {
+					if (i == 1 && derivation.getVariableComponent(displayId) == null) {
+						return displayId;
+					}
+					if (derivation.getVariableComponent(displayId + i) == null) {
+						return displayId + i;
+					}
+				}
+			default:
+				throw new IllegalArgumentException();
+			}
+		}
+	}
 }
