@@ -327,11 +327,13 @@ public class SBOLReader
 		boolean foundRDF = false;
 		boolean foundSBOL1 = false;
 		boolean foundSBOL2 = false;
+		boolean foundSBOL3 = false;
 		for (NamespaceBinding n : document.getNamespaceBindings())
 		{
 			if (n.getNamespaceURI().equals(Sbol1Terms.rdf.getNamespaceURI())) foundRDF = true;
 			if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))	foundSBOL1 = true;
 			if (n.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()))	foundSBOL2 = true;
+			if (n.getNamespaceURI().equals(Sbol2Terms.sbol3.getNamespaceURI()))	foundSBOL3 = true;
 		}
 		if (foundSBOL2) {
 			if (!foundRDF) {
@@ -339,6 +341,11 @@ public class SBOLReader
 			}
 			return SBOLVERSION2;
 		} else if (foundSBOL1) {
+			if (!foundRDF) {
+				throw new SBOLValidationException("sbol-10102");
+			}
+			return SBOLVERSION1;
+		} else if (foundSBOL3) {
 			if (!foundRDF) {
 				throw new SBOLValidationException("sbol-10102");
 			}

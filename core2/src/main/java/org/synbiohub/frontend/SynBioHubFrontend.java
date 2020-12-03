@@ -1949,7 +1949,6 @@ public class SynBioHubFrontend
      * Update a uesr on a SynBioHub
      *
      * @param id Id of the user to update
-     * @param username username of new user
      * @param name name of new user
      * @param email email of new user
      * @param affiliation affiliation of new user
@@ -1959,7 +1958,7 @@ public class SynBioHubFrontend
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      */
-    public void updateUser(int id, String username, String name, String email, String affiliation, 
+    public void updateUser(int id, String name, String email, String affiliation, 
     		boolean isMember, boolean isCurator, boolean isAdmin) throws SynBioHubException
     {
     	if (user.equals("")) {
@@ -1974,7 +1973,6 @@ public class SynBioHubFrontend
     
         List<NameValuePair> arguments = new ArrayList<>(4);
         arguments.add(new BasicNameValuePair("id", Integer.toString(id)));
-    	arguments.add(new BasicNameValuePair("username", username));
     	arguments.add(new BasicNameValuePair("name", name));
     	arguments.add(new BasicNameValuePair("email", email));
     	arguments.add(new BasicNameValuePair("affiliation", affiliation));
@@ -2662,8 +2660,6 @@ public class SynBioHubFrontend
         /* example for setting a HttpMultipartMode */
         params.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
-        params.addTextBody("user", user);	
-        params.addTextBody("collectionUri", topLevelUri.toString());	
         params.addBinaryBody("collectionIcon", inputStream, ContentType.DEFAULT_BINARY, filename);
 	        
         try

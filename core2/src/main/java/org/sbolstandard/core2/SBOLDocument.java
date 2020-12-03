@@ -2746,6 +2746,9 @@ public class SBOLDocument {
 					newDisplayId = newDisplayId.replace("/" + topLevel.getVersion(), "");
 					newVersion = topLevel.getVersion();
 				}
+				if (newDisplayId.equals("")) {
+					newDisplayId = "namespace";
+				}
 				newDisplayId = URIcompliance.fixDisplayId(newDisplayId);
 				while (getTopLevelLocalOnly(
 						URIcompliance.createCompliantURI(documentURIPrefix, newDisplayId, newVersion)) != null) {
