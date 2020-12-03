@@ -48,7 +48,9 @@ public class Association extends Identified {
 
 	void copy(Association association) throws SBOLValidationException {
 		((Identified)this).copy((Identified)association);
-		this.setPlan(association.getPlanURI());
+		if (this.isSetPlan()) {
+			this.setPlan(association.getPlanURI());
+		}
 		for (URI role : association.getRoles()) {
 			this.addRole(URI.create(role.toString()));
 		}
