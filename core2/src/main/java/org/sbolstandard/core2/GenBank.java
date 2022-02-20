@@ -511,19 +511,21 @@ class GenBank {
 				String journal = null;
 				String medline = null;
 				String pubmed = null;
-				for (Annotation ref : a.getAnnotations()) {
-					if (ref.getQName().equals(new QName(GBNAMESPACE,LABEL,GBPREFIX))) {
-						label = ref.getStringValue();
-					} else if (ref.getQName().equals(new QName(GBNAMESPACE,AUTHORS,GBPREFIX))) {
-						authors = ref.getStringValue();
-					} else if (ref.getQName().equals(new QName(GBNAMESPACE,TITLE,GBPREFIX))) {
-						title = ref.getStringValue();
-					} else if (ref.getQName().equals(new QName(GBNAMESPACE,JOURNAL,GBPREFIX))) {
-						journal = ref.getStringValue();
-					} else if (ref.getQName().equals(new QName(GBNAMESPACE,MEDLINE,GBPREFIX))) {
-						medline = ref.getStringValue();
-					} else if (ref.getQName().equals(new QName(GBNAMESPACE,PUBMED,GBPREFIX))) {
-						pubmed = ref.getStringValue();
+				if (a.getAnnotations()!=null) {
+					for (Annotation ref : a.getAnnotations()) {
+						if (ref.getQName().equals(new QName(GBNAMESPACE,LABEL,GBPREFIX))) {
+							label = ref.getStringValue();
+						} else if (ref.getQName().equals(new QName(GBNAMESPACE,AUTHORS,GBPREFIX))) {
+							authors = ref.getStringValue();
+						} else if (ref.getQName().equals(new QName(GBNAMESPACE,TITLE,GBPREFIX))) {
+							title = ref.getStringValue();
+						} else if (ref.getQName().equals(new QName(GBNAMESPACE,JOURNAL,GBPREFIX))) {
+							journal = ref.getStringValue();
+						} else if (ref.getQName().equals(new QName(GBNAMESPACE,MEDLINE,GBPREFIX))) {
+							medline = ref.getStringValue();
+						} else if (ref.getQName().equals(new QName(GBNAMESPACE,PUBMED,GBPREFIX))) {
+							pubmed = ref.getStringValue();
+						}
 					}
 				}
 				if (label != null) {
