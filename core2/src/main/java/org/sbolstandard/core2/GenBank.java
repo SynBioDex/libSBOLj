@@ -1337,6 +1337,11 @@ class GenBank {
 							boolean outerComplement = false;
 							OrientationType orientation = OrientationType.INLINE;
 							if (range.startsWith("complement")) {
+								while (!range.endsWith(")")) {
+									strLine = readGenBankLine(br).trim();
+//									System.out.println("Multi:"+strLine);
+									range += strLine;
+								}
 								outerComplement = true;
 								orientation = OrientationType.REVERSECOMPLEMENT;
 								range = range.replace("complement(", "").replace(")","");
