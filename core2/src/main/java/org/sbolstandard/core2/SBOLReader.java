@@ -724,13 +724,13 @@ public class SBOLReader
 			for (NamespaceBinding n : document.getNamespaceBindings())
 
 			{
-				if (SBOLDoc.getNamespace(URI.create(n.getNamespaceURI()))==null) {
+//				if (SBOLDoc.getNamespace(URI.create(n.getNamespaceURI()))==null) {
 					if (n.getPrefix()==null) {
 						SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), ""));
 					} else {
 						SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 					}
-				}
+//				}
 
 			}
 		} catch (SBOLValidationException e) {
