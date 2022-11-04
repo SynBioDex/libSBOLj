@@ -332,7 +332,7 @@ public class SBOLDocument {
 						moduleDefinition = document.getModuleDefinition(moduleDefinitionURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 				}
 			}
 		}
@@ -511,7 +511,7 @@ public class SBOLDocument {
 						collection = document.getCollection(collectionURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 					collection = null;
 				}
 			}
@@ -691,7 +691,7 @@ public class SBOLDocument {
 						experiment = document.getExperiment(experimentURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 					experiment = null;
 				}
 			}
@@ -871,7 +871,7 @@ public class SBOLDocument {
 						experimentalDatum = document.getExperimentalData(experimentalDataURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 					experimentalDatum = null;
 				}
 			}
@@ -1097,7 +1097,7 @@ public class SBOLDocument {
 						model = document.getModel(modelURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 				}
 			}
 		}
@@ -1265,7 +1265,7 @@ public class SBOLDocument {
 						attachment = document.getAttachment(attachmentURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 					attachment = null;
 				}
 			}
@@ -1578,7 +1578,7 @@ public class SBOLDocument {
 						componentDefinition = document.getComponentDefinition(componentDefinitionURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 				}
 			}
 		}
@@ -1634,7 +1634,7 @@ public class SBOLDocument {
 						combinatorialDerivation = document.getCombinatorialDerivation(combinatorialDerivationURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 				}
 			}
 		}
@@ -1883,7 +1883,7 @@ public class SBOLDocument {
 						implementation = document.getImplementation(implementationURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 				}
 			}
 		}
@@ -2296,9 +2296,13 @@ public class SBOLDocument {
 	 *             if an SBOL validation rule violation occurred in
 	 *             {@link #createCopy(TopLevel)}.
 	 */
-	public void createCopy(SBOLDocument document) throws SBOLValidationException {
+	public void createCopy(SBOLDocument document) {
 		for (TopLevel topLevel : document.getTopLevels()) {
-			createCopy(topLevel);
+			try {	
+				createCopy(topLevel);
+			} catch (SBOLValidationException exception) {
+				// Skipping this one due to validation exception
+			}
 		}
 	}
 
@@ -3485,7 +3489,7 @@ public class SBOLDocument {
 						sequence = document.getSequence(sequenceURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 				}
 			}
 		}
@@ -3705,7 +3709,7 @@ public class SBOLDocument {
 						genericTopLevel = document.getGenericTopLevel(genericTopLevelURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 				}
 			}
 		}
@@ -3888,7 +3892,7 @@ public class SBOLDocument {
 						activity = document.getActivity(activityURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 					activity = null;
 				}
 			}
@@ -4061,7 +4065,7 @@ public class SBOLDocument {
 						agent = document.getAgent(agentURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 					agent = null;
 				}
 			}
@@ -4234,7 +4238,7 @@ public class SBOLDocument {
 						plan = document.getPlan(planURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 				}
 			}
 		}
@@ -4352,7 +4356,7 @@ public class SBOLDocument {
 						topLevel = document.getTopLevel(topLevelURI);
 						createCopy(document);
 					}
-				} catch (SynBioHubException | SBOLValidationException e) {
+				} catch (SynBioHubException e) {
 				}
 			}
 		} 
