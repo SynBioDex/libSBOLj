@@ -399,8 +399,8 @@ public class SBOLWriter
 			list.add(NamedProperty(Sbol2Terms.Identified.description, t.getDescription()));
 		for(Annotation annotation : t.getAnnotations())
 		{
-			if (!annotation.getValue().getName().getPrefix().equals("sbol"))
-				list.add(annotation.getValue());
+			//if (!annotation.getValue().getName().getPrefix().equals("sbol"))
+			list.add(annotation.getValue());
 		}
 	}
 
