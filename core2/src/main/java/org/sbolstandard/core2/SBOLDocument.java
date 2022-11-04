@@ -2292,9 +2292,6 @@ public class SBOLDocument {
 	 *
 	 * @param document
 	 *            the document to be copied from
-	 * @throws SBOLValidationException
-	 *             if an SBOL validation rule violation occurred in
-	 *             {@link #createCopy(TopLevel)}.
 	 */
 	public void createCopy(SBOLDocument document) {
 		for (TopLevel topLevel : document.getTopLevels()) {
