@@ -1983,6 +1983,40 @@ public class SBOLValidate {
 			}
 		}
 	}
+	
+	private static void compareExperiments(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
+		for (Experiment experiment1 : doc1.getExperiments()) {
+			Experiment experiment2 = doc2.getExperiment(experiment1.getIdentity());
+			if (experiment2 == null) {
+				errors.add("Experiment " + experiment1.getIdentity() + " not found in " + file2);
+			} else if (!experiment1.equals(experiment2)) {
+				errors.add("Experiment " + experiment1.getIdentity() + " differ.");
+			}
+		}
+		for (Experiment experiment2 : doc2.getExperiments()) {
+			Experiment experiment1 = doc1.getExperiment(experiment2.getIdentity());
+			if (experiment1 == null) {
+				errors.add("Experiment " + experiment2.getIdentity() + " not found in " + file1);
+			}
+		}
+	}
+	
+	private static void compareExperimentalData(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
+		for (ExperimentalData experimentalData1 : doc1.getExperimentalData()) {
+			ExperimentalData experimentalData2 = doc2.getExperimentalData(experimentalData1.getIdentity());
+			if (experimentalData2 == null) {
+				errors.add("ExperimentalData " + experimentalData1.getIdentity() + " not found in " + file2);
+			} else if (!experimentalData1.equals(experimentalData2)) {
+				errors.add("ExperimentalData " + experimentalData1.getIdentity() + " differ.");
+			}
+		}
+		for (ExperimentalData experimentalData2 : doc2.getExperimentalData()) {
+			ExperimentalData experimentalData1 = doc1.getExperimentalData(experimentalData2.getIdentity());
+			if (experimentalData1 == null) {
+				errors.add("ExperimentalData " + experimentalData2.getIdentity() + " not found in " + file1);
+			}
+		}
+	}
 
 	private static void compareMapsTos(String file1, Component component1, String file2, Component component2) {
 		for (MapsTo mapsTo1 : component1.getMapsTos()) {
@@ -2505,6 +2539,8 @@ public class SBOLValidate {
 		compareGenericTopLevels(file1, doc1, file2, doc2);
 		compareCombinatorialDerivations(file1, doc1, file2, doc2);
 		compareImplementations(file1, doc1, file2, doc2);
+		compareExperiments(file1, doc1, file2, doc2);
+		compareExperimentalData(file1, doc1, file2, doc2);
 		compareAttachments(file1, doc1, file2, doc2);
 	}
 
